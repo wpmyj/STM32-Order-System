@@ -625,6 +625,51 @@
               <FilePath>..\USER\Home.c</FilePath>
             </File>
             <File>
+              <FileName>Menu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Menu.c</FilePath>
+            </File>
+            <File>
+              <FileName>Newtable.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Newtable.c</FilePath>
+            </File>
+            <File>
+              <FileName>Order.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Order.c</FilePath>
+            </File>
+            <File>
+              <FileName>Reminder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Reminder.c</FilePath>
+            </File>
+            <File>
+              <FileName>AddFood.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\AddFood.c</FilePath>
+            </File>
+            <File>
+              <FileName>RetreatFood.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\RetreatFood.c</FilePath>
+            </File>
+            <File>
+              <FileName>Query.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Query.c</FilePath>
+            </File>
+            <File>
+              <FileName>MMS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\MMS.c</FilePath>
+            </File>
+            <File>
+              <FileName>Settings_Func.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Settings_Func.c</FilePath>
+            </File>
+            <File>
               <FileName>Readme.txt</FileName>
               <FileType>5</FileType>
               <FilePath>..\USER\Readme.txt</FilePath>

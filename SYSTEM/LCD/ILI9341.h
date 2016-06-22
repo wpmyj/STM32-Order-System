@@ -64,7 +64,6 @@ extern const unsigned char ASCII_16[95][16];
 #define LGRAYBLUE        0XA651 //浅灰蓝色(中间层颜色)
 #define LBBLUE           0X2B12 //浅棕蓝色(选择条目的反色)
 
-
 /*LCD相关端口定义*/
 #define  LCD_BL 	  PAout(3)					 //LCD_BL背光				PA3
 #define  LCD_CS     PCout(9)     		   //片选端口         PC9

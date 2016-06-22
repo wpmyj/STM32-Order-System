@@ -1,6 +1,6 @@
 #include "Application.h"
 
-static u8 user_input_flag=1,passwd_input_flag=0,pass_flag=0;
+static u8 user_input_flag=1,passwd_input_flag=0;
 u8 *user,*passwd;
 /*
 	函数功能：获取输入
@@ -42,8 +42,8 @@ u8 *Input_Scan(void)
 	/*输入切换*/
 	if((key==KEY_UP)&&user_input_flag==0){
 		BACK_COLOR = BROWN;
-		LCD_DrawRecFill(90, 65, 190, 95,GRAY);
-		LCD_DrawRecFill(90, 105, 190, 132,BROWN);
+		LCD_DrawRecFill(90, 45, 190, 75,GRAY);
+		LCD_DrawRecFill(90, 95, 190, 122,BROWN);
 		user_input_flag = 1;											//用户输入标志为1
 		passwd_input_flag = 0;										//密码输入标志为0
 		strcpy((char*)temp2,(char*)Input_Data);		//把密码存到temp2里面
@@ -54,8 +54,8 @@ u8 *Input_Scan(void)
 	}
 	if((key==KEY_DOWN)&&passwd_input_flag==0){
 		BACK_COLOR = BROWN;
-		LCD_DrawRecFill(90, 65, 190, 95,BROWN);
-		LCD_DrawRecFill(90, 105, 190, 132,GRAY);
+		LCD_DrawRecFill(90, 45, 190, 75,BROWN);
+		LCD_DrawRecFill(90, 95, 190, 122,GRAY);
 		user_input_flag = 0;											//用户输入标志为0
 		passwd_input_flag = 1;										//密码输入标志为1
 		strcpy((char*)temp1,(char*)Input_Data);		//把用户存到temp1里面
@@ -71,9 +71,8 @@ u8 *Input_Scan(void)
 		WKUP_flag = 0;
 		LCD_DrawRecFill(160, 145, 210, 170,BROWN);
 		if(str_cmpx(user,"123456     ", 10)&&str_cmpx(passwd,"123456     ",10)){
-			KEY_LED = !KEY_LED;
-			pass_flag = 1;
-			printf("登陆成功！%s,%d\r\n",__FILE__,__LINE__);
+			Login_flag = 0;				//失能登陆界面
+			Home_flag = 1;				//使能主界面
 		}
 	}else if(WKUP_flag==0){
 		WKUP_flag = 1;
@@ -90,25 +89,24 @@ u8 *Input_Scan(void)
 */
 void Login_Func(void)
 {
-	pass_flag = 0;
 	
 	LCD_Clear(YELLOW);
 	BACK_COLOR = BROWN;
 	
-	LCD_DrawRecFill(50, 20, 170, 50,BROWN);
-	Display_String(77,28,80,16,"用户登陆",16);
+	LCD_DrawRecFill(0,0,220,20,LBBLUE);
+	Display_String(77,3,80,16,"用户登陆",16);
+
+	LCD_DrawRecFill(20, 45, 80, 75,BROWN);
+	Display_String(25,52,80,16,"用户：",16);
 	
-	LCD_DrawRecFill(20, 65, 80, 95,BROWN);
-	Display_String(25,72,80,16,"用户：",16);
+	LCD_DrawRecFill(20, 95, 80, 122,BROWN);
+	Display_String(25,100,80,16,"密码：",16);
 	
-	LCD_DrawRecFill(20, 105, 80, 132,BROWN);
-	Display_String(25,110,80,16,"密码：",16);
+	LCD_DrawRecFill(90, 45, 190, 75,(user_input_flag ? GRAY : BROWN));
+	Display_String(95,52,80,16,user,16);
 	
-	LCD_DrawRecFill(90, 65, 190, 95,GRAY);
-	Display_String(95,72,80,16,user,16);
-	
-	LCD_DrawRecFill(90, 105, 190, 132,BROWN);
-	Display_String(95,110,80,16,passwd,16);
+	LCD_DrawRecFill(90, 95, 190, 122,(passwd_input_flag ? GRAY : BROWN));
+	Display_String(95,100,80,16,passwd,16);
 	
 	LCD_DrawRecFill(10, 145, 60, 170,BROWN);
 	Display_String(20,150,80,16,"清除",16);
@@ -121,17 +119,15 @@ void Login_Func(void)
 		if(user_input_flag){
 			BACK_COLOR = GRAY;
 			user = Input_Scan();
-			Display_String(95,72,80,16,user,16);
+			Display_String(95,52,80,16,user,16);
 		}
 		/*输入密码*/
 		if(passwd_input_flag){
 			BACK_COLOR = GRAY;
 			passwd = Input_Scan();
-			Display_String(95,110,80,16,passwd,16);
+			Display_String(95,100,80,16,passwd,16);
 		}
-	}while(!pass_flag);
+	}while(Login_flag);
 	
-	LCD_Clear(YELLOW);
-	BACK_COLOR = YELLOW;
 }
 

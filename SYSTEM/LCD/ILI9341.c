@@ -819,7 +819,7 @@ void Show_Font(u16 x,u16 y,u8 *dzk,u8 size)
 }
 
 /*
-	函数功能：显示图片：240x320
+	函数功能：显示图片：176x220
 	参数：*p图片地址
 */
 void LCD_Pic(const unsigned char * p)
@@ -829,8 +829,8 @@ void LCD_Pic(const unsigned char * p)
 	LCD_SetCursor(0x00,0x0000);	//设置光标位置 
 	LCD_WriteRAM_Prepare();     //开始写入GRAM	 	  
 	
-	for(y=0;y<320;y++){
-    for(x=0;x<240;x++){
+	for(y=0;y<220;y++){
+    for(x=0;x<176;x++){
 			LCD_WR_DATA((*p<<8)|(*(p+1)));
 			p += 2;			
     }			

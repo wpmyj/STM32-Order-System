@@ -50,8 +50,8 @@ void Display_HZ(u16 x,u16 y,u8 *font,u8 size)
 		for(j=0;j<size;j++){		//显示上下一列的字节
 			if(HZ[k]&0x80)	
 				LCD_DrawPoint(x,y);//如果是1的话显示
-			else 						
-				LCD_DrawPoint_color(x,y,BACK_COLOR);
+//			else 						
+//				LCD_DrawPoint_color(x,y,BACK_COLOR);
 			y ++;									//y坐标增加1
 			HZ[k] <<= 1;					//把次高位变成最高位
 			if((j+1)%8==0) k++;		//如果显示完一个字节，显示下一个字节
