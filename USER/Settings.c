@@ -1,11 +1,5 @@
 #include "Application.h"
 
-/*清屏颜色，背景颜色，名称起始横坐标，按键1，按键2*/
-WINDOWS_INIT_TYPE Settings_Win={YELLOW,BROWN,94,"设置","返回","选择"};
-
-/*起始横坐标，起始纵坐标，图标宽度，图标高度，横间隙，纵间隙，窗口贴片横数量，窗口贴片纵数量*/
-WINDOWS_TYPE Settings_Info = {10,25,200,25,5,5,1,4};
-
 /*菜单列表*/
 const u8 *Settings_title[12] = {"时间设置","用户管理","背光及声音","关于"};
 
@@ -15,8 +9,11 @@ const u8 *Settings_title[12] = {"时间设置","用户管理","背光及声音","关于"};
 void Settings_Func(void)
 {
 	short i=0,tmp=1;
-	
-	/*窗口初始化*/
+	/*起始横坐标，起始纵坐标，图标宽度，图标高度，横间隙，纵间隙，窗口贴片横数量，窗口贴片纵数量*/
+	WINDOWS_TYPE Settings_Info = {10,25,200,25,5,5,1,4};	
+	/*清屏颜色，背景颜色，名称起始横坐标，按键1，按键2*/
+	WINDOWS_INIT_TYPE Settings_Win={YELLOW,BROWN,94,"设置","返回","选择"};
+	/*界面初始化*/
 	Windows_Init(Settings_Win);	
 	
 	/*初始化菜单*/

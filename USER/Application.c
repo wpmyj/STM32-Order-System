@@ -1,32 +1,5 @@
 #include "Application.h"
 
-/****************************相应界面激活*************************/
-u8 Login_flag 								=			0;
-u8 Home_flag									=			0;
-u8 Menu_flag 									=			0;
-u8 Newtable_flag 							=			0;
-u8 Order_flag 								=			0;
-u8 Reminder_flag 							=			0;
-u8 AddFood_flag 							=			0;
-u8 RetreatFood_flag 					=			0;
-u8 Query_flag 								=			0;
-u8 MMS_flag 									=			0;
-u8 Settings_flag 							=			0;
-u8 Settings_Time_flag 				=			1;
-u8 Settings_User_flag 				=			0;
-u8 Settings_LAB_flag 					=			0;
-u8 Settings_About_flag 				=			0;
-u8 Clear_flag 								=			0;
-u8 Clear_All									=			1;
-u8 Null 											= 		1;
-/****************************相关数据定义***************************/
-ACCOUNT_TYPE Account={"          ","          "};
-ACCOUNT_TYPE DefAcc[4] ={{"123456    ","123456    "}};
-
-
-
-
-
 /*******************************************************************
 	函数功能：实时时钟
 ********************************************************************/
@@ -102,6 +75,7 @@ u8 *Key_Input(u8 key, u8 range, u8 *Clear_All)
 		i=0;
 		Esc_flag=1;
 		*Clear_All = 0;
+		LCD_DrawRecFill(10, 145, 60, 170,BROWN);//清除效果
 	}
 	
 	return Input_Data;
@@ -113,17 +87,18 @@ u8 *Key_Input(u8 key, u8 range, u8 *Clear_All)
 ****************************************************************/
 void Windows_Init(WINDOWS_INIT_TYPE windows)
 {
+	/*初始化一些相关参数*/
 	Clear_flag = 0;
 	Clear_All = 1;
 	LCD_Clear(windows.Clear_Color);
 	BACK_COLOR = windows.Back_Color;
-	
+	/*画状态栏*/
 	LCD_DrawRecFill(0,0,220,20,LBBLUE);
 	Display_String(windows.Location,3,130,16,windows.Name,16);
-	
+	/*画按键1*/
 	LCD_DrawRecFill(10, 145, 60, 170,BROWN);
 	Display_String(20,150,80,16,windows.Button1,16);
-	
+	/*画按键2*/
 	LCD_DrawRecFill(160, 145, 210, 170,BROWN);
 	Display_String(170,150,80,16,windows.Button2,16);
 	
@@ -161,7 +136,14 @@ void Windows_Titles(WINDOWS_TYPE t, u8 **show,u16 color)
 }
 
 /**************************************************************************
-	函数功能：
+	函数功能：通用功能按键
+	参数：short *i: 上下键
+				short *j:	左右键
+				u8 tls_x:左右范围
+				u8 tls_y:上下范围
+				u8 *Old_flag:老界面标志
+				u8 *Self_flag:自己界面标志
+				u8 *New_flag:新界面标志
 ***************************************************************************/
 u8 Common_Key(short *i,short *j,u8 tls_x, u8 tls_y,u8 *Old_flag, u8 *Self_flag,u8 *New_flag)
 {

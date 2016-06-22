@@ -1,10 +1,9 @@
 #include "Application.h"
 
-WINDOWS_INIT_TYPE AddFood_Win={YELLOW,BROWN,94,"加菜","返回","选择"};
-
 void AddFood_Func(void)
 {
-	/*窗口初始化*/
+	WINDOWS_INIT_TYPE AddFood_Win={YELLOW,BROWN,94,"加菜","返回","选择"};
+	/*界面初始化*/
 	Windows_Init(AddFood_Win);
 	
 	do{

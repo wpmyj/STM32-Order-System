@@ -610,6 +610,11 @@
               <FilePath>..\USER\main.c</FilePath>
             </File>
             <File>
+              <FileName>Data_Handler.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Data_Handler.c</FilePath>
+            </File>
+            <File>
               <FileName>Application.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\Application.c</FilePath>

@@ -1,8 +1,7 @@
 #include "Application.h"
 
 u8 user_input_flag=1,passwd_input_flag=0;
-
-WINDOWS_INIT_TYPE Login_Win = {YELLOW,BROWN,77,"用户登陆","清除","确认"};
+ACCOUNT_TYPE Account={"          ","          "};	
 
 /*
 	函数功能：获取输入
@@ -91,6 +90,8 @@ u8 *Input_Scan(void)
 void Login_Func(void)
 {
 
+	WINDOWS_INIT_TYPE Login_Win = {YELLOW,BROWN,77,"用户登陆","清除","确认"};
+	/*窗口初始化*/
 	Windows_Init(Login_Win);
 
 	LCD_DrawRecFill(20, 45, 80, 75,BROWN);

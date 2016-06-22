@@ -82,9 +82,11 @@ extern ACCOUNT_TYPE Account;
 extern ACCOUNT_TYPE DefAcc[4];
 
 
-
 /*****************************函数声明***********************************/
-
+/*硬件部分初始化*/
+void Hardware_Init(void);
+/*点菜机系统初始化*/
+void DCJ_SYSTEM_INIT(void);
 /*实时时钟*/
 void RTC_Func(void);
 /*登陆界面*/

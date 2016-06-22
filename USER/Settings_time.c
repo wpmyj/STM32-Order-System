@@ -1,12 +1,5 @@
 #include "Application.h"
 
-/*起始横坐标，起始纵坐标，图标宽度，图标高度，横间隙，纵间隙，窗口贴片横数量，窗口贴片纵数量*/
-WINDOWS_TYPE Settings_Time_Info = {10,53,60,25,10,10,3,2};
-
-/*清屏颜色，背景颜色，名称起始横坐标，按键1，按键2*/
-WINDOWS_INIT_TYPE Settings_Time_Win={YELLOW,BROWN,78,"设置时间","取消","确认"};
-
-
 /*图标信息*/
 #define ST_X			10			//起始横坐标
 #define ST_Y			53			//起始纵坐标
@@ -33,8 +26,14 @@ void Settings_Time_Func(void)
 	short i=0,j=0,tmp1=0,tmp2=0;
 	TIME_TYPE time;
 	
-	/*窗口初始化*/
-	Windows_Init(Settings_Time_Win);	
+//	/*起始横坐标，起始纵坐标，图标宽度，图标高度，横间隙，纵间隙，窗口贴片横数量，窗口贴片纵数量*/
+//	WINDOWS_TYPE Set_Time_Info = {10,53,60,25,10,10,3,2};
+
+	/*清屏颜色，背景颜色，名称起始横坐标，按键1，按键2*/
+	WINDOWS_INIT_TYPE Set_Time_Win={YELLOW,BROWN,78,"设置时间","取消","确认"};
+	
+	/*界面初始化*/
+	Windows_Init(Set_Time_Win);	
 
 //	/*显示菜单*/
 //	Windows_Titles(Settings_Time_Info,(u8 **)Time,BROWN);

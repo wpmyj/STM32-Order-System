@@ -2,8 +2,6 @@
 
 #define Input_Cnt		3
 
-WINDOWS_INIT_TYPE Reminder_Win={YELLOW,BROWN,94,"催菜","取消","确认"};
-
 /*
 	函数功能：催菜功能
 */
@@ -12,7 +10,8 @@ void Reminder_Func(void)
 	u8 key;
 	u8 *Reminder_Table;
 	
-	/*窗口初始化*/
+	WINDOWS_INIT_TYPE Reminder_Win={YELLOW,BROWN,94,"催菜","取消","确认"};
+	/*界面初始化*/
 	Windows_Init(Reminder_Win);
 	
 	LCD_DrawRecFill(40,40,180,60,BROWN);

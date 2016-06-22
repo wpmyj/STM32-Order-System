@@ -1,9 +1,11 @@
 #include "Application.h"
 
-WINDOWS_INIT_TYPE Home_Win={YELLOW,BROWN,53,"创黑科技点菜宝","退出","菜单"};
-
+/*
+	函数功能：主界面
+*/
 void Home_Func(void)
 {
+	WINDOWS_INIT_TYPE Home_Win={YELLOW,BROWN,53,"创黑科技点菜宝","退出","菜单"};
 	/*窗口初始化*/
 	Windows_Init(Home_Win);
 	LCD_DrawRecFill(50, 40, 170, 96,BROWN);

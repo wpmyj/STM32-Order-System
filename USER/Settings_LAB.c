@@ -1,11 +1,5 @@
 #include "Application.h"
 
-/*清屏颜色，背景颜色，名称起始横坐标，按键1，按键2*/
-WINDOWS_INIT_TYPE Settings_LAB_Win={YELLOW,BROWN,70,"背光及声音","返回","选择"};
-
-/*起始横坐标，起始纵坐标，图标宽度，图标高度，横间隙，纵间隙，窗口贴片横数量，窗口贴片纵数量*/
-WINDOWS_TYPE Settings_LAB_Info = {10,25,200,25,5,5,1,3};
-
 const u8 *Settings_LAB[12] = {"背光开关","调节亮度","声音开关"};
 
 /*
@@ -16,6 +10,10 @@ void Settings_LAB_Func(void)
 	u8 key;
 	short i=0,tmp=1;
 	
+	/*起始横坐标，起始纵坐标，图标宽度，图标高度，横间隙，纵间隙，窗口贴片横数量，窗口贴片纵数量*/
+	WINDOWS_TYPE Settings_LAB_Info = {10,25,200,25,5,5,1,3};
+	/*清屏颜色，背景颜色，名称起始横坐标，按键1，按键2*/
+	WINDOWS_INIT_TYPE Settings_LAB_Win={YELLOW,BROWN,70,"背光及声音","返回","选择"};
 	/*窗口初始化*/
 	Windows_Init(Settings_LAB_Win);	
 	

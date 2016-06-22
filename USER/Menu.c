@@ -6,14 +6,13 @@
 const u16 Menu_Color[10] = {CYAN,DARKBLUE,BLUE,BRED,GRED,GBLUE,RED,MAGENTA,CYAN,DARKBLUE};
 const u8 Menu_Name[10][6] = {"  ","开桌","点菜","催菜","加菜","退菜","查询","信息","设置","  "};
 
-WINDOWS_INIT_TYPE Menu_Win={YELLOW,BROWN,94,"菜单","返回","选择"};
-
 /*
 	函数功能：菜单界面
 */
 void Menu_Func(void)
 {
 	static short Menu_Num=0,temp=0;
+	WINDOWS_INIT_TYPE Menu_Win={YELLOW,BROWN,94,"菜单","返回","选择"};
 	
 	/*窗口初始化*/
 	Windows_Init(Menu_Win);

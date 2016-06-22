@@ -2,8 +2,6 @@
 
 #define Input_Cnt		3 
 
-WINDOWS_INIT_TYPE Newtable_Win={YELLOW,BROWN,94,"开桌","取消","确认"};
-
 /*
 	函数功能：开新桌
 */
@@ -11,7 +9,10 @@ void Newtable_Func(void)
 {
 	u8 key;
 	u8 *Table;
-	/*窗口初始化*/
+	
+	/*界面信息*/
+	WINDOWS_INIT_TYPE Newtable_Win={YELLOW,BROWN,94,"开桌","取消","确认"};
+	/*界面初始化*/
 	Windows_Init(Newtable_Win);
 	
 	LCD_DrawRecFill(40,40,180,60,BROWN);

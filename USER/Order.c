@@ -1,27 +1,23 @@
 #include "Application.h"
 
-/*起始横坐标，起始纵坐标，图标宽度，图标高度，横间隙，纵间隙，窗口贴片横数量，窗口贴片纵数量*/
-WINDOWS_TYPE Order_Info = {10,33,60,25,10,10,3,3};
-
-/*清屏颜色，背景颜色，名称起始横坐标，按键1，按键2*/
-WINDOWS_INIT_TYPE Order_Win={YELLOW,BROWN,94,"点菜","返回","选择"};
-
 /*菜单部分,后期修改从W25Q64里面获取*/
 const u8 *Food[9] = {"炒饭","炒面","炒粉","面条","饺子","云吞","蒸饺","鸡排饭","叉烧饭"};
-
-LIST_TYPE Menu = {(u8 **)Food,"10","10"};
-
-/*菜单*/
-/*菜单选择标记*/
-
 
 void Order_Func(void)
 {
 	u8 key;
 	short i=0,j=0,tmp1=1,tmp2=1;
 	u8 Food_flag[3][3] = {0};
+	/*菜单*/
+	LIST_TYPE Menu = {(u8 **)Food,"10","10"};
 	
-	/*窗口初始化*/
+	/*起始横坐标，起始纵坐标，图标宽度，图标高度，横间隙，纵间隙，窗口贴片横数量，窗口贴片纵数量*/
+	WINDOWS_TYPE Order_Info = {10,33,60,25,10,10,3,3};
+
+	/*清屏颜色，背景颜色，名称起始横坐标，按键1，按键2*/
+	WINDOWS_INIT_TYPE Order_Win={YELLOW,BROWN,94,"点菜","返回","选择"};
+	
+	/*界面初始化*/
 	Windows_Init(Order_Win);
 	
 	/*显示菜单*/
