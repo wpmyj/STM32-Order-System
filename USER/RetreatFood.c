@@ -16,11 +16,11 @@ void RetreatFood_Func(void)
 	/*起始横坐标，起始纵坐标，图标宽度，图标高度，横间隙，纵间隙，窗口贴片横数量，窗口贴片纵数量*/
 	WINDOWS_TYPE RetreatFood_Info = {10,33,60,25,10,10,3,3};
 	/*清屏颜色，背景颜色，名称起始横坐标，按键1，按键2*/
-	WINDOWS_INIT_TYPE RetreatFood_Win={YELLOW,BROWN,94,"退菜","返回","选择"};
+	WINDOWS_INIT_TYPE RetreatFood_Win={GBLUE,LBBLUE,94,"退菜","返回","选择"};
 	/*界面初始化*/
 	Windows_Init(RetreatFood_Win);
 	/*显示菜单*/
-	Windows_Titles(RetreatFood_Info,(u8 **)Menu.Food,BROWN);
+	Windows_Titles(RetreatFood_Info,(u8 **)Menu.Food,LBBLUE);
 	/*选择新的图标，添加高亮*/
 	Windows_Title(RetreatFood_Info,(u8 **)Menu.Food,i,j,CYAN);	
 
@@ -34,7 +34,7 @@ void RetreatFood_Func(void)
 		if(tmp1!=i||tmp2!=j){	
 			/*恢复原来的图标颜色*/
 			if(!Food_flag[tmp1][tmp2])
-				Windows_Title(RetreatFood_Info,(u8 **)Menu.Food,tmp1,tmp2,BROWN);
+				Windows_Title(RetreatFood_Info,(u8 **)Menu.Food,tmp1,tmp2,LBBLUE);
 			tmp1 = i;
 			tmp2 = j;
 			/*选择新的图标，添加高亮*/

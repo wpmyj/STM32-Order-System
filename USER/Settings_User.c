@@ -1,10 +1,8 @@
 #include "Application.h"
 
-
-
 void Settings_User_Func(void)
 {
-	WINDOWS_INIT_TYPE Settings_User_Win={YELLOW,BROWN,78,"用户管理","返回","选择"};
+	WINDOWS_INIT_TYPE Settings_User_Win={GBLUE,LBBLUE,78,"用户管理","返回","选择"};
 	/*窗口初始化*/
 	Windows_Init(Settings_User_Win);	
 	

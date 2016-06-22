@@ -12,11 +12,11 @@ void Settings_Func(void)
 	/*起始横坐标，起始纵坐标，图标宽度，图标高度，横间隙，纵间隙，窗口贴片横数量，窗口贴片纵数量*/
 	WINDOWS_TYPE Settings_Info = {10,25,200,25,5,5,1,4};	
 	/*清屏颜色，背景颜色，名称起始横坐标，按键1，按键2*/
-	WINDOWS_INIT_TYPE Settings_Win={YELLOW,BROWN,94,"设置","返回","选择"};
+	WINDOWS_INIT_TYPE Settings_Win={GBLUE,LBBLUE,94,"设置","返回","选择"};
 	/*界面初始化*/
 	Windows_Init(Settings_Win);	
 	/*初始化菜单*/
-	Windows_Titles(Settings_Info,(u8 **)Settings_title,BROWN);
+	Windows_Titles(Settings_Info,(u8 **)Settings_title,LBBLUE);
 	/*设置高亮*/
 	Windows_Title(Settings_Info,(u8 **)Settings_title,i,0,CYAN);
 	do{
@@ -26,7 +26,7 @@ void Settings_Func(void)
 		/*更新显示*/
 		if(tmp!=i){
 			/*恢复高亮*/
-			Windows_Title(Settings_Info,(u8 **)Settings_title,tmp,0,BROWN);
+			Windows_Title(Settings_Info,(u8 **)Settings_title,tmp,0,LBBLUE);
 			tmp = i;
 			/*设置高亮*/
 			Windows_Title(Settings_Info,(u8 **)Settings_title,i,0,CYAN);

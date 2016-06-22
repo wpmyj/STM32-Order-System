@@ -1,37 +1,26 @@
 #include "Application.h"
 
-#define Input_Cnt		3 
-
 /*
 	函数功能：开新桌
 */
 void Newtable_Func(void)
 {
-	u8 key;
-	u8 *Table;
-	
-	/*界面信息*/
-	WINDOWS_INIT_TYPE Newtable_Win={YELLOW,BROWN,94,"开桌","取消","确认"};
-	/*界面初始化*/
-	Windows_Init(Newtable_Win);
-	LCD_DrawRecFill(40,40,180,60,BROWN);
-	Display_String(43,43,150,16,"请输入新开桌号：",16);
-	LCD_DrawRecFill(40,80,180,120,BROWN);
-	
-	do{
-		
-		/*获取功能键值*/
-		key = Common_Key((short*)&Null,(short*)&Null,Null,Null, &Menu_flag,&Newtable_flag,&Order_flag);
-		if((key==KEY_WKUP)&&Clear_flag){
-			
-		}
-			
-		/*获取新开桌子号*/
-		Table = Key_Input(key,Input_Cnt,&Clear_All);
-		Display_String(98,90,80,16,Table,16);
-		
-	}while(Newtable_flag);
-	
+	/*老界面标志，自身界面标志，新界面标志，窗体名称，获取桌子号提示，确认提示*/
+	Get_Table_Func(&Menu_flag, &Newtable_flag,&Order_flag,"开桌","请输入新开桌号：","是否点菜？");
+}
+
+/*
+	函数功能：催菜功能
+*/
+void Reminder_Func(void)
+{
+	/*老界面标志，自身界面标志，新界面标志，窗体名称，获取桌子号提示，确认提示*/
+	Get_Table_Func(&Menu_flag, &Reminder_flag,&RetreatFood_flag,"催菜","请输入催菜桌号：","是否催菜？");
 }
 
 
+void Query_Func(void)
+{		
+	/*老界面标志，自身界面标志，新界面标志，窗体名称，获取桌子号提示，确认提示*/
+	Get_Table_Func(&Menu_flag, &Query_flag,&AddFood_flag,"查询","请输入查询桌号：","是否查询？");
+}

@@ -16,12 +16,14 @@ u8 Settings_Time_flag 				=			0;						//设置界面---时间设置
 u8 Settings_User_flag 				=			0;						//设置界面---用户管理
 u8 Settings_LAB_flag 					=			0;						//设置界面---背光及声音
 u8 Settings_About_flag 				=			0;						//设置界面---关于
+u8 Message_Warming_flag				=			0;						//提示信息界面
+u8 LCD_BL_LIGHT								=			10;						//点菜机LCD显示屏亮度级别
 u8 Clear_flag 								=			0;						//清除标志 当Clear_flag = 1 时，可清除；为0时，不可清除；
 u8 Clear_All									=			1;						//全局清除标志，
 u8 Null 											= 		1;						//无效操作空间
 /****************************相关数据定义***************************/
 
-ACCOUNT_TYPE DefAcc[4] ={{"123456    ","123456    "}};
+const ACCOUNT_TYPE DefAcc[4] ={{"123456    ","123456    "}};
 
 
 /*******************************************************************
@@ -41,10 +43,35 @@ void Hardware_Init(void)
 	TIM2_PWM_Init(100,720);//定时器2PWM波输出初始化
 }
 
+
 /*******************************************************************
-	函数功能：SYSTEM初始化	
+	函数功能：SYSTEM数据初始化
+
 ********************************************************************/
-void DCJ_SYSTEM_INIT(void)
+void DCJ_SYSTEM_INIT()
+{
+	Delay_ms(10);																			//等待系统稳定
+	/*获取数据并还原数据*/
+	BEEP_EN = FlASH_Read_Byte_Data(BEEP_EN_Addr);				//获取蜂鸣器状态
+	KEY_LED = FlASH_Read_Byte_Data(KEY_LED_EN_Addr);		//获取键盘灯状态
+	LCD_BL_LIGHT = FlASH_Read_Byte_Data(LCD_BL_Addr);		//获取屏幕亮度级别
+	LCD_BL_PWM = LCD_BL_LIGHT *5;												//还原屏幕亮度
+}
+
+void SAVE_Data(void)
+{
+	FLASH_Sector_Erase(BEEP_EN_Addr);
+	FLASH_Sector_Erase(KEY_LED_EN_Addr);
+	FLASH_Sector_Erase(LCD_BL_Addr);
+	FLASH_Write_Byte_Data(BEEP_EN_Addr,BEEP_EN);
+	FLASH_Write_Byte_Data(KEY_LED_EN_Addr,KEY_LED);
+	FLASH_Write_Byte_Data(LCD_BL_Addr,LCD_BL_LIGHT);
+}
+
+/*******************************************************************
+	函数功能：SYSTEM开始	
+********************************************************************/
+void DCJ_SYSTEM_START(void)
 {
 	while(1){
 		if(Login_flag)						Login_Func();								//登陆界面
@@ -63,14 +90,5 @@ void DCJ_SYSTEM_INIT(void)
 		if(Settings_LAB_flag)			Settings_LAB_Func();				//设置界面--背光及声音
 		if(Settings_About_flag)		Settings_About_Func();			//设置界面--关于
 	}
-}
-
-/*******************************************************************
-	函数功能：数据管理
-
-********************************************************************/
-void DataHandle()
-{
-	
 }
 

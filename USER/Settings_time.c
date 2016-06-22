@@ -28,11 +28,11 @@ void Settings_Time_Func(void)
 	/*起始横坐标，起始纵坐标，图标宽度，图标高度，横间隙，纵间隙，窗口贴片横数量，窗口贴片纵数量*/
 	WINDOWS_TYPE Set_Time_Info = {10,53,60,25,10,10,3,2};
 	/*清屏颜色，背景颜色，名称起始横坐标，按键1，按键2*/
-	WINDOWS_INIT_TYPE Set_Time_Win={YELLOW,BROWN,78,"设置时间","取消","确认"};
+	WINDOWS_INIT_TYPE Set_Time_Win={GBLUE,LBBLUE,78,"设置时间","取消","确认"};
 	/*界面初始化*/
 	Windows_Init(Set_Time_Win);	
 	/*显示菜单*/
-	Windows_Titles(Set_Time_Info,(u8 **)Time,BROWN);
+	Windows_Titles(Set_Time_Info,(u8 **)Time,LBBLUE);
 	Disp_Time_Info(Set_Time_Info,i,j,CYAN);
 	do{
 		
@@ -47,7 +47,7 @@ void Settings_Time_Func(void)
 		if(tmp1!=i||tmp2!=j){	
 			/*恢复原来的图标颜色*/
 			strcpy((char *)date_time[tmp2+tmp1*Set_Time_Info.tls_x],(const char *)str);
-			Disp_Time_Info(Set_Time_Info,tmp1,tmp2,BROWN);		
+			Disp_Time_Info(Set_Time_Info,tmp1,tmp2,LBBLUE);		
 			tmp1 = i;
 			tmp2 = j;
 			Clear_All = 1;

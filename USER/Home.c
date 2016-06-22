@@ -5,10 +5,10 @@
 */
 void Home_Func(void)
 {
-	WINDOWS_INIT_TYPE Home_Win={YELLOW,BROWN,53,"创黑科技点菜宝","退出","菜单"};
+	WINDOWS_INIT_TYPE Home_Win={GBLUE,LBBLUE,53,"创黑科技点菜宝","退出","菜单"};
 	/*窗口初始化*/
 	Windows_Init(Home_Win);
-	LCD_DrawRecFill(50, 40, 170, 96,BROWN);
+	LCD_DrawRecFill(50, 40, 170, 96,LBBLUE);
 	
 	do{
 		/*获取功能键值*/

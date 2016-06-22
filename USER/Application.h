@@ -33,8 +33,8 @@ typedef struct{
 /*****************************菜单部分***********************************/
 typedef struct{
 	u8 **Food;
-	u8 *Price;
-	u8 *Num;
+	u8 **Price;
+	u8 **Num;
 }LIST_TYPE;
 
 /*****************************窗体信息***********************************/
@@ -75,15 +75,24 @@ extern u8 Settings_Time_flag;
 extern u8 Settings_User_flag;
 extern u8 Settings_LAB_flag;
 extern u8 Settings_About_flag;
+extern u8 Message_Warming_flag;
 extern u8 Clear_flag;
 extern u8 Clear_All;
 extern u8 Null;
+extern u8 LCD_BL_LIGHT;
 extern ACCOUNT_TYPE Account;
-extern ACCOUNT_TYPE DefAcc[4];
+extern const ACCOUNT_TYPE DefAcc[4];
 
+/*****************************数据存储地址*******************************/
+#define DATA_BASE								(0x050000)
+#define BEEP_EN_Addr						(0x00+DATA_BASE)
+#define KEY_LED_EN_Addr					(0x10+DATA_BASE)
+#define LCD_BL_Addr							(0x20+DATA_BASE)
 /*****************************函数声明***********************************/
 void Hardware_Init(void);								/*硬件部分初始化*/						
-void DCJ_SYSTEM_INIT(void);							/*点菜机系统初始化*/																					
+void DCJ_SYSTEM_INIT(void);							/*点菜机系统数据初始化*/
+void DCJ_SYSTEM_START(void);						/*点菜机系统开始*/
+void SAVE_Data(void);										/*保存数据*/
 void Login_Func(void);									/*登陆界面*/						
 void Home_Func(void);										/*主界面*/							
 void Menu_Func(void);										/*菜单界面*/						
@@ -100,6 +109,7 @@ void Settings_User_Func(void);					/*设置界面--用户管理*/
 void Settings_LAB_Func(void);						/*设置界面--背光及声音*/									
 void Settings_About_Func(void);					/*设置界面--关于*/											
 void RTC_Func(void);										/*实时时钟*/	
+void Message_Warming_Func(u8 *Old_flag, u8 *New_flag, u8 *Str);		/*信息提示界面*/
 
 /*******************************输入相关函数*******************************/
 u8 *Input_Scan(void);																								//按键输入不带范围
@@ -110,5 +120,8 @@ u8 Common_Key(short *i,short *j,u8 tls_x, u8 tls_y,u8 *Old_flag, u8 *Self_flag,u
 void Windows_Init(WINDOWS_INIT_TYPE windows);												//窗体初始化
 void Windows_Title(WINDOWS_TYPE t, u8 **show,u8 i, u8 j,u16 color);	//窗口贴片块
 void Windows_Titles(WINDOWS_TYPE t, u8 **show,u16 color);						//窗口贴片
+
+/********************************获取桌子号*********************************/
+u16 Get_Table_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag,u8 *name,u8 *show,u8 *warming);
 
 #endif

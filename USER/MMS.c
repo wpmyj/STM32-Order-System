@@ -2,7 +2,7 @@
 
 void MMS_Func(void)
 {
-	WINDOWS_INIT_TYPE MMS_Win={YELLOW,BROWN,94,"信息","返回","选择"};
+	WINDOWS_INIT_TYPE MMS_Win={GBLUE,LBBLUE,94,"信息","返回","选择"};
 	/*界面初始化*/
 	Windows_Init(MMS_Win);	
 	
