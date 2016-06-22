@@ -361,7 +361,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\USER;..\SYSTEM\SYS;..\SYSTEM\SYS_Init_3.5;..\SYSTEM\SYS_Init_3.5\inc;..\SYSTEM\SYS_Init_3.5\src;..\SYSTEM\LED;..\SYSTEM\Beep;..\SYSTEM\KEY;..\SYSTEM\Delay;..\SYSTEM\SPI;..\SYSTEM\W25Q64;..\SYSTEM\USART;..\SYSTEM\LCD;..\SYSTEM\Fonts;..\SYSTEM\RTC;..\SYSTEM\TIM</IncludePath>
+              <IncludePath>..\USER;..\SYSTEM\SYS;..\SYSTEM\SYS_Init_3.5;..\SYSTEM\SYS_Init_3.5\inc;..\SYSTEM\SYS_Init_3.5\src;..\SYSTEM\LED;..\SYSTEM\Beep;..\SYSTEM\KEY;..\SYSTEM\Delay;..\SYSTEM\SPI;..\SYSTEM\W25Q64;..\SYSTEM\USART;..\SYSTEM\LCD;..\SYSTEM\Fonts;..\SYSTEM\RTC;..\SYSTEM\TIM;..\SYSTEM\CC1101</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -603,6 +603,11 @@
               <FileName>TIM.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\SYSTEM\TIM\TIM.c</FilePath>
+            </File>
+            <File>
+              <FileName>cc1101.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SYSTEM\CC1101\cc1101.c</FilePath>
             </File>
           </Files>
         </Group>
