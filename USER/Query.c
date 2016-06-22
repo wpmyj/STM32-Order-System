@@ -1,33 +1,18 @@
 #include "Application.h"
 
+WINDOWS_INIT_TYPE Query_Win={YELLOW,BROWN,94,"查询","返回","选择"};
+
+/*************************************************************
+	函数功能：查询界面
+**************************************************************/
 void Query_Func(void)
-{
-	u8 key;
-	
-	LCD_Clear(YELLOW);
-	BACK_COLOR = BROWN;
-	
-	LCD_DrawRecFill(0,0,220,20,LBBLUE);
-	Display_String(94,3,80,16,"查询",16);
-	
-	LCD_DrawRecFill(10, 145, 60, 170,BROWN);
-	Display_String(20,150,80,16,"返回",16);
-	
-	LCD_DrawRecFill(160, 145, 210, 170,BROWN);
-	Display_String(170,150,80,16,"选择",16);	
+{	
+	/*窗口初始化*/
+	Windows_Init(Query_Win);	
 	
 	do{
-		key = Key_Scan();
+		/*获取功能键值*/
+		Common_Key((short *)&Null,(short *)&Null,Null,Null, &Menu_flag,&Query_flag,&Null);	
 		
-		/*退出*/
-		if(key==KEY_ESC){
-			Query_flag = 0;
-			Menu_flag = 1;
-		}
-		/*选择*/
-		if(key==KEY_WKUP){
-			
-		}
-	
 	}while(Query_flag);
 }

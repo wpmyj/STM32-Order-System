@@ -1,13 +1,12 @@
 #include "Application.h"
 
-#define titles				3
-#define SE_LABX					10				
-#define SE_LABY					25
-#define SE_LABWeight			200
-#define SE_LABHight			25
-#define SE_LABJX					5
+/*清屏颜色，背景颜色，名称起始横坐标，按键1，按键2*/
+WINDOWS_INIT_TYPE Settings_LAB_Win={YELLOW,BROWN,70,"背光及声音","返回","选择"};
 
-const u8 Settings_LAB[titles][12] = {"背光开关","调节亮度","声音开关"};
+/*起始横坐标，起始纵坐标，图标宽度，图标高度，横间隙，纵间隙，窗口贴片横数量，窗口贴片纵数量*/
+WINDOWS_TYPE Settings_LAB_Info = {10,25,200,25,5,5,1,3};
+
+const u8 *Settings_LAB[12] = {"背光开关","调节亮度","声音开关"};
 
 /*
 	函数功能：设置背光及声音
@@ -17,55 +16,30 @@ void Settings_LAB_Func(void)
 	u8 key;
 	short i=0,tmp=1;
 	
-	LCD_Clear(YELLOW);
-	BACK_COLOR = BROWN;
+	/*窗口初始化*/
+	Windows_Init(Settings_LAB_Win);	
 	
-	LCD_DrawRecFill(0,0,220,20,LBBLUE);
-	Display_String(70,3,80,16,"背光及声音",16);
-	
-	LCD_DrawRecFill(10, 145, 60, 170,BROWN);
-	Display_String(20,150,80,16,"返回",16);
-	
-	LCD_DrawRecFill(160, 145, 210, 170,BROWN);
-	Display_String(170,150,80,16,"选择",16);	
-	
-	for(i=0;i<titles;i++){
-		LCD_DrawRecFill(SE_LABX, (SE_LABY+i*(SE_LABHight+SE_LABJX)), SE_LABX+SE_LABWeight, (SE_LABY+i*(SE_LABHight+SE_LABJX))+SE_LABHight,BROWN);
-		Display_String(SE_LABX+4,(SE_LABY+i*(SE_LABHight+SE_LABJX)+4),70,16,(u8 *)Settings_LAB[i],16);	
-	}
-	
-	i = 0;
+	/*显示菜单*/
+	Windows_Titles(Settings_LAB_Info,(u8 **)Settings_LAB,BROWN);
 	
 	do{
-		key = Key_Scan();
 		
-		/*退出*/
-		if(key==KEY_ESC){
-			Settings_LAB_flag = 0;
-			Settings_flag = 1;
-		}
+		key = Common_Key(&i,(short*)&Null,Settings_LAB_Info.tls_x, Settings_LAB_Info.tls_y,&Settings_flag,&Settings_LAB_flag,&Null);
 		/*选择*/
 		if(key==KEY_WKUP){
+			Settings_LAB_flag = 1;
 			if(i==0){
 				KEY_LED = !KEY_LED;
-				LCD_DrawRecFill(SE_LABX+120, (SE_LABY+i*(SE_LABHight+SE_LABJX)), SE_LABX+SE_LABWeight, (SE_LABY+i*(SE_LABHight+SE_LABJX))+SE_LABHight,CYAN);
-				Display_String(SE_LABX+150,(SE_LABY+i*(SE_LABHight+SE_LABJX)+4),70,16,(u8 *)(KEY_LED?"开":"关"),16);	
+				LCD_DrawRecFill(130, (25+i*(30)), 210, (25+i*(30))+25,CYAN);
+				Display_String(160,(25+i*30+4),70,16,(u8 *)(KEY_LED?"开":"关"),16);	
 			}
 		}
 		
-		/*控制关标显示*/
-		if(key==KEY_UP)		i--;
-		if(key==KEY_DOWN)	i++;
-		if(i>=titles)			i = 0;
-		if(i<0)						i = titles - 1;
-		
 		/*更新显示*/
 		if(tmp!=i){
-			LCD_DrawRecFill(SE_LABX, (SE_LABY+tmp*(SE_LABHight+SE_LABJX)), SE_LABX+SE_LABWeight, (SE_LABY+tmp*(SE_LABHight+SE_LABJX))+SE_LABHight,BROWN);
-			Display_String(SE_LABX+4,(SE_LABY+tmp*(SE_LABHight+SE_LABJX)+4),70,16,(u8 *)Settings_LAB[tmp],16);	
+			Windows_Title(Settings_LAB_Info,(u8 **)Settings_LAB,tmp,0,BROWN);
 			tmp = i;
-			LCD_DrawRecFill(SE_LABX, (SE_LABY+i*(SE_LABHight+SE_LABJX)), SE_LABX+SE_LABWeight, (SE_LABY+i*(SE_LABHight+SE_LABJX))+SE_LABHight,CYAN);
-			Display_String(SE_LABX+4,(SE_LABY+i*(SE_LABHight+SE_LABJX)+4),70,16,(u8 *)Settings_LAB[i],16);	
+			Windows_Title(Settings_LAB_Info,(u8 **)Settings_LAB,i,0,CYAN);
 		}
 	
 	}while(Settings_LAB_flag);

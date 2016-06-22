@@ -106,3 +106,45 @@ Display_String((ST_X+j*(Weight+JX)+4),(ST_Y+i*(Hight+JX)+3),60,16,(u8 *)Food[j+i
 2016/3/15 16:54	  开始制作设置界面
 
 2016/3/15 21:16   完成设置界面关于
+
+2016/3/17 9:03		开始数据整理
+
+
+
+需要整理的数据：
+1.用户名
+2.用户密码
+3.桌子号
+4.菜单名
+5.点啥菜
+6.价格
+7.数量
+8.时间管理
+9.窗体数据
+
+
+/*用户管理*/
+typedef struct{
+	u8 *User;
+	u8 *Passwd;
+}user;
+
+/*点菜部分*/
+typedef struct{
+	u8 *Table;
+	u8 *Food;
+	u8 *Price;
+	u8 *Num;
+}customer;
+
+/*菜单部分*/
+typedef struct{
+	u8 **Food;
+	u8 *Price;
+	u8 *Num;
+}list;
+
+/*窗体信息*/
+typedef struct{
+	u8 
+}windows;

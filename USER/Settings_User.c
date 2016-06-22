@@ -1,33 +1,15 @@
 #include "Application.h"
 
+WINDOWS_INIT_TYPE Settings_User_Win={YELLOW,BROWN,78,"用户管理","返回","选择"};
+
 void Settings_User_Func(void)
 {
-	u8 key;
-	
-	LCD_Clear(YELLOW);
-	BACK_COLOR = BROWN;
-	
-	LCD_DrawRecFill(0,0,220,20,LBBLUE);
-	Display_String(78,3,80,16,"用户管理",16);
-	
-	LCD_DrawRecFill(10, 145, 60, 170,BROWN);
-	Display_String(20,150,80,16,"返回",16);
-	
-	LCD_DrawRecFill(160, 145, 210, 170,BROWN);
-	Display_String(170,150,80,16,"选择",16);	
+	/*窗口初始化*/
+	Windows_Init(Settings_User_Win);	
 	
 	do{
-		key = Key_Scan();
+		/*获取功能键值*/
+		Common_Key((short *)&Null,(short *)&Null,Null,Null, &Settings_flag,&Settings_User_flag,&Settings_flag);
 		
-		/*退出*/
-		if(key==KEY_ESC){
-			Settings_User_flag = 0;
-			Settings_flag = 1;
-		}
-		/*选择*/
-		if(key==KEY_WKUP){
-			
-		}
-	
 	}while(Settings_User_flag);
 }

@@ -12,8 +12,53 @@
 #include "ILI9341.h"
 #include "RTC.h"
 #include "string.h"
+#include "Debug.h"
 
-/*各项菜单全局使能标志*/
+/*****************************定义类型***********************************/
+/*用户管理*/
+typedef struct{
+	u8 *User;
+	u8 *Passwd;
+}ACCOUNT_TYPE;
+
+/*点菜部分*/
+typedef struct{
+	u8 *Table;
+	u8 **Food;
+	u8 *Price;
+	u8 *Num;
+}CUSTOMER_TYPE;
+
+/*菜单部分*/
+typedef struct{
+	u8 **Food;
+	u8 *Price;
+	u8 *Num;
+}LIST_TYPE;
+
+/*窗体信息*/
+typedef struct{
+	u8 St_x;				//起始x位置
+	u8 St_y;				//起始y位置
+	u8 Weight;			//宽
+	u8 Hight;				//高
+	u8 Jx_x;				//横间隙
+	u8 Jx_y;				//纵间隙
+	u8 tls_x;				//窗口贴片横数量
+	u8 tls_y;				//窗口贴片纵数量
+}WINDOWS_TYPE;
+
+/*窗体初始化信息*/
+typedef struct{
+	u16 Clear_Color;
+	u16 Back_Color;
+	u8 Location;
+	u8 *Name;
+	u8 *Button1;
+	u8 *Button2;
+}WINDOWS_INIT_TYPE;
+
+/****************************各项菜单全局使能标志***********************/
 extern u8 Login_flag;
 extern u8 Home_flag;
 extern u8 Menu_flag;
@@ -30,12 +75,20 @@ extern u8 Settings_User_flag;
 extern u8 Settings_LAB_flag;
 extern u8 Settings_About_flag;
 extern u8 Clear_flag;
+extern u8 Clear_All;
+extern u8 Null;
+
+extern ACCOUNT_TYPE Account;
+extern ACCOUNT_TYPE DefAcc[4];
+
+
+
+/*****************************函数声明***********************************/
 
 /*实时时钟*/
 void RTC_Func(void);
 /*登陆界面*/
 void Login_Func(void);
-u8 *Input_Scan(void);
 /*主界面*/
 void Home_Func(void);
 /*菜单界面*/
@@ -65,6 +118,14 @@ void Settings_LAB_Func(void);
 /*设置界面--关于*/
 void Settings_About_Func(void);
 
-u8 *Key_Input(u8 key, u8 range);
+/*基础相关函数*/
+u8 *Key_Input(u8 key, u8 range, u8 *Clear_All);			//按键输入带范围
+u8 *Input_Scan(void);									//按键输入不带范围
+u8 Common_Key(short *i,short *j,u8 tls_x, u8 tls_y,u8 *Old_flag, u8 *Self_flag,u8 *New_flag);
+
+void Windows_Init(WINDOWS_INIT_TYPE windows);	//窗体初始化
+void Windows_Title(WINDOWS_TYPE t, u8 **show,u8 i, u8 j,u16 color);	//窗口贴片块
+void Windows_Titles(WINDOWS_TYPE t, u8 **show,u16 color);						//窗口贴片
+
 
 #endif

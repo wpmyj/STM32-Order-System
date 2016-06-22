@@ -1,7 +1,9 @@
 #include "Application.h"
 
-static u8 user_input_flag=1,passwd_input_flag=0;
-u8 *user,*passwd;
+u8 user_input_flag=1,passwd_input_flag=0;
+
+WINDOWS_INIT_TYPE Login_Win = {YELLOW,BROWN,77,"用户登陆","清除","确认"};
+
 /*
 	函数功能：获取输入
 	返回值：获取到的数据首地址
@@ -38,7 +40,6 @@ u8 *Input_Scan(void)
 		BACK_COLOR = GRAY;
 	}
 	
-	
 	/*输入切换*/
 	if((key==KEY_UP)&&user_input_flag==0){
 		BACK_COLOR = BROWN;
@@ -70,7 +71,7 @@ u8 *Input_Scan(void)
 	if((key==KEY_WKUP)&&WKUP_flag){
 		WKUP_flag = 0;
 		LCD_DrawRecFill(160, 145, 210, 170,BROWN);
-		if(str_cmpx(user,"123456     ", 10)&&str_cmpx(passwd,"123456     ",10)){
+		if(str_cmpx(Account.User,DefAcc[0].User, 10)&&str_cmpx(Account.Passwd,DefAcc[0].Passwd,10)){
 			Login_flag = 0;				//失能登陆界面
 			Home_flag = 1;				//使能主界面
 		}
@@ -89,12 +90,8 @@ u8 *Input_Scan(void)
 */
 void Login_Func(void)
 {
-	
-	LCD_Clear(YELLOW);
-	BACK_COLOR = BROWN;
-	
-	LCD_DrawRecFill(0,0,220,20,LBBLUE);
-	Display_String(77,3,80,16,"用户登陆",16);
+
+	Windows_Init(Login_Win);
 
 	LCD_DrawRecFill(20, 45, 80, 75,BROWN);
 	Display_String(25,52,80,16,"用户：",16);
@@ -103,29 +100,24 @@ void Login_Func(void)
 	Display_String(25,100,80,16,"密码：",16);
 	
 	LCD_DrawRecFill(90, 45, 190, 75,(user_input_flag ? GRAY : BROWN));
-	Display_String(95,52,80,16,user,16);
+	Display_String(95,52,80,16,Account.User,16);
 	
 	LCD_DrawRecFill(90, 95, 190, 122,(passwd_input_flag ? GRAY : BROWN));
-	Display_String(95,100,80,16,passwd,16);
-	
-	LCD_DrawRecFill(10, 145, 60, 170,BROWN);
-	Display_String(20,150,80,16,"清除",16);
-	
-	LCD_DrawRecFill(160, 145, 210, 170,BROWN);
-	Display_String(170,150,80,16,"确认",16);
+	Display_String(95,100,80,16,Account.Passwd,16);
 	
 	do{
+		
 		/*输入用户名*/
 		if(user_input_flag){
 			BACK_COLOR = GRAY;
-			user = Input_Scan();
-			Display_String(95,52,80,16,user,16);
+			Account.User = Input_Scan();
+			Display_String(95,52,80,16,Account.User,16);
 		}
 		/*输入密码*/
 		if(passwd_input_flag){
 			BACK_COLOR = GRAY;
-			passwd = Input_Scan();
-			Display_String(95,100,80,16,passwd,16);
+			Account.Passwd = Input_Scan();
+			Display_String(95,100,80,16,Account.Passwd,16);
 		}
 	}while(Login_flag);
 	

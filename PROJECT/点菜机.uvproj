@@ -694,6 +694,11 @@
               <FileType>5</FileType>
               <FilePath>..\USER\Readme.txt</FilePath>
             </File>
+            <File>
+              <FileName>Debug.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\Debug.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
