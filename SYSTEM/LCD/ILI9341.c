@@ -17,12 +17,14 @@ _lcd_dev LCDDEV;
 */
 //void LCD_WR_DATA(u16 data)
 //{	
+//	DATA_OUT();
 //	LCD_RS=1;  //RS=1;
 //	LCD_CS=0;	//CS=0;
 //	DataOut(data);				
 //	LCD_WR=0;	//WR=0;
 //	LCD_WR=1;	//WR=1;
 //	LCD_CS=1;	//CS=1;	
+//	DATA_IN();
 //}
 
 /*
@@ -901,6 +903,15 @@ void Draw_Circle_Dot(int x,int y,int r,int q,int du,int color)
 	a = cos(k) * r;											//求出x轴坐标偏移
 	b = sin(k) * r;											//求出y轴坐标偏移
 	Draw_Circles(x+a,y+b,0,q,color);//画小点	
+}
+
+/*
+	函数功能：画矩形并填充颜色
+*/
+void LCD_DrawRecFill(u16 x0, u16 y0, u16 x1, u16 y1,u16 color)
+{
+	LCD_Fill(x0, y0, x1, y1,color);
+	LCD_DrawRectangle(x0, y0, x1, y1);		   			//画矩形
 }
 
 

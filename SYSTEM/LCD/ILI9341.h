@@ -141,5 +141,6 @@ void LCD_DrawPoint_color(u16 x,u16 y,u16 color);
 void Draw_Circle_Line(int x,int y,int r,int du,int color);
 void Draw_Circles(int x,int y,int r,int q,int color);
 void Draw_Circle_Dot(int x,int y,int r,int q,int du,int color);
+void LCD_DrawRecFill(u16 x0, u16 y0, u16 x1, u16 y1,u16 color);
 
 #endif

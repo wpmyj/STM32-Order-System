@@ -12,6 +12,7 @@ typedef struct
 
 extern Font_Info Font_Addr;		//字体地址
 
+/*相关函数声明*/
 void Font_Init(void);
 void Get_Font_Data(u8 *HZ,u8 *buff,u8 size);
 void Display_HZ(u16 x,u16 y,u8 *font,u8 size);

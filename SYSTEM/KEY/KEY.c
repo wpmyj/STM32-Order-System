@@ -2,7 +2,7 @@
 
 /*
 	函数功能：按键初始化
-	硬件连接：
+	硬件连接：PB_All PA0 PC10
 */
 void KEY_Init(void)
 {
@@ -41,7 +41,7 @@ void KEY_Init(void)
 u8 Key_Scan(void)
 {
 	static u8 key_flag = 1;
-	GPIO_InitTypeDef GPIO_InitStructure;
+
 	if((S0|S1||S2||S3||S4|S5||S6||S7||S8||S9||S10||S11||
 		S12||S13||S14||S15||S16||S17)&&key_flag){
 		key_flag = 0;
