@@ -63,7 +63,7 @@ void Newtable_Func(void)
 	Display_String(94,3,80,16,"开桌",16);
 	
 	LCD_DrawRecFill(10, 145, 60, 170,BROWN);
-	Display_String(20,150,80,16,"取消",16);
+	Display_String(20,150,80,16,(u8 *)(Clear_flag?"清除":"取消"),16);
 	
 	LCD_DrawRecFill(160, 145, 210, 170,BROWN);
 	Display_String(170,150,80,16,"确认",16);	
