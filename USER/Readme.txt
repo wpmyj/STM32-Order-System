@@ -27,7 +27,7 @@
 
 4.Menu_Func;				//菜单				已完成
 
-	1).Newtable_Func;		//开桌
+	1).Newtable_Func;		//开桌				开动,完成
 
 	2).Order_Func;			//点菜
 
@@ -57,5 +57,8 @@ extern  u8 Query_flag;
 extern  u8 MMS_flag;
 extern  u8 Settings_flag;
 
-2016/3/4 22:40	基本需要用到的界面相应的c文件创立好，基本工作做好，
+2016/3/14 22:40	基本需要用到的界面相应的c文件创立好，基本工作做好，
 接下来就一步一步画界面了
+
+
+2016/3/15 开始做开桌界面
