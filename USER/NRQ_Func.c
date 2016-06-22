@@ -12,8 +12,8 @@
 u16 Get_Table_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag,u8 *name,u8 *show,u8 *warming)
 {
 	u8 key;
-	u16 table_num;
-	u8 *Table;
+	u16 table_num=0;
+	static u8 *Table;
 	/*界面信息*/
 	WINDOWS_INIT_TYPE Win={94,"    ","取消","确认"};
 	Win.Name = name;
@@ -35,7 +35,7 @@ u16 Get_Table_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag,u8 *name,u8 *show,u
 			#endif
 		}
 		/*获取桌子号*/
-		Table = Key_Input(key,3,&Clear_All);
+		Table = Key_Input(key,3);
 		Display_String(98,90,80,16,Table,16);
 	}while(*Self_flag);
 	if(*Old_flag==0)
@@ -81,5 +81,5 @@ void Query_Func(void)
 }
 
 
-/********************************************************************************/
+/********************************END*********************************************/
 

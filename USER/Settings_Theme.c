@@ -2,9 +2,9 @@
 
 /*菜单列表*/
 const u8 *Theme_title[3] = {"棕黄灰","浅青绿","紫罗兰"};
-/*
+/*********************************************************************************
 	函数功能：主题设置
-*/
+**********************************************************************************/
 void Settings_Theme_Func(void)
 {
 	short i=0,tmp=1;
@@ -21,11 +21,14 @@ void Settings_Theme_Func(void)
 	Windows_Title(Theme_Info,(u8 **)Theme_title,i,0,Theme_SLE);
 	
 	do{
+		
 		/*获取功能键值*/
 		key = Common_Key((short *)&i,(short *)&Null,Null,Theme_Info.tls_y, &Settings_flag,&Settings_Theme_flag,&Settings_flag);
 		if(key==KEY_WKUP){	
 			update_flag = 1;	//更新主题标志位置1
 		}
+		
+		/*更新显示*/
 		if(i!=tmp){
 			/*恢复高亮*/
 			Windows_Title(Theme_Info,(u8 **)Theme_title,tmp,0,Theme_BACK);
@@ -58,6 +61,8 @@ void Settings_Theme_Func(void)
 			}
 		}
 		SAVE_Data();						//保存数据
-	}
-	
+	}	
 }
+
+/*********************************END**************************************/
+

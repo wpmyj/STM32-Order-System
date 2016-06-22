@@ -17,18 +17,21 @@ u8 Settings_Theme_flag 				=			0;						//设置界面---用户管理
 u8 Settings_LAB_flag 					=			0;						//设置界面---背光及声音
 u8 Settings_About_flag 				=			0;						//设置界面---关于
 u8 Message_Warming_flag				=			0;						//提示信息界面
+
 /*****************************主题相关*****************************/
 u16 Theme_Color 							= 		GBLUE;				//主题清屏色
 u16 Theme_BACK  							= 		LBBLUE;				//主题背景色
 u16 Theme_SLE 								= 		CYAN;					//主题选择色
+
 /****************************相关数据定义***************************/
-ACCOUNT_TYPE DefAcc ={"123456","123456"};	//默认用户
+ACCOUNT_TYPE DefAcc ={"123456","123456"};					//默认用户
 CUSTOMER_TYPE COUSTOMER;													//顾客
+
 /************************	*点菜系统相关数据************************/
 u8 LCD_BL_LIGHT								=			10;						//点菜机LCD显示屏亮度级别
 u8 Clear_flag 								=			0;						//清除标志 当Clear_flag = 1 时，可清除；为0时，不可清除；
-u8 Clear_All									=			1;						//全局清除标志，
 u32 Null 											= 		1;						//无效操作空间
+
 /*******************************************************************
 	函数功能：硬件初始化
 ********************************************************************/
@@ -65,25 +68,30 @@ void DCJ_SYSTEM_INIT()
 		u8 tmp[10]={0};
 	#endif
 	Delay_ms(100);																		//等待系统稳定
-	/*获取数据并还原数据*/
-	FlASH_Read_Byte_Data(Theme_Addr+0);								//无意义的操作，第一个不稳 丢掉
-	Theme_Color = (u16)FlASH_Read_Byte_Data(Theme_Addr+0)<<8 | FlASH_Read_Byte_Data(Theme_Addr+1) ;
-	Theme_BACK  = (u16)FlASH_Read_Byte_Data(Theme_Addr+2)<<8 | FlASH_Read_Byte_Data(Theme_Addr+3) ;
-	Theme_SLE   = (u16)FlASH_Read_Byte_Data(Theme_Addr+4)<<8 | FlASH_Read_Byte_Data(Theme_Addr+5) ;
-	
-	#ifdef Debug_Save
-		FLASH_Serial_Read_Data(Theme_Addr, 6, tmp);
-		for(i=0;i<6;i++){
-			printf("%X ",tmp[i]);
-		}
-		printf("Color:%X,Back:%X,SLE:%X\r\n",Theme_Color,Theme_BACK,Theme_SLE);
-	#endif
-	
-	BEEP_EN = FlASH_Read_Byte_Data(BEEP_EN_Addr);				//获取蜂鸣器状态
-	KEY_LED = FlASH_Read_Byte_Data(KEY_LED_EN_Addr);		//获取键盘灯状态
-	LCD_BL_LIGHT = FlASH_Read_Byte_Data(LCD_BL_Addr);		//获取屏幕亮度级别
-	LCD_BL_PWM = LCD_BL_LIGHT *5;												//还原屏幕亮度
-	
+	/*判断系统是否第一次使用*/
+	FlASH_Read_Byte_Data(FIRST_USE);									//无意义的操作，第一个不稳 丢掉		
+	if(FlASH_Read_Byte_Data(FIRST_USE)!=0xaa){
+		FLASH_Sector_Erase(FIRST_USE);									//不要乱擦除扇区
+		FLASH_Write_Byte_Data(FIRST_USE,0xaa);					//第一次使用写个标志0xaa
+	}else{	
+		/*获取数据并还原数据*/
+		Theme_Color = (u16)FlASH_Read_Byte_Data(Theme_Addr+0)<<8 | FlASH_Read_Byte_Data(Theme_Addr+1) ;
+		Theme_BACK  = (u16)FlASH_Read_Byte_Data(Theme_Addr+2)<<8 | FlASH_Read_Byte_Data(Theme_Addr+3) ;
+		Theme_SLE   = (u16)FlASH_Read_Byte_Data(Theme_Addr+4)<<8 | FlASH_Read_Byte_Data(Theme_Addr+5) ;
+		
+		#ifdef Debug_Save
+			FLASH_Serial_Read_Data(Theme_Addr, 6, tmp);
+			for(i=0;i<6;i++){
+				printf("%X ",tmp[i]);
+			}
+			printf("Color:%X,Back:%X,SLE:%X\r\n",Theme_Color,Theme_BACK,Theme_SLE);
+		#endif
+		
+		BEEP_EN = FlASH_Read_Byte_Data(BEEP_EN_Addr);				//获取蜂鸣器状态
+		KEY_LED = FlASH_Read_Byte_Data(KEY_LED_EN_Addr);		//获取键盘灯状态
+		LCD_BL_LIGHT = FlASH_Read_Byte_Data(LCD_BL_Addr);		//获取屏幕亮度级别
+		LCD_BL_PWM = LCD_BL_LIGHT *5;												//还原屏幕亮度
+	}
 }
 /*******************************************************************
 	函数功能：SYSTEM数据保存
@@ -91,7 +99,8 @@ void DCJ_SYSTEM_INIT()
 ********************************************************************/
 void SAVE_Data(void)
 {
-	FLASH_Sector_Erase(BEEP_EN_Addr);										//不要乱擦除扇区
+	FLASH_Sector_Erase(FIRST_USE);										//不要乱擦除扇区
+	FLASH_Write_Byte_Data(FIRST_USE,0xaa);					
 	FLASH_Write_Byte_Data(BEEP_EN_Addr,BEEP_EN);
 	FLASH_Write_Byte_Data(KEY_LED_EN_Addr,KEY_LED);
 	FLASH_Write_Byte_Data(LCD_BL_Addr,LCD_BL_LIGHT);
@@ -224,7 +233,7 @@ u8 Common_Key(short *i,short *j,u8 tls_x, u8 tls_y,u8 *Old_flag, u8 *Self_flag,u
 				u8 *Clear_All：清除标志
 	返回值：处理完之后的数据首地址
 *******************************************************************/
-u8 *Key_Input(u8 key, u8 range, u8 *Clear)
+u8 *Key_Input(u8 key, u8 range)
 {
 	static u8 i=0, Esc_flag=1;
 	static u8 Input[11]="           ";	
@@ -263,18 +272,8 @@ u8 *Key_Input(u8 key, u8 range, u8 *Clear)
 		Esc_flag = 1;
 	}
 	
-	/*清除全部内容*/
-	if(*Clear){
-		for(i=0;i<11;i++)
-			Input[i] = ' ';
-		i=0;
-		Esc_flag=1;
-		*Clear = 0;
-		LCD_DrawRecFill(10, 145, 60, 170,Theme_BACK);//清除效果
-	}
-	
 	#ifdef Debug_Input
-	printf("key:%d,i:%d,Clear_flag:%d,*Clear_All:%d,Input_Data:%s\r\n",key,i,Clear_flag,*Clear,Input);
+	printf("key:%d,i:%d,Clear_flag:%d,Input_Data:%s\r\n",key,i,Clear_flag,Input);
 	#endif
 	
 	return Input;
@@ -328,14 +327,14 @@ void Key_Input_Str(WINDOWS_TYPE t,u8 x,u8 y,u8 key,u8 range,u8 *str)
 	/*清除数据*/
 	if(key==KEY_ESC){				//清除键
 		Esc_flag = 0;
-		LCD_DrawRecFill(10, 145, 60, 170,Theme_BACK);//清除效果
+		LCD_DrawRecFill(10, 145, 60, 170,Theme_BACK);//清除键效果
 		LCD_DrawRecFill((t.St_x+y*(t.Weight+t.Jx_x)),												//x1
 										(t.St_y+x*(t.Hight+t.Jx_y)), 												//y1
 										(t.St_x+y*(t.Weight+t.Jx_x)+t.Weight),							//x2
 										(t.St_y+x*(t.Hight+t.Jx_y)+t.Hight),								//y2
 										 Theme_SLE);
-		if(i!=0)							//范围最低0
-			str[--i] = '\0';
+		if(i!=0)	str[--i] = '\0';									//范围最低0
+		
 	}else if(Esc_flag==0){
 		Esc_flag = 1;
 	}
@@ -369,7 +368,6 @@ void Windows_Init(WINDOWS_INIT_TYPE windows)
 {
 	/*初始化一些相关参数*/
 	Clear_flag = 0;
-	Clear_All = 1;
 	LCD_Clear(Theme_Color);
 	BACK_COLOR = Theme_BACK;
 	/*画状态栏*/
@@ -437,5 +435,5 @@ void Message_Warming_Func(u8 *Old_flag,u8 *New_flag, u8 *Str)
 	
 }
 
-/********************************************************************************/
+/********************************END****************************************/
 

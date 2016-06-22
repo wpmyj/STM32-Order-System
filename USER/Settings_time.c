@@ -4,9 +4,9 @@
 const u8 *Time[6] = {"年","月","日","时","分","秒"};
 const u8 *Def_time[6] = {"2016","01","01","08","00","00"};
 
-/*
+/*************************************************************************
 	函数功能：设置时间
-*/
+**************************************************************************/
 void Settings_Time_Func(void)
 {
 	u8 key;
@@ -29,7 +29,8 @@ void Settings_Time_Func(void)
 	do{
 		
 		/*获取功能键值*/
-		key = Common_Key(&i,&j,Set_Time_Info.tls_x,Set_Time_Info.tls_y,&Settings_flag,&Settings_Time_flag,&Settings_flag);		
+		key = Common_Key(&i,&j,Set_Time_Info.tls_x,Set_Time_Info.tls_y,
+										 &Settings_flag,&Settings_Time_flag,&Settings_flag);		
 		if(key==KEY_WKUP){
 			set_flag = 1;
 		}
@@ -48,10 +49,11 @@ void Settings_Time_Func(void)
 			tmp1 = i;
 			tmp2 = j;
 			/*选择新的图标，添加高亮*/
-			DispStr_Win(Set_Time_Info,i,j,(u8 *)date_time[tmp2+tmp1*Set_Time_Info.tls_x],Theme_SLE);
+			DispStr_Win(Set_Time_Info,i,j,(u8 *)date_time[j+i*Set_Time_Info.tls_x],Theme_SLE);
 		}
 		
 	}while(Settings_Time_flag);	
+	
 	/*设置时间*/
 	if(set_flag){
 		sscanf((char *)date_time[0],"%d",(int*)&time.year);
@@ -64,5 +66,5 @@ void Settings_Time_Func(void)
 	}
 }
 
-
+/*********************************END**************************************/
 

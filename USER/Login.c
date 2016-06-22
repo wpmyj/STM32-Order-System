@@ -3,9 +3,9 @@
 const u8 *name[2] = {"用户:","密码:"};
 const u8 *mima[2] = {"        ","        "};
 
-/*
+/*********************************************************************
 	函数功能：登陆界面
-*/
+**********************************************************************/
 void Login_Func(void)
 {
 	u8 key=0;
@@ -27,20 +27,8 @@ void Login_Func(void)
 		
 		/*获取功能键值*/
 		key = Common_Key((short *)&i,(short *)&Null,Null,Login_Info.tls_y, (u8 *)&Null,(u8 *)&Null,(u8 *)&Null);
-		if(key==KEY_WKUP){
-			if(!strcmp((const char *)Account.User,	(const char *)DefAcc.User)&&
-				 !strcmp((const char *)Account.Passwd,(const char *)DefAcc.Passwd)){
-				Login_flag = 0;				//失能登陆界面
-				Home_flag = 1;				//使能主界面	
-			}
-				
-			#ifdef Debug_Login
-				printf("user:%s\r\npasswd:%s\r\n",Account.User,Account.Passwd);
-				printf("DefAcc.user:%s\r\nDefAcc.passwd:%s\r\n",DefAcc.User,DefAcc.Passwd);
-			#endif
-		}
 		
-		/*输入获取时间*/	
+		/*输入获取内容*/	
 		Key_Input_Str(Login_Info,i,0,key,8,i?Account.Passwd:Account.User);
 		BACK_COLOR = Theme_SLE;
 		Display_String((Login_Info.St_x+4),(Login_Info.St_y+i*(Login_Info.Hight+Login_Info.Jx_y)+4),
@@ -55,8 +43,22 @@ void Login_Func(void)
 			DispStr_Win(Login_Info,i,0,i?Account.Passwd:Account.User,Theme_SLE);	
 		}
 		
+		/*确认键按下登录 密码验证*/
+		if(key==KEY_WKUP){				
+			if(!strcmp((const char *)Account.User,	(const char *)DefAcc.User)&&
+				 !strcmp((const char *)Account.Passwd,(const char *)DefAcc.Passwd)){
+				Login_flag = 0;				//失能登陆界面
+				Home_flag = 1;				//使能主界面	
+			}
+				
+			#ifdef Debug_Login
+				printf("user:%s\r\npasswd:%s\r\n",Account.User,Account.Passwd);
+				printf("DefAcc.user:%s\r\nDefAcc.passwd:%s\r\n",DefAcc.User,DefAcc.Passwd);
+			#endif
+		}
+		
 	}while(Login_flag);
 	
 }
 
-
+/*********************************END**************************************/

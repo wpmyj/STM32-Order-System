@@ -74,7 +74,6 @@ extern u8 Settings_LAB_flag;
 extern u8 Settings_About_flag;
 extern u8 Message_Warming_flag;
 extern u8 Clear_flag;
-extern u8 Clear_All;
 extern u32 Null;
 extern u8 LCD_BL_LIGHT;
 extern ACCOUNT_TYPE Account;
@@ -86,12 +85,13 @@ extern u16 Theme_BACK;
 extern u16 Theme_SLE;
 /*****************************数据存储地址*******************************/
 #define DATA_BASE								(0x050000)
-#define BEEP_EN_Addr						(0x00+DATA_BASE)
-#define KEY_LED_EN_Addr					(0x10+DATA_BASE)
-#define LCD_BL_Addr							(0x20+DATA_BASE)
-#define USER_Addr								(0x30+DATA_BASE)
-#define PASSWD_Addr							(0x40+DATA_BASE)
-#define Theme_Addr							(0x50+DATA_BASE)
+#define FIRST_USE								(0x10+DATA_BASE)
+#define BEEP_EN_Addr						(0x20+DATA_BASE)
+#define KEY_LED_EN_Addr					(0x30+DATA_BASE)
+#define LCD_BL_Addr							(0x40+DATA_BASE)
+#define USER_Addr								(0x50+DATA_BASE)
+#define PASSWD_Addr							(0x60+DATA_BASE)
+#define Theme_Addr							(0x70+DATA_BASE)
 /*****************************函数声明***********************************/
 void Hardware_Init(void);								/*硬件部分初始化*/						
 void DCJ_SYSTEM_INIT(void);							/*点菜机系统数据初始化*/
@@ -116,7 +116,7 @@ void RTC_Func(void);										/*实时时钟*/
 void Message_Warming_Func(u8 *Old_flag, u8 *New_flag, u8 *Str);		/*信息提示界面*/
 
 /*******************************输入相关函数*******************************/
-u8 *Key_Input(u8 key, u8 range, u8 *Clear_All);											//按键输入带范围
+u8 *Key_Input(u8 key, u8 range);							 											//按键输入带范围
 void Key_Input_Str(WINDOWS_TYPE t,u8 x,u8 y,u8 key,u8 range,u8 *str);//窗口内按键输入
 u8 Common_Key(short *i,short *j,u8 tls_x, u8 tls_y,u8 *Old_flag, u8 *Self_flag,u8 *New_flag);	//功能键
 
@@ -125,6 +125,7 @@ void Windows_Init(WINDOWS_INIT_TYPE windows);												//窗体初始化
 void Windows_Title(WINDOWS_TYPE t, u8 **show,u8 i, u8 j,u16 color);	//窗口贴片块
 void Windows_Titles(WINDOWS_TYPE t, u8 **show,u16 color);						//窗口贴片
 void DispStr_Win(WINDOWS_TYPE t,u8 x,u8 y,u8 *show,u16 color);			//带窗体显示字符串
+
 /********************************获取桌子号*********************************/
 u16 Get_Table_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag,u8 *name,u8 *show,u8 *warming);
 

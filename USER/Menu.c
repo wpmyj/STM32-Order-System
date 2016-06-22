@@ -6,9 +6,9 @@
 const u16 Menu_Color[10] = {CYAN,DARKBLUE,BLUE,BRED,GRED,GBLUE,RED,MAGENTA,CYAN,DARKBLUE};
 const u8 Menu_Name[10][6] = {"  ","开桌","点菜","催菜","加菜","退菜","查询","信息","设置","  "};
 
-/*
+/****************************************************************
 	函数功能：辅助功能
-*/
+*****************************************************************/
 void Disp_Menu(u8 Menu_Num)
 {
 	LCD_DrawRecFill(20, Menu_YS, 60, Menu_YE,Menu_Color[Menu_Num+2]);
@@ -18,18 +18,14 @@ void Disp_Menu(u8 Menu_Num)
 	Display_String(94,130,80,16,(unsigned char *)Menu_Name[Menu_Num+1],16);
 }
 
-/*
+/****************************************************************
 	函数功能：菜单界面
-*/
+*****************************************************************/
 void Menu_Func(void)
 {
 	static short Menu_Num=0,temp=0;
 	WINDOWS_INIT_TYPE Menu_Win={94,"菜单","返回","选择"};
-	
-	#ifdef Debug_Theme
-		printf("Color:%X,Back:%X,SLE:%X\r\n",Theme_Color,Theme_BACK,Theme_SLE);
-	#endif
-	
+
 	/*窗口初始化*/
 	Windows_Init(Menu_Win);
 	/*彩片块初始化*/
@@ -62,4 +58,4 @@ void Menu_Func(void)
 	
 }
 
-
+/*********************************END**************************************/
