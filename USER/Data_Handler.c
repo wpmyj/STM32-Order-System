@@ -38,6 +38,7 @@ void Hardware_Init(void)
 	Font_Init();		//字库初始化	
 	LCD_Init();			//液晶屏初始化
 	RTC_Init();			//实时时钟初始化
+	TIM2_PWM_Init(100,720);//定时器2PWM波输出初始化
 }
 
 
