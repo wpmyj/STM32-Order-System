@@ -18,12 +18,12 @@ u8 Settings_LAB_flag 					=			0;						//设置界面---背光及声音
 u8 Settings_About_flag 				=			0;						//设置界面---关于
 u8 Message_Warming_flag				=			0;						//提示信息界面
 /*****************************主题相关*****************************/
-u16 Theme_Color = GBLUE;
-u16 Theme_BACK  = LBBLUE;
-u16 Theme_SLE 	= CYAN;
+u16 Theme_Color 							= 		GBLUE;				//主题清屏色
+u16 Theme_BACK  							= 		LBBLUE;				//主题背景色
+u16 Theme_SLE 								= 		CYAN;					//主题选择色
 /****************************相关数据定义***************************/
-ACCOUNT_TYPE DefAcc ={"123456    ","123456    "};
-CUSTOMER_TYPE COUSTOMER;
+ACCOUNT_TYPE DefAcc ={"123456    ","123456    "};	//默认用户
+CUSTOMER_TYPE COUSTOMER;													//顾客
 /************************	*点菜系统相关数据************************/
 u8 LCD_BL_LIGHT								=			10;						//点菜机LCD显示屏亮度级别
 u8 Clear_flag 								=			0;						//清除标志 当Clear_flag = 1 时，可清除；为0时，不可清除；
@@ -34,20 +34,20 @@ u32 Null 											= 		1;						//无效操作空间
 ********************************************************************/
 void Hardware_Init(void)
 {
-	LED_Init();			//LED灯初始化
-	Beep_Init();		//蜂鸣器初始化
-	KEY_Init();			//按键初始化
-	Delay_Init();		//延时函数初始化
+	LED_Init();												//LED灯初始化
+	Beep_Init();											//蜂鸣器初始化
+	KEY_Init();												//按键初始化
+	Delay_Init();											//延时函数初始化
 	#ifdef Debug
-		USART1_Init(115200);	//串口初始化
+		USART1_Init(115200);						//串口初始化
 	#endif
-	W25Q64_Init();	//存储芯片初始化
-	Font_Init();		//字库初始化	
-	LCD_Init();			//液晶屏初始化
-	RTC_Init();			//实时时钟初始化
-	TIM2_PWM_Init(100,720);//定时器2PWM波输出初始化
-	
-	if(CC1101_Init())			//初始化433模块
+	W25Q64_Init();										//存储芯片初始化
+	Font_Init();											//字库初始化	
+	LCD_Init();												//液晶屏初始化
+	RTC_Init();												//实时时钟初始化
+	TIM2_PWM_Init(100,720);						//定时器2PWM波输出初始化
+
+	if(CC1101_Init())									//初始化433模块
 	{
 		Open_GD0_Interrupt();
 	}		
@@ -64,9 +64,9 @@ void DCJ_SYSTEM_INIT()
 		u8 i;
 		u8 tmp[10]={0};
 	#endif
-	Delay_ms(10);																			//等待系统稳定
+	Delay_ms(100);																		//等待系统稳定
 	/*获取数据并还原数据*/
-	FlASH_Read_Byte_Data(Theme_Addr+0);								//无意义的操作，起到让W25Q64工作，第一个不稳 丢掉
+	FlASH_Read_Byte_Data(Theme_Addr+0);								//无意义的操作，第一个不稳 丢掉
 	Theme_Color = (u16)FlASH_Read_Byte_Data(Theme_Addr+0)<<8 | FlASH_Read_Byte_Data(Theme_Addr+1) ;
 	Theme_BACK  = (u16)FlASH_Read_Byte_Data(Theme_Addr+2)<<8 | FlASH_Read_Byte_Data(Theme_Addr+3) ;
 	Theme_SLE   = (u16)FlASH_Read_Byte_Data(Theme_Addr+4)<<8 | FlASH_Read_Byte_Data(Theme_Addr+5) ;
@@ -85,10 +85,13 @@ void DCJ_SYSTEM_INIT()
 	LCD_BL_PWM = LCD_BL_LIGHT *5;												//还原屏幕亮度
 	
 }
+/*******************************************************************
+	函数功能：SYSTEM数据保存
 
+********************************************************************/
 void SAVE_Data(void)
 {
-	FLASH_Sector_Erase(BEEP_EN_Addr);		//不要乱擦除扇区
+	FLASH_Sector_Erase(BEEP_EN_Addr);										//不要乱擦除扇区
 	FLASH_Write_Byte_Data(BEEP_EN_Addr,BEEP_EN);
 	FLASH_Write_Byte_Data(KEY_LED_EN_Addr,KEY_LED);
 	FLASH_Write_Byte_Data(LCD_BL_Addr,LCD_BL_LIGHT);
@@ -99,7 +102,33 @@ void SAVE_Data(void)
 	FLASH_Write_Byte_Data(Theme_Addr+4,Theme_SLE>>8);
 	FLASH_Write_Byte_Data(Theme_Addr+5,Theme_SLE);
 }
-
+/*******************************************************************
+	函数功能：SYSTEM_BACK
+********************************************************************/
+void DCJ_SYSTEM_BACK(void)
+{
+	if(
+		Login_flag 							==	0 &&
+		Home_flag  							==	0 &&
+		Menu_flag  							==	0 &&
+		Newtable_flag						==	0	&&
+		Order_flag 							==	0 &&
+		Reminder_flag 					==	0 &&
+		AddFood_flag 						==	0 &&
+		RetreatFood_flag			  ==	0 &&
+		Query_flag							==	0 &&
+		MMS_flag 								==	0	&&
+		Settings_flag						==	0	&&
+		Settings_Time_flag			==	0	&&
+		Settings_Theme_flag			==	0	&&
+		Settings_LAB_flag				==	0	&&
+		Settings_About_flag			==	0	&&
+		Message_Warming_flag		==	0	
+	)
+	{
+		Home_Func();															//系统跑偏了回归主菜单
+	}
+}
 
 /*******************************************************************
 	函数功能：SYSTEM开始	
@@ -122,6 +151,7 @@ void DCJ_SYSTEM_START(void)
 		if(Settings_Theme_flag)		Settings_Theme_Func();			//设置界面--主题设置
 		if(Settings_LAB_flag)			Settings_LAB_Func();				//设置界面--背光及声音
 		if(Settings_About_flag)		Settings_About_Func();			//设置界面--关于
+		DCJ_SYSTEM_BACK();																		//系统跑偏了回归主菜单
 	}
 }
 
@@ -130,8 +160,8 @@ void DCJ_SYSTEM_START(void)
 ********************************************************************/
 void RTC_Func(void)
 {
-	u8 Date_String[20];				//存放DATE数据
-	u8 Time_String[20];				//存放TIME数据
+	u8 Date_String[10];				//存放DATE数据
+	u8 Time_String[10];				//存放TIME数据
 	TIME_TYPE Disp_Time;			//存储时间结构体
 	
 	/*秒中断完成后更新显示*/
@@ -179,10 +209,10 @@ u8 Common_Key(short *i,short *j,u8 tls_x, u8 tls_y,u8 *Old_flag, u8 *Self_flag,u
 	if(key==KEY_UP)			*i -= 1;
 	if(key==KEY_LEFT)		*j -= 1;
 	if(key==KEY_RIGHT)	*j += 1;
-	if(*i>tls_y-1) *i = 0;
-	if(*j>tls_x-1) *j = 0;
-	if(*i<0)	 *i = tls_y - 1;
-	if(*j<0)	 *j = tls_x - 1;
+	if(*i>tls_y-1) 			*i = 0;
+	if(*j>tls_x-1)			*j = 0;
+	if(*i<0)					 	*i = tls_y - 1;
+	if(*j<0)	 					*j = tls_x - 1;
 	
 	return key;
 }
@@ -250,8 +280,17 @@ u8 *Key_Input(u8 key, u8 range, u8 *Clear)
 	return Input;
 }
 
-
-void Key_Input1(WINDOWS_TYPE t,u8 x,u8 y,u8 key,u8 range,u8 *str)
+/******************************************************************
+	函数功能：按键输入处理
+	参数：WINDOWS_TYPE t：窗体信息
+				u8 x：窗体贴片横第几块
+				u8 y：窗体贴片纵第几块
+				u8 key：  外部输入的按键值
+				u8 range：输入范围
+				u8 *str： 处理完获取的字符
+	返回值：处理完之后的数据首地址
+*******************************************************************/
+void Key_Input_Str(WINDOWS_TYPE t,u8 x,u8 y,u8 key,u8 range,u8 *str)
 {
 	static u8 Esc_flag=1;
 	u8 i=strlen((const char *)str);

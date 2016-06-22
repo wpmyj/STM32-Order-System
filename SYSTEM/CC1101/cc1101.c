@@ -503,7 +503,7 @@ void EXTI4_IRQHandler(void)
 {
     EXTI->PR=1<<4;  //清除LINE4上的中断标志位
     GDO0_INTOFF;//关中断
-		KEY_LED=!KEY_LED;
+//		KEY_LED=!KEY_LED;
     if(GDO0)
     {
         delayus(20);
@@ -520,7 +520,7 @@ void EXTI4_IRQHandler(void)
             case RF_RXMODE:
                 if(halRfReceivePacket(RF_Read_Buff))//读RXFIFO
                 {
-                    KEY_LED=!KEY_LED;
+//                    KEY_LED=!KEY_LED;
                     RF_Sta.DatFlag=OK;
                 }
                 break;

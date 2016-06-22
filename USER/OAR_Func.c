@@ -2,11 +2,14 @@
 
 #define Food_Num    30
 
-/*菜单部分,后期修改从W25Q64里面获取*/
-const u8 *Food[Food_Num] = {"炒饭       ￥10","炒面       ￥10","炒粉       ￥10",
-														"面条       ￥10","饺子       ￥10","云吞       ￥10",
+/*菜谱部分,后期修改从W25Q64里面获取*/
+const u8 *Food[Food_Num] = {"蛋炒饭     ￥10","扬州炒饭   ￥10","炒面       ￥10",
+														"干炒牛河   ￥10","湿炒牛河   ￥10","桂林米粉   ￥10",
+														"担担面     ￥10","饺子       ￥10","云吞       ￥10",
 														"蒸饺       ￥10","鸡排饭     ￥12","叉烧饭     ￥13",
-														"红烧肉饭   ￥15","青椒瘦肉   ￥10","红烧牛肉面 ￥15"};
+														"红烧肉饭   ￥15","青椒瘦肉   ￥10","红烧牛肉面 ￥15",
+														"红烧狮子头 ￥15","隆江猪脚饭 ￥10","黄焖鸡米饭 ￥15",
+														"酒水另算   ￥00","水果自选   ￥00"};
 						
 const u8 *Null_Num[Food_Num] = {0};		
 
@@ -18,7 +21,7 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 	#ifdef Debug_Get_Num
 	u8 debug=0;
 	#endif
-	u8 key,sure_flag=0;
+	u8 key;
 	u8 Num[Food_Num][5] = {0};
 	short i=0,j=0,tmp1=0,tmp2=0;	
 	/*菜单*/
@@ -43,15 +46,16 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 	/*循环菜单*/
 	do{
 		/*获取功能键值*/
-		key = Common_Key(&i,&j,5, Food_Info.tls_y,Old_flag, Self_flag, New_flag);
+		key = Common_Key(&i,&j,5, Food_Info.tls_y,Old_flag, Self_flag, Self_flag);
 		if(key==KEY_WKUP){
-			sure_flag = 1;
+			*Self_flag = 0;
+			Message_Warming_flag = 1;
 			/*复制字符串*/
 			Menu.Num[i+j*Num_Info.tls_y] = Num[i+j*Num_Info.tls_y];		//映射Num的地址到Menu.Num 里面
 		}
 		
 		/*点菜数量*/
-		Key_Input1(Num_Info,i,j,key,3,Num[i+j*Food_Info.tls_y]);
+		Key_Input_Str(Num_Info,i,0,key,3,Num[i+j*Food_Info.tls_y]);
 		Display_String(164,(Num_Info.St_y+i*(Num_Info.Hight+Num_Info.Jx_y)+4),24,16,Num[i+j*Food_Info.tls_y],16);
 		
 		/*被选择的图标添加高亮*/
@@ -91,16 +95,16 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 		}
 		
 	}while(*Self_flag);
-	
-	if(sure_flag){
-		
+	if(*Old_flag==0)
+		Message_Warming_Func(Self_flag,New_flag,"是否确认！");
+	if(*New_flag==1){
 		/*发送点菜单数据，整理数据*/
 		u8 **food_tmp;
 		u8 **num_tmp;
 		u8 tmp=0;
 		u8 *str;
 		
-		food_tmp = (u8 **)malloc(Food_Num);
+		food_tmp = (u8 **)malloc(Food_Num);										//开辟空间
 		num_tmp = (u8 **)malloc(Food_Num);
 		str = (u8 *)malloc(Food_Num);
 		
@@ -121,7 +125,7 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 			sprintf((char *)str,"%s***数量：%s",COUSTOMER.Food[i],COUSTOMER.Num[i]);
 			Send_msg(0x08,str);
 		}
-		free(food_tmp);
+		free(food_tmp);																				//释放空间
 		free(num_tmp);
 		free(str);
 		#ifdef Debug_data

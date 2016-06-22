@@ -44,7 +44,7 @@ u8 Key_Scan(void)
 
 	if((GPIOB->IDR!=0x0000||S16||S17)&&key_flag){
 		key_flag = 0;
-		Delay_ms(10);
+		Delay_ms(20);
 		if(GPIOB->IDR!=0x0000||S16||S17)	Beep_Alarm();	
 		if(S1)	return 1;
 		if(S2) 	return 2;

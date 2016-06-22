@@ -9,8 +9,10 @@ const u8 *Null_time[6] = {0};
 */
 void Disp_Time_Info(WINDOWS_TYPE t,u8 x,u8 y,u8 *show,u16 color)
 {
-	LCD_DrawRecFill((t.St_x+y*(t.Weight+t.Jx_x)), (t.St_y+x*(t.Hight+t.Jx_y)), 
-									(t.St_x+y*(t.Weight+t.Jx_x)+t.Weight), (t.St_y+x*(t.Hight+t.Jx_y)+t.Hight),color);
+	LCD_DrawRecFill((t.St_x+y*(t.Weight+t.Jx_x)),								//x1 
+									(t.St_y+x*(t.Hight+t.Jx_y)), 								//y1
+									(t.St_x+y*(t.Weight+t.Jx_x)+t.Weight), 			//x2
+									(t.St_y+x*(t.Hight+t.Jx_y)+t.Hight),color);	//y2
 	Display_String((t.St_x+y*(t.Weight+t.Jx_x)+4),(t.St_y+x*(t.Hight+t.Jx_y)+4),36,16,show,16);					//显示时间
 }
 
@@ -45,9 +47,10 @@ void Settings_Time_Func(void)
 		}
 		
 		/*输入获取时间*/	
-		Key_Input1(Set_Time_Info,i,j,key,4,date_time[j+i*Set_Time_Info.tls_x]);
+		Key_Input_Str(Set_Time_Info,i,j,key,4,date_time[j+i*Set_Time_Info.tls_x]);
 		Display_String((Set_Time_Info.St_x+j*(Set_Time_Info.Weight+Set_Time_Info.Jx_x)+4),	//显示时间
-									(Set_Time_Info.St_y+i*(Set_Time_Info.Hight+Set_Time_Info.Jx_y)+4),36,16,date_time[j+i*Set_Time_Info.tls_x],16);					
+									(Set_Time_Info.St_y+i*(Set_Time_Info.Hight+Set_Time_Info.Jx_y)+4),36,16,
+									 date_time[j+i*Set_Time_Info.tls_x],16);					
 		
 		/*更新显示*/
 		if(tmp1!=i||tmp2!=j){	

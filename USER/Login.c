@@ -73,7 +73,6 @@ u8 *Input_Scan(void)
 //		FLASH_Serial_Read_Data(USER_Addr, 10, DefAcc.User);	//获取用户名
 //		FLASH_Serial_Read_Data(PASSWD_Addr, 10, DefAcc.Passwd);	//获取用户名
 		if(str_cmpx(Account.User,DefAcc.User, 10)&&str_cmpx(Account.Passwd,DefAcc.Passwd,10)){
-//		if(str_cmpx(Account.User,"123456    ", 10)&&str_cmpx(Account.Passwd,"123456    ",10)){
 			Login_flag = 0;				//失能登陆界面
 			Home_flag = 1;				//使能主界面	
 		}
