@@ -5,6 +5,7 @@
 #include "led.h"
 #include "RF_Dat.h"
 #include "SPI.h"
+#include "Application.h"
 
 #define MISO     PAin(6)
 #define CSN      PCout(4)

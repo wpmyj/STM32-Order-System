@@ -5,9 +5,9 @@
 //CUSTOMER_TYPE customer;
 
 /*菜单部分,后期修改从W25Q64里面获取*/
-const u8 *Food[Food_Num] = {"炒饭     ￥10","炒面     ￥10","炒粉     ￥10",
-														"面条     ￥10","饺子     ￥10","云吞     ￥10",
-														"蒸饺     ￥10","鸡排饭   ￥12","叉烧饭   ￥13"};
+const u8 *Food[Food_Num] = {"炒饭   ￥10","炒面   ￥10","炒粉   ￥10",
+														"面条   ￥10","饺子   ￥10","云吞   ￥10",
+														"蒸饺   ￥10","鸡排饭 ￥12","叉烧饭 ￥13"};
 						
 const u8 *Null_Num[Food_Num] = {0};		
 
@@ -20,7 +20,7 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 	u8 debug=0;
 	#endif
 	u8 key,sure_flag=0;
-	u8 Num[Food_Num][5] = {0};
+	static u8 Num[Food_Num][5] = {0};
 	short i=0,j=0,tmp1=0,tmp2=0;	
 	/*菜单*/
 	LIST_TYPE Menu = {(u8 **)Food,(u8 **)Null_Num};
@@ -97,19 +97,59 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 	}while(*Self_flag);
 	
 	if(sure_flag){
-		u8 food[]={0},num[]={0};
-		u8 tmp=0;
-		for(i=0;i<Food_Num;i++){
-			if(Menu.Num[i][0]>='0'&&Menu.Num[i][0]<='9'){
-				sscanf((char *)Menu.Num[i],"%d",(int *)&num[tmp]);
-				food[tmp] = i;
-				tmp++;
+		
+		/*发送点菜单数据，整理数据*/
+		/*第一种整理成具体数字*/
+		#ifdef Debug_menu
+			u8 food[Food_Num]={0},num[Food_Num]={0};
+			u8 tmp=0;
+			for(i=0;i<Food_Num;i++){
+				if(Menu.Num[i][0]>='0'&&Menu.Num[i][0]<='9'){
+					sscanf((char *)Menu.Num[i],"%d",(int *)&num[tmp]);	
+					food[tmp] = i;
+					tmp ++;
+				}
 			}
-		}
-		#ifdef Debug_data
-			for(i=0;i<tmp;i++)
-				printf("food:%d  num:%d\r\n",food[i],num[i]);
+			num[tmp] = '\0';
+			food[tmp] = '\0';
+			
+			#ifdef Debug_data
+				for(i=0;i<tmp;i++)
+					printf("food:%d  num:%d\r\n",food[i],num[i]);
+			#endif
+		
+		#else
+			/*第二种整理成字符串*/
+			u8 *food_tmp[Food_Num];
+			u8 *num_tmp[Food_Num];
+			u8 tmp=0;
+			u8 str[30];
+			for(i=0;i<Food_Num;i++){
+				if(Menu.Num[i][0]>='0'&&Menu.Num[i][0]<='9'){				//查找有点到的食物
+					num_tmp[tmp] = Menu.Num[i];												//复制食物数量地址
+					food_tmp[tmp] = Menu.Food[i]; 										//复制食物名称地址
+					tmp ++;																						//重新指向下一个指针数组元素
+				}
+			}
+			COUSTOMER.Food = food_tmp;														//重新映射地址
+			COUSTOMER.Num = num_tmp;															//重新映射地址
+		
+			/*发送点菜单*/
+			sprintf((char *)str,"桌子号：%d",COUSTOMER.Table);
+			Send_msg(0x07,str);
+			for(i=0;i<tmp;i++){
+				sprintf((char *)str,"%s***%s",COUSTOMER.Food[i],COUSTOMER.Num[i]);
+				Send_msg(0x07,str);
+			}
+			#ifdef Debug_data
+				printf("桌子号：%d\r\n",COUSTOMER.Table);
+				for(i=0;i<tmp;i++)
+					printf("食物：%s**********数量：%s\r\n",COUSTOMER.Food[i],COUSTOMER.Num[i]);
+			#endif
+			
 		#endif
+		
+		
 	}
 	
 }

@@ -13,8 +13,8 @@ typedef struct
     unsigned char adr;     //地址 
     unsigned char event;   //编号
     unsigned char status;  //状态
-    unsigned int  value;   //传值
-//	  unsigned int  value1;//传值
+//    unsigned int  value;   //传值
+		unsigned char str[16];	//传字符串
 }_RF_Dat;
 
 extern _RF_Dat RF_Dat;

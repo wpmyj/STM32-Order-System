@@ -43,6 +43,12 @@ void Hardware_Init(void)
 	LCD_Init();			//液晶屏初始化
 	RTC_Init();			//实时时钟初始化
 	TIM2_PWM_Init(100,720);//定时器2PWM波输出初始化
+	
+	if(CC1101_Init())			//初始化433模块
+	{
+		Open_GD0_Interrupt();
+	}		
+	else 	LCD_ShowString(50,10,200,16,16,"CC1101 RESET ERR");		
 }
 
 

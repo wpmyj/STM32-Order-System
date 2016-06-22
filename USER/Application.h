@@ -15,6 +15,7 @@
 #include "string.h"
 #include "Debug.h"
 #include "TIM.h"
+#include "cc1101.h"
 /*****************************定义类型***********************************/
 /*****************************用户管理***********************************/
 typedef struct{
@@ -23,11 +24,20 @@ typedef struct{
 }ACCOUNT_TYPE;
 
 /*****************************点菜部分***********************************/
+#ifdef Debug_menu 
 typedef struct{
 	u8 Table;
 	u8 *Food;
 	u8 *Num;
 }CUSTOMER_TYPE;
+#else
+typedef struct{
+	u8 Table;
+	u8 **Food;
+	u8 **Num;
+}CUSTOMER_TYPE;
+#endif
+
 
 /*****************************菜单部分***********************************/
 typedef struct{
@@ -125,5 +135,8 @@ void Windows_Titles(WINDOWS_TYPE t, u8 **show,u16 color);						//窗口贴片
 
 /********************************获取桌子号*********************************/
 u16 Get_Table_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag,u8 *name,u8 *show,u8 *warming);
+
+
+void Send_msg(u8 adr,u8 *msg);
 
 #endif

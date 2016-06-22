@@ -2,25 +2,7 @@
 ** CC1101 433MHz无线模块相互通信
 ** 2014-11-16
 */
-//#include "stm32f10x.h"
 #include "cc1101.h"
-//#include "led.h"
-//#include "RF_Dat.h"
-/*************NVIC控制器配置***************************/
-//组号  抢占位数 子优先级数量
-//  组0			0					4
-//  组1			1					3
-//  组2			2					2
-//  组3			3					1
-//  组4			4					0
-//#define NVIC_PRIORITY_GROUP_0   (7 - 0)
-//#define NVIC_PRIORITY_GROUP_1   (7 - 1)
-//#define NVIC_PRIORITY_GROUP_2   (7 - 2)
-//#define NVIC_PRIORITY_GROUP_3   (7 - 3)
-//#define NVIC_PRIORITY_GROUP_4   (7 - 4)
-//#define NVIC_PRIORITY_GROUP	    (NVIC_PRIORITY_GROUP_2)      /* 设置为组2 */
-
-
 
 //#include "RF_Send.h"
 //#include "task.h"
@@ -81,7 +63,7 @@ const RF_SETTINGS rfSettings =
     0x06,   // PKTCTRL1  Packet automation control.  //地址校验以及0(0x00)为广播地址
 
     0x05,   // PKTCTRL0  Packet automation control.   //使用"可变数据包长度模式"
-    0x06,   // ADDR      Device address.              //设备地址为0x06
+    0x07,   // ADDR      Device address.              //设备地址为0x07
     0xff    // PKTLEN    Packet length.               //在非固定长度时设置为255
 };
 
