@@ -24,8 +24,7 @@ u8 Clear_All									=			1;						//全局清除标志，
 u8 Null 											= 		1;						//无效操作空间
 /****************************相关数据定义***************************/
 
-const ACCOUNT_TYPE DefAcc[4] ={{"123456    ","123456    "}};
-
+ACCOUNT_TYPE DefAcc ={"123456    ","123456    "};
 
 /*******************************************************************
 	函数功能：硬件初始化
@@ -57,11 +56,17 @@ void DCJ_SYSTEM_INIT()
 	KEY_LED = FlASH_Read_Byte_Data(KEY_LED_EN_Addr);		//获取键盘灯状态
 	LCD_BL_LIGHT = FlASH_Read_Byte_Data(LCD_BL_Addr);		//获取屏幕亮度级别
 	LCD_BL_PWM = LCD_BL_LIGHT *5;												//还原屏幕亮度
+	
+//	FLASH_Sector_Erase(USER_Addr);
+//	FLASH_Serial_Write_Data(USER_Addr, 10, "123456   ");
+//	FLASH_Serial_Write_Data(PASSWD_Addr, 10, "123456   ");
+//	FLASH_Serial_Read_Data(USER_Addr, 10, DefAcc.User);	//获取用户名
+//	FLASH_Serial_Read_Data(PASSWD_Addr, 10, DefAcc.Passwd);	//获取用户名
 }
 
 void SAVE_Data(void)
 {
-	FLASH_Sector_Erase(BEEP_EN_Addr);
+	FLASH_Sector_Erase(BEEP_EN_Addr);		//不要乱擦除扇区
 	FLASH_Sector_Erase(KEY_LED_EN_Addr);
 	FLASH_Sector_Erase(LCD_BL_Addr);
 	FLASH_Write_Byte_Data(BEEP_EN_Addr,BEEP_EN);

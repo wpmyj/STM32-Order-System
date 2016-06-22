@@ -72,18 +72,18 @@ u8 Common_Key(short *i,short *j,u8 tls_x, u8 tls_y,u8 *Old_flag, u8 *Self_flag,u
 u8 *Key_Input(u8 key, u8 range, u8 *Clear)
 {
 	static u8 i=0, Esc_flag=1;
-	static u8 Input_Data[11]="      ";	
+	static u8 Input[11]="           ";	
 	
 	/*正常获取数据*/
 	if(i<range){								//输入范围
 		if((key>0&&key<10))		//输入数字1-9
-			Input_Data[i++] = key + 0x30;
+			Input[i++] = key + 0x30;
 		if(key==KEY_0)				//输入数字0
-			Input_Data[i++] = '0';
+			Input[i++] = '0';
 		if(key==KEY_X)				//输入字符*
-			Input_Data[i++] = '*';
+			Input[i++] = '*';
 		if(key==KEY_J)				//输入字符#
-			Input_Data[i++] = '#';
+			Input[i++] = '#';
 	}
 	
 	/*清除标志位*/
@@ -103,7 +103,7 @@ u8 *Key_Input(u8 key, u8 range, u8 *Clear)
 		Esc_flag = 0;
 		LCD_DrawRecFill(10, 145, 60, 170,LBBLUE);//清除效果
 		if(i!=0)							//范围最低0
-			Input_Data[--i] = ' ';
+			Input[--i] = ' ';
 	}else if(Esc_flag==0){
 		Esc_flag = 1;
 	}
@@ -111,7 +111,7 @@ u8 *Key_Input(u8 key, u8 range, u8 *Clear)
 	/*清除全部内容*/
 	if(*Clear){
 		for(i=0;i<11;i++)
-			Input_Data[i] = ' ';
+			Input[i] = ' ';
 		i=0;
 		Esc_flag=1;
 		*Clear = 0;
@@ -119,10 +119,10 @@ u8 *Key_Input(u8 key, u8 range, u8 *Clear)
 	}
 	
 	#ifdef Debug_Input
-	printf("i:%d,Clear_flag:%d,*Clear_All:%d,Input_Data:%s\r\n",i,Clear_flag,*Clear,Input_Data);
+	printf("key:%d,i:%d,Clear_flag:%d,*Clear_All:%d,Input_Data:%s\r\n",key,i,Clear_flag,*Clear,Input);
 	#endif
 	
-	return Input_Data;
+	return Input;
 }
 
 

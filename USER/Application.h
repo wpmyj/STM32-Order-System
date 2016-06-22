@@ -81,13 +81,16 @@ extern u8 Clear_All;
 extern u8 Null;
 extern u8 LCD_BL_LIGHT;
 extern ACCOUNT_TYPE Account;
-extern const ACCOUNT_TYPE DefAcc[4];
+extern ACCOUNT_TYPE DefAcc;
 
 /*****************************数据存储地址*******************************/
 #define DATA_BASE								(0x050000)
 #define BEEP_EN_Addr						(0x00+DATA_BASE)
 #define KEY_LED_EN_Addr					(0x10+DATA_BASE)
 #define LCD_BL_Addr							(0x20+DATA_BASE)
+#define USER_Addr								(0x30+DATA_BASE)
+#define PASSWD_Addr							(0x40+DATA_BASE)
+
 /*****************************函数声明***********************************/
 void Hardware_Init(void);								/*硬件部分初始化*/						
 void DCJ_SYSTEM_INIT(void);							/*点菜机系统数据初始化*/

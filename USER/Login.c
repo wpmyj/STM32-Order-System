@@ -70,13 +70,15 @@ u8 *Input_Scan(void)
 	if((key==KEY_WKUP)&&WKUP_flag){
 		WKUP_flag = 0;
 		LCD_DrawRecFill(160, 145, 210, 170,LBBLUE);
-		if(str_cmpx(Account.User,DefAcc[0].User, 10)&&str_cmpx(Account.Passwd,DefAcc[0].Passwd,10)){
+//		FLASH_Serial_Read_Data(USER_Addr, 10, DefAcc.User);	//获取用户名
+//		FLASH_Serial_Read_Data(PASSWD_Addr, 10, DefAcc.Passwd);	//获取用户名
+		if(str_cmpx(Account.User,DefAcc.User, 10)&&str_cmpx(Account.Passwd,DefAcc.Passwd,10)){
 			Login_flag = 0;				//失能登陆界面
 			Home_flag = 1;				//使能主界面	
 		}
 		#ifdef Debug_Login
 			printf("user:%s\r\npasswd:%s\r\n",Account.User,Account.Passwd);
-			printf("DefAcc.user:%s\r\nDefAcc.passwd:%s\r\n",DefAcc[0].User,DefAcc[0].Passwd);
+			printf("DefAcc.user:%s\r\nDefAcc.passwd:%s\r\n",DefAcc.User,DefAcc.Passwd);
 		#endif
 	}else if(WKUP_flag==0){
 		WKUP_flag = 1;

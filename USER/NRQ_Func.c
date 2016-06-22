@@ -38,7 +38,6 @@ u16 Get_Table_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag,u8 *name,u8 *show,u
 		/*»ñÈ¡×À×ÓºÅ*/
 		Table = Key_Input(key,3,&Clear_All);
 		Display_String(98,90,80,16,Table,16);
-		
 	}while(*Self_flag);
 	if(*Old_flag==0)
 		Message_Warming_Func(Old_flag,New_flag, warming);
