@@ -131,6 +131,8 @@ void Key_Input1(u8 x1,u8 y1,u8 x2,u8 y2,u8 key,u8 range,u8 *str)
 	static u8 Esc_flag=1;
 	u8 i=strlen((const char *)str);
 
+	BACK_COLOR = LBBLUE;
+	
 	#ifdef Debug_Input
 		printf("str:%s\r\ni:%d\r\n",str,i);
 	#endif

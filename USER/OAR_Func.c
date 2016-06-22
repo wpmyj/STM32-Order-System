@@ -2,7 +2,7 @@
 
 #define Food_Num    30
 
-//void Key_Input2(WINDOWS_TYPE t,u8 x,u8 y,u8 key, u8 range,u8 *str,u16 color);
+//CUSTOMER_TYPE customer;
 
 /*菜单部分,后期修改从W25Q64里面获取*/
 const u8 *Food[Food_Num] = {"炒饭     ￥10","炒面     ￥10","炒粉     ￥10",
@@ -23,7 +23,7 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 	u8 Num[Food_Num][5] = {0};
 	short i=0,j=0,tmp1=0,tmp2=0;	
 	/*菜单*/
-	LIST_TYPE Menu = {(u8 **)Food,(u8 **)Null_Num,(u8 **)Null_Num};
+	LIST_TYPE Menu = {(u8 **)Food,(u8 **)Null_Num};
 	/*起始横坐标，起始纵坐标，图标宽度，图标高度，横间隙，纵间隙，窗口贴片横数量，窗口贴片纵数量*/
 	WINDOWS_TYPE Food_Info = {10,25,130,25,10,5,1,4};
 	/*起始横坐标，起始纵坐标，图标宽度，图标高度，横间隙，纵间隙，窗口贴片横数量，窗口贴片纵数量*/
@@ -39,12 +39,15 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 	/*选择第一项图标，添加高亮*/
 	Windows_Title(Food_Info,(u8 **)Menu.Food+j*Food_Info.tls_y,i,0,CYAN);
 	Windows_Title(Num_Info,(u8 **)Menu.Num+j*Num_Info.tls_y,i,0,CYAN);
+	BACK_COLOR = LBBLUE;
 	/*循环菜单*/
 	do{
 		/*获取功能键值*/
 		key = Common_Key(&i,&j,5, Food_Info.tls_y,Old_flag, Self_flag, New_flag);
 		if(key==KEY_WKUP){
 			sure_flag = 1;
+			/*复制字符串*/
+			Menu.Num[i+j*Num_Info.tls_y] = Num[i+j*Num_Info.tls_y];		//映射Num的地址到Menu.Num 里面
 		}
 		
 		/*点菜数量*/
@@ -54,7 +57,7 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 							(Num_Info.St_y+i*(Num_Info.Hight+Num_Info.Jx_y)+Num_Info.Hight),
 							key,3,Num[i+j*Food_Info.tls_y]);
 		Display_String(164,(Num_Info.St_y+i*(Num_Info.Hight+Num_Info.Jx_y)+4),24,16,Num[i+j*Food_Info.tls_y],16);
-
+		
 		/*被选择的图标添加高亮*/
 		if(tmp1!=i){
 			/*复制字符串*/
@@ -94,7 +97,19 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 	}while(*Self_flag);
 	
 	if(sure_flag){
-		
+		u8 food[]={0},num[]={0};
+		u8 tmp=0;
+		for(i=0;i<Food_Num;i++){
+			if(Menu.Num[i][0]>='0'&&Menu.Num[i][0]<='9'){
+				sscanf((char *)Menu.Num[i],"%d",(int *)&num[tmp]);
+				food[tmp] = i;
+				tmp++;
+			}
+		}
+		#ifdef Debug_data
+			for(i=0;i<tmp;i++)
+				printf("food:%d  num:%d\r\n",food[i],num[i]);
+		#endif
 	}
 	
 }

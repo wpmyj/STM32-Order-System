@@ -1,7 +1,5 @@
 #include "Application.h"
 
-void Key_Input1(u8 x1,u8 y1,u8 x2,u8 y2,u8 key,u8 range,u8 *str);
-
 /*时间项*/
 const u8 *Time[6] = {"年","月","日","时","分","秒"};
 const u8 *Null_time[6] = {0};

@@ -24,16 +24,14 @@ typedef struct{
 
 /*****************************点菜部分***********************************/
 typedef struct{
-	u8 *Table;
-	u8 **Food;
-	u8 *Price;
+	u8 Table;
+	u8 *Food;
 	u8 *Num;
 }CUSTOMER_TYPE;
 
 /*****************************菜单部分***********************************/
 typedef struct{
 	u8 **Food;
-	u8 **Price;
 	u8 **Num;
 }LIST_TYPE;
 
@@ -82,7 +80,7 @@ extern u8 Null;
 extern u8 LCD_BL_LIGHT;
 extern ACCOUNT_TYPE Account;
 extern ACCOUNT_TYPE DefAcc;
-
+extern CUSTOMER_TYPE COUSTOMER;
 /*****************************数据存储地址*******************************/
 #define DATA_BASE								(0x050000)
 #define BEEP_EN_Addr						(0x00+DATA_BASE)
