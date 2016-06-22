@@ -54,7 +54,7 @@ void Hardware_Init(void)
 	W25Q64_Init();										//存储芯片初始化
 	Font_Init();											//字库初始化	
 	LCD_Init();												//液晶屏初始化
-	
+	W_WDG_Init(0x7f,0x7f,3);					//窗口看门狗初始化
 	TIM2_PWM_Init(100,720);						//定时器2PWM波输出初始化
 
 	if(CC1101_Init())									//初始化433模块
@@ -62,6 +62,8 @@ void Hardware_Init(void)
 		Open_GD0_Interrupt();
 	}		
 	else 	LCD_ShowString(50,10,200,16,16,"CC1101 RESET ERR");		
+	
+	
 }
 
 /*******************************************************************
@@ -78,8 +80,7 @@ void DCJ_SYSTEM_INIT()
 	/*判断系统是否第一次使用*/
 	FlASH_Read_Byte_Data(FIRST_USE);									//无意义的操作，第一个不稳 丢掉		
 	if(FlASH_Read_Byte_Data(FIRST_USE)!=0xaa){
-		FLASH_Sector_Erase(FIRST_USE);									//不要乱擦除扇区
-		FLASH_Write_Byte_Data(FIRST_USE,0xaa);					//第一次使用写个标志0xaa
+		SAVE_Data();																		//把数据存到FLASH并写上标志0xaa
 	}else{	
 		/*获取数据并还原数据*/
 		Theme_Color = (u16)FlASH_Read_Byte_Data(Theme_Addr+0)<<8 | FlASH_Read_Byte_Data(Theme_Addr+1) ;

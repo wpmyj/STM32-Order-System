@@ -226,7 +226,7 @@
             <RoSelD>3</RoSelD>
             <RwSelD>3</RwSelD>
             <CodeSel>0</CodeSel>
-            <OptFeed>0</OptFeed>
+            <OptFeed>1</OptFeed>
             <NoZi1>0</NoZi1>
             <NoZi2>0</NoZi2>
             <NoZi3>0</NoZi3>
@@ -361,7 +361,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\USER;..\SYSTEM\SYS;..\SYSTEM\SYS_Init_3.5;..\SYSTEM\SYS_Init_3.5\inc;..\SYSTEM\SYS_Init_3.5\src;..\SYSTEM\LED;..\SYSTEM\Beep;..\SYSTEM\KEY;..\SYSTEM\Delay;..\SYSTEM\SPI;..\SYSTEM\W25Q64;..\SYSTEM\USART;..\SYSTEM\LCD;..\SYSTEM\Fonts;..\SYSTEM\RTC;..\SYSTEM\TIM;..\SYSTEM\CC1101;..\SYSTEM\SYSTEM_WKUP</IncludePath>
+              <IncludePath>..\USER;..\SYSTEM\SYS;..\SYSTEM\SYS_Init_3.5;..\SYSTEM\SYS_Init_3.5\inc;..\SYSTEM\SYS_Init_3.5\src;..\SYSTEM\LED;..\SYSTEM\Beep;..\SYSTEM\KEY;..\SYSTEM\Delay;..\SYSTEM\SPI;..\SYSTEM\W25Q64;..\SYSTEM\USART;..\SYSTEM\LCD;..\SYSTEM\Fonts;..\SYSTEM\RTC;..\SYSTEM\TIM;..\SYSTEM\CC1101;..\SYSTEM\SYSTEM_WKUP;..\SYSTEM\WDOG</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -613,6 +613,11 @@
               <FileName>SYSTEM_WKUP.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\SYSTEM\SYSTEM_WKUP\SYSTEM_WKUP.c</FilePath>
+            </File>
+            <File>
+              <FileName>WDOG.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SYSTEM\WDOG\WDOG.c</FilePath>
             </File>
           </Files>
         </Group>
