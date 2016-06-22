@@ -24,20 +24,11 @@ typedef struct{
 }ACCOUNT_TYPE;
 
 /*****************************点菜部分***********************************/
-#ifdef Debug_menu 
-typedef struct{
-	u8 Table;
-	u8 *Food;
-	u8 *Num;
-}CUSTOMER_TYPE;
-#else
 typedef struct{
 	u8 Table;
 	u8 **Food;
 	u8 **Num;
 }CUSTOMER_TYPE;
-#endif
-
 
 /*****************************菜单部分***********************************/
 typedef struct{
@@ -84,7 +75,7 @@ extern u8 Settings_About_flag;
 extern u8 Message_Warming_flag;
 extern u8 Clear_flag;
 extern u8 Clear_All;
-extern u8 Null;
+extern u32 Null;
 extern u8 LCD_BL_LIGHT;
 extern ACCOUNT_TYPE Account;
 extern ACCOUNT_TYPE DefAcc;
@@ -127,7 +118,7 @@ void Message_Warming_Func(u8 *Old_flag, u8 *New_flag, u8 *Str);		/*信息提示界面*
 /*******************************输入相关函数*******************************/
 u8 *Input_Scan(void);																								//按键输入不带范围
 u8 *Key_Input(u8 key, u8 range, u8 *Clear_All);											//按键输入带范围
-void Key_Input1(u8 x1,u8 y1,u8 x2,u8 y2,u8 key,u8 range,u8 *str);
+void Key_Input1(WINDOWS_TYPE t,u8 x,u8 y,u8 key,u8 range,u8 *str);
 u8 Common_Key(short *i,short *j,u8 tls_x, u8 tls_y,u8 *Old_flag, u8 *Self_flag,u8 *New_flag);	//功能键
 
 /*******************************界面相关函数********************************/
@@ -138,7 +129,6 @@ void Windows_Titles(WINDOWS_TYPE t, u8 **show,u16 color);						//窗口贴片
 /********************************获取桌子号*********************************/
 u16 Get_Table_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag,u8 *name,u8 *show,u8 *warming);
 
-
-void Send_msg(u8 adr,u8 *msg);
+void Send_msg(u8 adr,u8 *msg);																			//433无线发送接口
 
 #endif

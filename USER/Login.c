@@ -72,8 +72,8 @@ u8 *Input_Scan(void)
 		LCD_DrawRecFill(160, 145, 210, 170,Theme_BACK);
 //		FLASH_Serial_Read_Data(USER_Addr, 10, DefAcc.User);	//获取用户名
 //		FLASH_Serial_Read_Data(PASSWD_Addr, 10, DefAcc.Passwd);	//获取用户名
-//		if(str_cmpx(Account.User,DefAcc.User, 10)&&str_cmpx(Account.Passwd,DefAcc.Passwd,10)){
-		if(str_cmpx(Account.User,"123456     ", 10)&&str_cmpx(Account.Passwd,"123456     ",10)){
+		if(str_cmpx(Account.User,DefAcc.User, 10)&&str_cmpx(Account.Passwd,DefAcc.Passwd,10)){
+//		if(str_cmpx(Account.User,"123456    ", 10)&&str_cmpx(Account.Passwd,"123456    ",10)){
 			Login_flag = 0;				//失能登陆界面
 			Home_flag = 1;				//使能主界面	
 		}
@@ -125,5 +125,9 @@ void Login_Func(void)
 			Display_String(95,100,80,16,Account.Passwd,16);
 		}
 	}while(Login_flag);
+	
+	#ifdef Debug_Theme
+		printf("Color:%X,Back:%X,SLE:%X\r\n",Theme_Color,Theme_BACK,Theme_SLE);
+	#endif
 }
 

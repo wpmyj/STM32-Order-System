@@ -1,6 +1,5 @@
 #include "Application.h"
 
-
 /********************************************************************************
 	函数功能：共同获取桌子号功能界面
 	参数：u8 *Old_flag：老的界面标志；
@@ -61,12 +60,14 @@ void Newtable_Func(void)
 ********************************************************************************/
 void Reminder_Func(void)
 {
-	u8 str[40];
+	u8 *str;
 	/*老界面标志，自身界面标志，新界面标志，窗体名称，获取桌子号提示，确认提示*/
 	u16 Remider_num = Get_Table_Func(&Menu_flag, &Reminder_flag,&Menu_flag,"催菜","请输入催菜桌号：","是否催菜？");
 	COUSTOMER.Table = Remider_num;
+	str = (u8 *)malloc(40);
 	sprintf((char *)str,"%d桌客人在催菜！快点！",COUSTOMER.Table);
 	Send_msg(0x08,str);
+	free(str);
 }
 
 /********************************************************************************

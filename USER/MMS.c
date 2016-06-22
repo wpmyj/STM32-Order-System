@@ -11,7 +11,7 @@ void MMS_Func(void)
 	BACK_COLOR = Theme_Color;
 	do{
 	/*获取功能键值*/
-	Common_Key((short *)&Null,(short *)&Null,Null,Null, &Menu_flag,&MMS_flag,&Null);
+	Common_Key((short *)&Null,(short *)&Null,Null,Null, &Menu_flag,&MMS_flag,(u8 *)&Null);
 	/*查询到有信息读取信息并显示出来*/	
 	if(RF_Sta.DatFlag==OK){
 		 RF_Sta.DatFlag=ERR;

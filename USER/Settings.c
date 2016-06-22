@@ -21,7 +21,7 @@ void Settings_Func(void)
 	Windows_Title(Settings_Info,(u8 **)Settings_title,i,0,Theme_SLE);
 	do{
 		/*获取功能键值*/
-		Common_Key(&i,(short *)&Null,Settings_Info.tls_x,Settings_Info.tls_y, &Menu_flag,&Settings_flag,&Null);
+		Common_Key(&i,(short *)&Null,Settings_Info.tls_x,Settings_Info.tls_y, &Menu_flag,&Settings_flag,(u8*)&Null);
 		
 		/*更新显示*/
 		if(tmp!=i){

@@ -1,7 +1,7 @@
 #include "Application.h"
 
 /*菜单列表*/
-const u8 *Theme_title[12] = {"棕黄灰","浅青绿","紫罗兰"};
+const u8 *Theme_title[3] = {"棕黄灰","浅青绿","紫罗兰"};
 /*
 	函数功能：主题设置
 */
@@ -38,26 +38,26 @@ void Settings_Theme_Func(void)
 	
 	if(update_flag){						//更新系统主题
 		switch(i){
-			case 0 : {							//棕黄灰
+			case 0 :{							//棕黄灰
 				Theme_Color = YELLOW;
 				Theme_BACK = BROWN;
 				Theme_SLE = GRAY;
 				break;
 			}
-			case 1 : {							//浅青绿
+			case 1 :{ 							//浅青绿
 				Theme_Color = GBLUE;
 				Theme_BACK = LBBLUE;
 				Theme_SLE = CYAN;			
 				break;
 			}
-			case 2 : {							//紫罗兰
+			case 2 :{ 							//紫罗兰
 				Theme_Color = MAGENTA;
 				Theme_BACK = BRRED;
 				Theme_SLE = GRED;			
 				break;
 			}
 		}
-		SAVE_Data();				//保存数据
+		SAVE_Data();						//保存数据
 	}
 	
 }

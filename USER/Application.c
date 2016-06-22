@@ -2,7 +2,7 @@
 
 /****************************相应界面激活*************************/
 u8 Login_flag 								=			1;						//登陆界面
-u8 Home_flag									=			0;						//主界面
+u8 Home_flag									=			0;						//主界面  
 u8 Menu_flag 									=			0;						//菜单界面
 u8 Newtable_flag 							=			0;						//开桌界面
 u8 Order_flag 								=			0;						//点菜界面
@@ -17,20 +17,18 @@ u8 Settings_Theme_flag 				=			0;						//设置界面---用户管理
 u8 Settings_LAB_flag 					=			0;						//设置界面---背光及声音
 u8 Settings_About_flag 				=			0;						//设置界面---关于
 u8 Message_Warming_flag				=			0;						//提示信息界面
+/*****************************主题相关*****************************/
+u16 Theme_Color = GBLUE;
+u16 Theme_BACK  = LBBLUE;
+u16 Theme_SLE 	= CYAN;
+/****************************相关数据定义***************************/
+ACCOUNT_TYPE DefAcc ={"123456    ","123456    "};
+CUSTOMER_TYPE COUSTOMER;
 /************************	*点菜系统相关数据************************/
 u8 LCD_BL_LIGHT								=			10;						//点菜机LCD显示屏亮度级别
 u8 Clear_flag 								=			0;						//清除标志 当Clear_flag = 1 时，可清除；为0时，不可清除；
 u8 Clear_All									=			1;						//全局清除标志，
-u8 Null 											= 		1;						//无效操作空间
-/*****************************主题相关*****************************/
-u16 Theme_Color = GBLUE;
-u16 Theme_BACK = LBBLUE;
-u16 Theme_SLE = CYAN;
-/****************************相关数据定义***************************/
-
-ACCOUNT_TYPE DefAcc ={"123456    ","123456    "};
-CUSTOMER_TYPE COUSTOMER;
-
+u32 Null 											= 		1;						//无效操作空间
 /*******************************************************************
 	函数功能：硬件初始化
 ********************************************************************/
@@ -40,7 +38,9 @@ void Hardware_Init(void)
 	Beep_Init();		//蜂鸣器初始化
 	KEY_Init();			//按键初始化
 	Delay_Init();		//延时函数初始化
-	USART1_Init(115200);	//串口初始化
+	#ifdef Debug
+		USART1_Init(115200);	//串口初始化
+	#endif
 	W25Q64_Init();	//存储芯片初始化
 	Font_Init();		//字库初始化	
 	LCD_Init();			//液晶屏初始化
@@ -66,9 +66,7 @@ void DCJ_SYSTEM_INIT()
 	#endif
 	Delay_ms(10);																			//等待系统稳定
 	/*获取数据并还原数据*/
-	
-	FlASH_Read_Byte_Data(Theme_Addr+0);
-	
+	FlASH_Read_Byte_Data(Theme_Addr+0);								//无意义的操作，起到让W25Q64工作，第一个不稳 丢掉
 	Theme_Color = (u16)FlASH_Read_Byte_Data(Theme_Addr+0)<<8 | FlASH_Read_Byte_Data(Theme_Addr+1) ;
 	Theme_BACK  = (u16)FlASH_Read_Byte_Data(Theme_Addr+2)<<8 | FlASH_Read_Byte_Data(Theme_Addr+3) ;
 	Theme_SLE   = (u16)FlASH_Read_Byte_Data(Theme_Addr+4)<<8 | FlASH_Read_Byte_Data(Theme_Addr+5) ;
@@ -91,8 +89,6 @@ void DCJ_SYSTEM_INIT()
 void SAVE_Data(void)
 {
 	FLASH_Sector_Erase(BEEP_EN_Addr);		//不要乱擦除扇区
-	FLASH_Sector_Erase(KEY_LED_EN_Addr);
-	FLASH_Sector_Erase(LCD_BL_Addr);
 	FLASH_Write_Byte_Data(BEEP_EN_Addr,BEEP_EN);
 	FLASH_Write_Byte_Data(KEY_LED_EN_Addr,KEY_LED);
 	FLASH_Write_Byte_Data(LCD_BL_Addr,LCD_BL_LIGHT);
@@ -255,7 +251,7 @@ u8 *Key_Input(u8 key, u8 range, u8 *Clear)
 }
 
 
-void Key_Input1(u8 x1,u8 y1,u8 x2,u8 y2,u8 key,u8 range,u8 *str)
+void Key_Input1(WINDOWS_TYPE t,u8 x,u8 y,u8 key,u8 range,u8 *str)
 {
 	static u8 Esc_flag=1;
 	u8 i=strlen((const char *)str);
@@ -294,7 +290,11 @@ void Key_Input1(u8 x1,u8 y1,u8 x2,u8 y2,u8 key,u8 range,u8 *str)
 	if(key==KEY_ESC){				//清除键
 		Esc_flag = 0;
 		LCD_DrawRecFill(10, 145, 60, 170,Theme_BACK);//清除效果
-		LCD_DrawRecFill(x1,y1,x2,y2,CYAN);
+		LCD_DrawRecFill((t.St_x+y*(t.Weight+t.Jx_x)),												//x1
+										(t.St_y+x*(t.Hight+t.Jx_y)), 												//y1
+										(t.St_x+y*(t.Weight+t.Jx_x)+t.Weight),							//x2
+										(t.St_y+x*(t.Hight+t.Jx_y)+t.Hight),								//y2
+										 Theme_SLE);
 		if(i!=0)							//范围最低0
 			str[--i] = '\0';
 	}else if(Esc_flag==0){

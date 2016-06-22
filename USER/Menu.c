@@ -7,6 +7,18 @@ const u16 Menu_Color[10] = {CYAN,DARKBLUE,BLUE,BRED,GRED,GBLUE,RED,MAGENTA,CYAN,
 const u8 Menu_Name[10][6] = {"  ","开桌","点菜","催菜","加菜","退菜","查询","信息","设置","  "};
 
 /*
+	函数功能：辅助功能
+*/
+void Disp_Menu(u8 Menu_Num)
+{
+	LCD_DrawRecFill(20, Menu_YS, 60, Menu_YE,Menu_Color[Menu_Num+2]);
+	LCD_DrawRecFill(80, Menu_YS, 140, Menu_YE,Menu_Color[Menu_Num+1]);
+	LCD_DrawRecFill(160, Menu_YS, 200, Menu_YE,Menu_Color[Menu_Num]);	
+	BACK_COLOR = Theme_Color;
+	Display_String(94,130,80,16,(unsigned char *)Menu_Name[Menu_Num+1],16);
+}
+
+/*
 	函数功能：菜单界面
 */
 void Menu_Func(void)
@@ -14,28 +26,25 @@ void Menu_Func(void)
 	static short Menu_Num=0,temp=0;
 	WINDOWS_INIT_TYPE Menu_Win={94,"菜单","返回","选择"};
 	
+	#ifdef Debug_Theme
+		printf("Color:%X,Back:%X,SLE:%X\r\n",Theme_Color,Theme_BACK,Theme_SLE);
+	#endif
+	
 	/*窗口初始化*/
 	Windows_Init(Menu_Win);
+	/*彩片块初始化*/
+	Disp_Menu(Menu_Num);
 	
-	LCD_DrawRecFill(20, Menu_YS, 60, Menu_YE,Menu_Color[Menu_Num+2]);
-	LCD_DrawRecFill(80, Menu_YS, 140, Menu_YE,Menu_Color[Menu_Num+1]);
-	LCD_DrawRecFill(160, Menu_YS, 200, Menu_YE,Menu_Color[Menu_Num]);	
-	BACK_COLOR = Theme_Color;
-	Display_String(94,130,80,16,(unsigned char *)Menu_Name[Menu_Num+1],16);
 	
 	do{
 
 		/*获取功能键值*/
-		Common_Key((short *)&Null,&Menu_Num,8,Null, &Home_flag,&Menu_flag,&Null);
+		Common_Key((short *)&Null,&Menu_Num,8,Null, &Home_flag,&Menu_flag,(u8*)&Null);
 		
 		/*更新显示信息*/
 		if(temp!=Menu_Num){	
 			temp = Menu_Num;
-			LCD_DrawRecFill(20, Menu_YS, 60, Menu_YE,Menu_Color[Menu_Num+2]);
-			LCD_DrawRecFill(80, Menu_YS, 140, Menu_YE,Menu_Color[Menu_Num+1]);
-			LCD_DrawRecFill(160, Menu_YS, 200, Menu_YE,Menu_Color[Menu_Num]);
-			LCD_Fill(90,126,130,150,Theme_Color);
-			Display_String(94,130,80,16,(unsigned char *)Menu_Name[Menu_Num+1],16);			
+			Disp_Menu(Menu_Num);		
 		}
 	
 	}while(Menu_flag);

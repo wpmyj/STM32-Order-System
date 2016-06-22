@@ -40,7 +40,7 @@ void Settings_LAB_Func(void)
 	
 	do{
 		
-		key = Common_Key(&i,&j,21, Settings_LAB_Info.tls_y,&Settings_flag,&Settings_LAB_flag,&Null);
+		key = Common_Key(&i,&j,21, Settings_LAB_Info.tls_y,&Settings_flag,&Settings_LAB_flag,(u8 *)&Null);
 		/*Ñ¡Ôñ¿ª¹Ø*/
 		if(key==KEY_WKUP){
 			Settings_LAB_flag = 1;

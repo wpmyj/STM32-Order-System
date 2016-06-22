@@ -10,12 +10,20 @@ void Home_Func(void)
 	Windows_Init(Home_Win);
 	LCD_DrawRecFill(50, 40, 170, 96,Theme_BACK);
 	
+	#ifdef Debug_Theme
+		printf("Color:%X,Back:%X,SLE:%X\r\n",Theme_Color,Theme_BACK,Theme_SLE);
+	#endif
+	
 	do{
 		/*获取功能键值*/
 		Common_Key((short *)&Null,(short *)&Null,Null,Null, &Login_flag,&Home_flag,&Menu_flag);
 		/*调用时钟显示*/
-		RTC_Func();				
+		RTC_Func();			
+		
 	}while(Home_flag);
 	
+	#ifdef Debug_Theme
+		printf("Color:%X,Back:%X,SLE:%X\r\n",Theme_Color,Theme_BACK,Theme_SLE);
+	#endif
 }
 
