@@ -39,19 +39,6 @@ void USART1_Init(u32 baud)
 }
 
 /*
-	函数功能：串口中断服务函数
-*/
-void USART1_IRQHandler(void)
-{
-	u16 dat;
-	if(RESET==USART_GetITStatus(USART1, USART_FLAG_RXNE))
-		dat = USART_ReceiveData(USART1);
-	if(RESET==USART_GetITStatus(USART1, USART_FLAG_TXE))
-		USART_SendData(USART1, dat);
-}
-
-
-/*
 	函数功能：重写putc函数,主要是为了实现printf函数
 	函数原型：
 	extern _ARMABI int fputc(int \*c*\, FILE * \*stream*\) __attribute__((__nonnull__(2)));
@@ -75,4 +62,17 @@ int fgetc(FILE *file)
 	while(RESET==USART_GetFlagStatus(USART1, USART_FLAG_RXNE));	//等待接收区非空
 	return USART_ReceiveData(USART1);						//返回接收区数据
 }
+
+
+///*
+//	函数功能：串口中断服务函数
+//*/
+//void USART1_IRQHandler(void)
+//{
+//	u16 dat;
+//	if(RESET==USART_GetITStatus(USART1, USART_FLAG_RXNE))
+//		dat = USART_ReceiveData(USART1);
+//	if(RESET==USART_GetITStatus(USART1, USART_FLAG_TXE))
+//		USART_SendData(USART1, dat);
+//}
 

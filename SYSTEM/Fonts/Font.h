@@ -13,9 +13,9 @@ typedef struct
 extern Font_Info Font_Addr;		//×ÖÌåµØÖ·
 
 void Font_Init(void);
-void Get_Font_Data(u8 *HZ,u8 *buff,u8 size);
-void Display_HZ(u16 x,u16 y,u8 *font,u8 size);
+void Get_Font_Data(u8 *code,u8 *buff,u8 size);
+void Display_Char(u16 x,u16 y,u8 *font,u8 size);
 void Display_String(u16 x,u16 y,u16 width,u16 height,u8*str,u8 size);
-
+void Display_HZ(u16 x,u16 y,u8 *HZ,u16 color,u8 size);
 
 #endif
