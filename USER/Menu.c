@@ -20,7 +20,7 @@ void Menu_Func(void)
 	LCD_DrawRecFill(20, Menu_YS, 60, Menu_YE,Menu_Color[Menu_Num+2]);
 	LCD_DrawRecFill(80, Menu_YS, 140, Menu_YE,Menu_Color[Menu_Num+1]);
 	LCD_DrawRecFill(160, Menu_YS, 200, Menu_YE,Menu_Color[Menu_Num]);	
-	LCD_Fill(90,126,130,150,GBLUE);
+	BACK_COLOR = GBLUE;
 	Display_String(94,130,80,16,(unsigned char *)Menu_Name[Menu_Num+1],16);
 	
 	do{

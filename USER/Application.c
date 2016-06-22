@@ -69,10 +69,10 @@ u8 Common_Key(short *i,short *j,u8 tls_x, u8 tls_y,u8 *Old_flag, u8 *Self_flag,u
 				u8 *Clear_All：清除标志
 	返回值：处理完之后的数据首地址
 *******************************************************************/
-u8 *Key_Input(u8 key, u8 range, u8 *Clear_All)
+u8 *Key_Input(u8 key, u8 range, u8 *Clear)
 {
 	static u8 i=0, Esc_flag=1;
-	static u8 Input_Data[11]="       ";	
+	static u8 Input_Data[11]="      ";	
 	
 	/*正常获取数据*/
 	if(i<range){								//输入范围
@@ -109,17 +109,69 @@ u8 *Key_Input(u8 key, u8 range, u8 *Clear_All)
 	}
 	
 	/*清除全部内容*/
-	if(*Clear_All){
+	if(*Clear){
 		for(i=0;i<11;i++)
 			Input_Data[i] = ' ';
 		i=0;
 		Esc_flag=1;
-		*Clear_All = 0;
+		*Clear = 0;
 		LCD_DrawRecFill(10, 145, 60, 170,LBBLUE);//清除效果
 	}
 	
+	#ifdef Debug_Input
+	printf("i:%d,Clear_flag:%d,*Clear_All:%d,Input_Data:%s\r\n",i,Clear_flag,*Clear,Input_Data);
+	#endif
+	
 	return Input_Data;
 }
+
+
+void Key_Input1(u8 x1,u8 y1,u8 x2,u8 y2,u8 key,u8 range,u8 *str)
+{
+	static u8 Esc_flag=1;
+	u8 i=strlen((const char *)str);
+
+	#ifdef Debug_Input
+		printf("str:%s\r\ni:%d\r\n",str,i);
+	#endif
+	
+	/*正常获取数据*/
+	if(i<range){						//输入范围
+		if((key>0&&key<10))		//输入数字1-9
+			str[i++] = key + 0x30;
+		if(key==KEY_0)				//输入数字0
+			str[i++] = '0';
+		if(key==KEY_X)				//输入字符*
+			str[i++] = '*';
+		if(key==KEY_J)				//输入字符#
+			str[i++] = '#';
+	}
+	
+	/*清除标志位*/
+	if((i==1)&&Clear_flag==0){
+		LCD_DrawRecFill(10, 145, 60, 170,LBBLUE);//清除效果
+	}	
+	if(i!=0){
+		Clear_flag = 1;
+		Display_String(20,150,80,16,"清除",16);
+	}else{
+		Clear_flag = 0;
+		Display_String(20,150,80,16,"取消",16);
+	}
+
+	/*清除数据*/
+	if(key==KEY_ESC){				//清除键
+		Esc_flag = 0;
+		LCD_DrawRecFill(10, 145, 60, 170,LBBLUE);//清除效果
+		LCD_DrawRecFill(x1,y1,x2,y2,CYAN);
+		if(i!=0)							//范围最低0
+			str[--i] = '\0';
+	}else if(Esc_flag==0){
+		Esc_flag = 1;
+	}
+	
+}
+
 
 /***************************************************************
 	函数功能：窗口初始化
@@ -141,7 +193,6 @@ void Windows_Init(WINDOWS_INIT_TYPE windows)
 	/*画按键2*/
 	LCD_DrawRecFill(160, 145, 210, 170,LBBLUE);
 	Display_String(170,150,80,16,windows.Button2,16);
-	
 }
 
 /************************************************************************
@@ -187,7 +238,7 @@ void Message_Warming_Func(u8 *Old_flag,u8 *New_flag, u8 *Str)
 	WINDOWS_INIT_TYPE Msg_Win={LIGHTBLUE,LBBLUE,94,"提示"," 否"," 是"};
 	/*窗口初始化*/
 	Windows_Init(Msg_Win);	
-	LCD_DrawRecFill(50, 50, 170, 96,WHITE);
+	LCD_DrawRecFill(50, 50, 170, 96,LBBLUE);
 	Display_String(70,60,170,96,Str,16);
 
 	do{

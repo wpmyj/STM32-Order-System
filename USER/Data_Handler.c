@@ -17,6 +17,7 @@ u8 Settings_User_flag 				=			0;						//设置界面---用户管理
 u8 Settings_LAB_flag 					=			0;						//设置界面---背光及声音
 u8 Settings_About_flag 				=			0;						//设置界面---关于
 u8 Message_Warming_flag				=			0;						//提示信息界面
+/************************	*点菜系统相关数据************************/
 u8 LCD_BL_LIGHT								=			10;						//点菜机LCD显示屏亮度级别
 u8 Clear_flag 								=			0;						//清除标志 当Clear_flag = 1 时，可清除；为0时，不可清除；
 u8 Clear_All									=			1;						//全局清除标志，
