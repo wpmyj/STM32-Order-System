@@ -36,13 +36,13 @@ u8 *Input_Scan(void)
 		Esc_flag = 1;
 		BACK_COLOR = BROWN;
 		Display_String(20,150,80,16,"清除",16);
-		BACK_COLOR = GRAY;
+		BACK_COLOR = CYAN;
 	}
 	
 	/*输入切换*/
 	if((key==KEY_UP)&&user_input_flag==0){
 		BACK_COLOR = BROWN;
-		LCD_DrawRecFill(90, 45, 190, 75,GRAY);
+		LCD_DrawRecFill(90, 45, 190, 75,CYAN);
 		LCD_DrawRecFill(90, 95, 190, 122,BROWN);
 		user_input_flag = 1;											//用户输入标志为1
 		passwd_input_flag = 0;										//密码输入标志为0
@@ -55,7 +55,7 @@ u8 *Input_Scan(void)
 	if((key==KEY_DOWN)&&passwd_input_flag==0){
 		BACK_COLOR = BROWN;
 		LCD_DrawRecFill(90, 45, 190, 75,BROWN);
-		LCD_DrawRecFill(90, 95, 190, 122,GRAY);
+		LCD_DrawRecFill(90, 95, 190, 122,CYAN);
 		user_input_flag = 0;											//用户输入标志为0
 		passwd_input_flag = 1;										//密码输入标志为1
 		strcpy((char*)temp1,(char*)Input_Data);		//把用户存到temp1里面
@@ -78,7 +78,7 @@ u8 *Input_Scan(void)
 		WKUP_flag = 1;
 		BACK_COLOR = BROWN;
 		Display_String(170,150,80,16,"确认",16);
-		BACK_COLOR = GRAY;
+		BACK_COLOR = CYAN;
 	}
 	
 	return Input_Data;			//返回获取到的数据首地址
@@ -100,23 +100,23 @@ void Login_Func(void)
 	LCD_DrawRecFill(20, 95, 80, 122,BROWN);
 	Display_String(25,100,80,16,"密码：",16);
 	
-	LCD_DrawRecFill(90, 45, 190, 75,(user_input_flag ? GRAY : BROWN));
+	LCD_DrawRecFill(90, 45, 190, 75,(user_input_flag ? CYAN : BROWN));
 	Display_String(95,52,80,16,Account.User,16);
 	
-	LCD_DrawRecFill(90, 95, 190, 122,(passwd_input_flag ? GRAY : BROWN));
+	LCD_DrawRecFill(90, 95, 190, 122,(passwd_input_flag ? CYAN : BROWN));
 	Display_String(95,100,80,16,Account.Passwd,16);
 	
 	do{
 		
 		/*输入用户名*/
 		if(user_input_flag){
-			BACK_COLOR = GRAY;
+			BACK_COLOR = CYAN;
 			Account.User = Input_Scan();
 			Display_String(95,52,80,16,Account.User,16);
 		}
 		/*输入密码*/
 		if(passwd_input_flag){
-			BACK_COLOR = GRAY;
+			BACK_COLOR = CYAN;
 			Account.Passwd = Input_Scan();
 			Display_String(95,100,80,16,Account.Passwd,16);
 		}

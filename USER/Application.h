@@ -1,5 +1,6 @@
 #ifndef _APPLICATION_H_
 #define _APPLICATION_H_
+/***************************各项头文件***********************************/
 #include <stm32f10x.h>
 #include "sys.h"
 #include "LED.h"
@@ -15,13 +16,13 @@
 #include "Debug.h"
 #include "TIM.h"
 /*****************************定义类型***********************************/
-/*用户管理*/
+/*****************************用户管理***********************************/
 typedef struct{
 	u8 *User;
 	u8 *Passwd;
 }ACCOUNT_TYPE;
 
-/*点菜部分*/
+/*****************************点菜部分***********************************/
 typedef struct{
 	u8 *Table;
 	u8 **Food;
@@ -29,14 +30,14 @@ typedef struct{
 	u8 *Num;
 }CUSTOMER_TYPE;
 
-/*菜单部分*/
+/*****************************菜单部分***********************************/
 typedef struct{
 	u8 **Food;
 	u8 *Price;
 	u8 *Num;
 }LIST_TYPE;
 
-/*窗体信息*/
+/*****************************窗体信息***********************************/
 typedef struct{
 	u8 St_x;				//起始x位置
 	u8 St_y;				//起始y位置
@@ -48,7 +49,7 @@ typedef struct{
 	u8 tls_y;				//窗口贴片纵数量
 }WINDOWS_TYPE;
 
-/*窗体初始化信息*/
+/**************************窗体初始化信息********************************/
 typedef struct{
 	u16 Clear_Color;
 	u16 Back_Color;
@@ -77,57 +78,37 @@ extern u8 Settings_About_flag;
 extern u8 Clear_flag;
 extern u8 Clear_All;
 extern u8 Null;
-
 extern ACCOUNT_TYPE Account;
 extern ACCOUNT_TYPE DefAcc[4];
 
-
 /*****************************函数声明***********************************/
-/*硬件部分初始化*/
-void Hardware_Init(void);
-/*点菜机系统初始化*/
-void DCJ_SYSTEM_INIT(void);
-/*实时时钟*/
-void RTC_Func(void);
-/*登陆界面*/
-void Login_Func(void);
-/*主界面*/
-void Home_Func(void);
-/*菜单界面*/
-void Menu_Func(void);
-/*开桌界面*/
-void Newtable_Func(void);
-/*点菜界面*/
-void Order_Func(void);
-/*催菜界面*/
-void Reminder_Func(void);
-/*加菜界面*/
-void AddFood_Func(void);
-/*退菜界面*/
-void RetreatFood_Func(void);
-/*查询界面*/
-void Query_Func(void);
-/*信息界面*/
-void MMS_Func(void);
-/*设置界面*/
-void Settings_Func(void);
-/*设置界面--设置时间*/
-void Settings_Time_Func(void);
-/*设置界面--用户管理*/
-void Settings_User_Func(void);
-/*设置界面--背光及声音*/
-void Settings_LAB_Func(void);
-/*设置界面--关于*/
-void Settings_About_Func(void);
+void Hardware_Init(void);								/*硬件部分初始化*/						
+void DCJ_SYSTEM_INIT(void);							/*点菜机系统初始化*/																					
+void Login_Func(void);									/*登陆界面*/						
+void Home_Func(void);										/*主界面*/							
+void Menu_Func(void);										/*菜单界面*/						
+void Newtable_Func(void);								/*开桌界面*/								
+void Order_Func(void);									/*点菜界面*/						
+void Reminder_Func(void);								/*催菜界面*/									
+void AddFood_Func(void);								/*加菜界面*/								
+void RetreatFood_Func(void);						/*退菜界面*/									
+void Query_Func(void);									/*查询界面*/							
+void MMS_Func(void);										/*信息界面*/					
+void Settings_Func(void);								/*设置界面*/								
+void Settings_Time_Func(void);					/*设置界面--设置时间*/										
+void Settings_User_Func(void);					/*设置界面--用户管理*/											
+void Settings_LAB_Func(void);						/*设置界面--背光及声音*/									
+void Settings_About_Func(void);					/*设置界面--关于*/											
+void RTC_Func(void);										/*实时时钟*/	
 
-/*基础相关函数*/
-u8 *Key_Input(u8 key, u8 range, u8 *Clear_All);			//按键输入带范围
-u8 *Input_Scan(void);									//按键输入不带范围
-u8 Common_Key(short *i,short *j,u8 tls_x, u8 tls_y,u8 *Old_flag, u8 *Self_flag,u8 *New_flag);
+/*******************************输入相关函数*******************************/
+u8 *Input_Scan(void);																								//按键输入不带范围
+u8 *Key_Input(u8 key, u8 range, u8 *Clear_All);											//按键输入带范围
+u8 Common_Key(short *i,short *j,u8 tls_x, u8 tls_y,u8 *Old_flag, u8 *Self_flag,u8 *New_flag);	//功能键
 
-void Windows_Init(WINDOWS_INIT_TYPE windows);	//窗体初始化
+/*******************************界面相关函数********************************/
+void Windows_Init(WINDOWS_INIT_TYPE windows);												//窗体初始化
 void Windows_Title(WINDOWS_TYPE t, u8 **show,u8 i, u8 j,u16 color);	//窗口贴片块
 void Windows_Titles(WINDOWS_TYPE t, u8 **show,u16 color);						//窗口贴片
-
 
 #endif

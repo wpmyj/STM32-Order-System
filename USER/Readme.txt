@@ -33,7 +33,7 @@
 
 	3).Reminder_Func;		//催菜				开动，基本完成
 
-	4).AddFood_Func;		//加菜
+	4).AddFood_Func;		//加菜				
 	
 	5).RetreatFood_Func;	//退菜
 		
@@ -43,11 +43,11 @@
 	
 	8).Settings_Func;		//设置				开动
 	
-		a.Settings_Time_Func;	//更新
+		a.Settings_Time_Func;	//更新时间		完成
 		
 		b.Settings_User_Func;	//用户管理
 		
-		c.Settings_LAB_Func;	//背光及声音
+		c.Settings_LAB_Func;	//背光及声音	完成
 		
 		d.Settings_About_Func;	//关于			完成
 		
@@ -148,3 +148,10 @@ typedef struct{
 typedef struct{
 	u8 
 }windows;
+
+
+2016/3/19  15:14
+开始理清系统条理
+
+开机--》输入密码--》开桌--》点菜--》确认
+

@@ -14,16 +14,14 @@ void Newtable_Func(void)
 	WINDOWS_INIT_TYPE Newtable_Win={YELLOW,BROWN,94,"开桌","取消","确认"};
 	/*界面初始化*/
 	Windows_Init(Newtable_Win);
-	
 	LCD_DrawRecFill(40,40,180,60,BROWN);
 	Display_String(43,43,150,16,"请输入新开桌号：",16);
-	
 	LCD_DrawRecFill(40,80,180,120,BROWN);
 	
 	do{
 		
 		/*获取功能键值*/
-		key = Common_Key((short*)&Null,(short*)&Null,Null,Null, &Menu_flag,&Newtable_flag,&Menu_flag);
+		key = Common_Key((short*)&Null,(short*)&Null,Null,Null, &Menu_flag,&Newtable_flag,&Order_flag);
 		if((key==KEY_WKUP)&&Clear_flag){
 			
 		}

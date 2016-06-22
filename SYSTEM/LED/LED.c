@@ -1,10 +1,10 @@
 #include "LED.h"
 
-/*
+/*********************************************************
 	函数功能：LED初始化
 	硬件连接：KEY_LED ：PA2
 						LCD_BL ：PA3
-*/
+**********************************************************/
 void LED_Init(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
@@ -19,4 +19,6 @@ void LED_Init(void)
 	GPIO_ResetBits(GPIOA, GPIO_Pin_2 | GPIO_Pin_3);
 	
 }
+
+/**********************************************************/
 
