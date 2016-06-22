@@ -25,7 +25,10 @@ extern u8 RetreatFood_flag;
 extern u8 Query_flag;
 extern u8 MMS_flag;
 extern u8 Settings_flag;
-
+extern u8 Settings_Time_flag;
+extern u8 Settings_User_flag;
+extern u8 Settings_LAB_flag;
+extern u8 Settings_About_flag;
 extern u8 Clear_flag;
 
 /*实时时钟*/
@@ -53,7 +56,15 @@ void Query_Func(void);
 void MMS_Func(void);
 /*设置界面*/
 void Settings_Func(void);
+/*设置界面--设置时间*/
+void Settings_Time_Func(void);
+/*设置界面--用户管理*/
+void Settings_User_Func(void);
+/*设置界面--背光及声音*/
+void Settings_LAB_Func(void);
+/*设置界面--关于*/
+void Settings_About_Func(void);
 
-u8 *Key_Input(u8 key);
+u8 *Key_Input(u8 key, u8 range);
 
 #endif

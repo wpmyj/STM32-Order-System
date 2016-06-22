@@ -665,9 +665,29 @@
               <FilePath>..\USER\MMS.c</FilePath>
             </File>
             <File>
-              <FileName>Settings_Func.c</FileName>
+              <FileName>Settings.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\USER\Settings_Func.c</FilePath>
+              <FilePath>..\USER\Settings.c</FilePath>
+            </File>
+            <File>
+              <FileName>Settings_time.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Settings_time.c</FilePath>
+            </File>
+            <File>
+              <FileName>Settings_User.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Settings_User.c</FilePath>
+            </File>
+            <File>
+              <FileName>Settings_LAB.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Settings_LAB.c</FilePath>
+            </File>
+            <File>
+              <FileName>Settings_About.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Settings_About.c</FilePath>
             </File>
             <File>
               <FileName>Readme.txt</FileName>

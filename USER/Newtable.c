@@ -1,5 +1,6 @@
 #include "Application.h"
 
+#define Input_Cnt		3 
 
 /*
 	函数功能：开新桌
@@ -42,8 +43,8 @@ void Newtable_Func(void)
 		}
 		
 		/*获取新开桌子号*/
-		Table = Key_Input(key);
-		Display_String(70,90,120,16,Table,16);
+		Table = Key_Input(key,Input_Cnt);
+		Display_String(98,90,80,16,Table,16);
 		
 	}while(Newtable_flag);
 	

@@ -11,7 +11,10 @@ u8 RetreatFood_flag = 0;
 u8 Query_flag = 0;
 u8 MMS_flag = 0;
 u8 Settings_flag = 0;
-
+u8 Settings_Time_flag = 0;
+u8 Settings_User_flag = 0;
+u8 Settings_LAB_flag = 0;
+u8 Settings_About_flag = 0;
 u8 Clear_flag = 0;
 
 /*
@@ -44,13 +47,13 @@ void RTC_Func(void)
 	参数：u8 key：外部输入的按键值
 	返回值：处理完之后的数据首地址
 */
-u8 *Key_Input(u8 key)
+u8 *Key_Input(u8 key, u8 range)
 {
 	static u8 i=0,Esc_flag=1;
 	static u8 Input_Data[11]="          ";
 	
 	/*正常获取数据*/
-	if(i<10){								//输入范围0-10
+	if(i<range){								//输入范围
 		if((key>0&&key<10))		//输入数字1-9
 			Input_Data[i++] = key + 0x30;
 		if(key==KEY_0)				//输入数字0

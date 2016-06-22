@@ -6,16 +6,18 @@
 #define Weight 		60			//图标宽度
 #define Hight			25			//图标高度
 #define JX			 	10			//间隙
+#define titles		3
+
 
 /*菜单*/
-const u8 Food[9][8] = {"炒饭","炒面","炒粉","面条","饺子","云吞","蒸饺","鸡排饭","叉烧饭"};
+const u8 Food[titles*titles][8] = {"炒饭","炒面","炒粉","面条","饺子","云吞","蒸饺","鸡排饭","叉烧饭"};
 /*菜单选择标记*/
-static u8 Food_flag[3][3] = {0};
+static u8 Food_flag[titles][titles] = {0};
 
 void Order_Func(void)
 {
 	u8 key;
-	static u8 i=0,j=0,tmp1=1,tmp2=1;
+	short i=0,j=0,tmp1=1,tmp2=1;
 	
 	LCD_Clear(YELLOW);
 	BACK_COLOR = BROWN;
@@ -30,8 +32,8 @@ void Order_Func(void)
 	Display_String(170,150,80,16,"选择",16);	
 	
 	/*显示菜单*/
-	for(i=0;i<3;i++){
-		for(j=0;j<3;j++){
+	for(i=0;i<titles;i++){
+		for(j=0;j<titles;j++){
 			LCD_DrawRecFill((ST_X+j*(Weight+JX)), (ST_Y+i*(Hight+JX)), (ST_X+j*(Weight+JX)+Weight), (ST_Y+i*(Hight+JX)+Hight),(Food_flag[i][j]?CYAN:BROWN));
 			Display_String((ST_X+j*(Weight+JX)+4),(ST_Y+i*(Hight+JX)+3),60,16,(u8 *)Food[j+i*3],16);	
 		}
@@ -58,8 +60,10 @@ void Order_Func(void)
 		if(key==KEY_UP)			i --;
 		if(key==KEY_LEFT)		j --;
 		if(key==KEY_RIGHT)	j ++;
-		if(i>=3) i = 0;
-		if(j>=3) j = 0;
+		if(i>=titles) i = 0;
+		if(j>=titles) j = 0;
+		if(i<0)	 i = titles - 1;
+		if(j<0)	 j = titles - 1;
 		
 		/*被选择的图标添加高亮*/
 		if(tmp1!=i||tmp2!=j){	

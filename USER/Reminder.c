@@ -1,5 +1,7 @@
 #include "Application.h"
 
+#define Input_Cnt		3
+
 /*
 	函数功能：催菜功能
 */
@@ -41,8 +43,8 @@ void Reminder_Func(void)
 		}
 	
 		/*获取催菜桌子号*/
-		Reminder_Table = Key_Input(key);
-		Display_String(70,90,120,16,Reminder_Table,16);
+		Reminder_Table = Key_Input(key,Input_Cnt);
+		Display_String(98,90,80,16,Reminder_Table,16);
 		
 	}while(Reminder_flag);
 	

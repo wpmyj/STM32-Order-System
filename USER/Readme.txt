@@ -41,11 +41,15 @@
 	
 	7).MMS_Func;			//接收服务器信息
 	
-	8).Settings_Func;		//设置
+	8).Settings_Func;		//设置				开动
 	
-		a.Updata_Func;		//更新
+		a.Settings_Time_Func;	//更新
 		
-		b.User_Manage_Func;	//用户管理
+		b.Settings_User_Func;	//用户管理
+		
+		c.Settings_LAB_Func;	//背光及声音
+		
+		d.Settings_About_Func;	//关于			完成
 		
 		
 extern 	u8 Newtable_flag;
@@ -98,3 +102,7 @@ Display_String((ST_X+j*(Weight+JX)+4),(ST_Y+i*(Hight+JX)+3),60,16,(u8 *)Food[j+i
 2016/3/15 16:10	  开始制作催菜界面
 
 2016/3/15 16:51	  基本完成催菜界面，后期在完善
+
+2016/3/15 16:54	  开始制作设置界面
+
+2016/3/15 21:16   完成设置界面关于
