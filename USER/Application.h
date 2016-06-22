@@ -13,8 +13,10 @@
 #include "ILI9341.h"
 #include "RTC.h"
 #include "string.h"
+#include "Debug.h"
 #include "TIM.h"
 #include "cc1101.h"
+#include "SYSTEM_WKUP.h"
 /*****************************定义类型***********************************/
 /*****************************用户管理***********************************/
 typedef struct{

@@ -18,7 +18,7 @@ void MMS_Func(void)
 	do{
 		
 	/*获取功能键值*/
-	Common_Key((short *)&Null,(short *)&Null,Null,Null, &Menu_flag,&MMS_flag,(u8 *)&Null);
+	Common_Key((short *)&Null,(short *)&Null,Null,Null, &Menu_flag,&MMS_flag,&Menu_flag);
 	
 	/*查询到有信息读取信息并显示出来*/	
 	if(RF_Sta.DatFlag==OK){
@@ -45,4 +45,6 @@ void Send_msg(u8 adr,u8 *msg)
 		halRfSendPacket((u8 *)&Send_Buf,sizeof(Send_Buf));//发送数据
 		Delay_ms(200);
 }
+
+/*********************************END**************************************/
 

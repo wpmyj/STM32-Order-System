@@ -43,7 +43,7 @@
 #define S15 	PBin(15)
 #define S16		PCin(10)
 #define S17   PAin(0)
-	
+
 /*相关函数声明*/
 void KEY_Init(void);
 u8 Key_Scan(void);

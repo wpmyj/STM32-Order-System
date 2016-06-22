@@ -27,4 +27,6 @@ void Settings_About_Func(void)
 	}while(Settings_About_flag);
 }
 
+/*********************************END**************************************/
+
 

@@ -24,6 +24,9 @@ const u8 *Null_Num[Food_Num] = {" "," "," "," "," ",
 **********************************************************************/
 void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 {
+	#ifdef Debug_Get_Num
+	u8 debug=0;
+	#endif
 	
 	/*查询是否有开桌*/
 	if(COUSTOMER.Table==0){
@@ -78,6 +81,12 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 				/*选择新的图标，添加高亮*/
 				Windows_Title(Food_Info,(u8 **)Menu.Food+j*Food_Info.tls_y,i,0,Theme_SLE);	
 				Windows_Title(Num_Info,(u8 **)Menu.Num+j*Num_Info.tls_y,i,0,Theme_SLE);	
+				#ifdef Debug_Get_Num
+					for(debug=0;debug<30;debug++){
+						printf("%s ",Menu.Num[debug]);
+					}
+					printf("\r\n");
+				#endif
 			}
 
 			/*变化菜单*/
@@ -94,6 +103,12 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 				Windows_Title(Num_Info,(u8 **)Menu.Num+j*Num_Info.tls_y,i,0,Theme_SLE);	
 				tmp2 = j;
 				i = 0;	
+				
+				#ifdef Debug_Get_Num
+					for(debug=0;debug<30;debug++)
+						printf("%s ",Menu.Num[debug]);
+					printf("\r\n");
+				#endif
 			}
 			
 		}while(*Self_flag);
@@ -124,6 +139,12 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 				sprintf((char *)str,"%s***数量：%s",COUSTOMER.Food[i],COUSTOMER.Num[i]);
 				Send_msg(0x08,str);
 			}
+
+			#ifdef Debug_data
+				printf("桌子号：%d\r\n",COUSTOMER.Table);
+				for(i=0;i<tmp;i++)
+					printf("食物：%s****数量：%s\r\n",COUSTOMER.Food[i],COUSTOMER.Num[i]);
+			#endif
 			
 			free(COUSTOMER.Food);																				//释放空间
 			free(COUSTOMER.Num);
@@ -160,5 +181,5 @@ void RetreatFood_Func(void)
 	Food_Func(&Menu_flag, &RetreatFood_flag,&Menu_flag,"退菜");
 }
 
-/*********************************************************************/
+/******************************END************************************/
 

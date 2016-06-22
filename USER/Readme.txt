@@ -162,3 +162,161 @@ typedef struct{
 这对后期的工作影响太大，故删掉重写，
 现在已经比较简洁了,逻辑更合理。
 
+
+
+
+2016/3/28  10:06 开始弄开关机
+
+//THUMB指令不支持汇编内联
+//采用如下方法实现执行汇编指令WFI
+//CHECK OK
+//091209
+//WFI  休眠并且在发生中断时被唤醒
+__asm void WFI_SET(void)
+{
+    WFI;    
+}
+
+/********************************************************************
+* Function   : Sys_Standby()
+* Description: 进入待机模式
+* Calls      : 
+* Called By  : 
+* Input      : 无
+* Output     : 无
+* Return     : 无
+* Author     : 杨工
+* Others     : 
+* date of completion : 2015.09.13
+* date of last modify: 2015.09.13
+*********************************************************************/
+void Sys_Standby(void)
+{
+    SCB->SCR |= 1 << 2; //使能SLEEPDEEP位 (SYS->CTRL)
+    RCC->APB1ENR |= 1 << 28; //使能电源时钟
+    PWR->CSR |= 1 << 8;      //设置WKUP用于唤醒
+    PWR->CR |= 1 << 2;       //清除Wake-up 标志
+    PWR->CR |= 1 << 1;       //PDDS置位
+    WFI_SET();               //执行WFI指令
+}
+
+
+
+思路--》程序开始--》配置一下WKUP键
+
+检测WKUP键是否按下1.5秒
+
+如果按下时间超过1.5秒，直接开机
+
+否则不开机，进入睡眠模式
+
+如何唤醒，WKUP上升沿 唤醒
+
+
+void WKUP_Init(void)
+{
+	GPIO_InitTypeDef GPIO_InitStructure;
+	/*开启PA,AFIO时钟*/
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_AFIO , ENABLE);
+	/*关闭jtag*/
+	AFIO->MAPR &= ~(0x7<<24);
+	AFIO->MAPR |=  0x04<<24;
+	/*配置相关GPIO口*/
+	/*配置PA0*/
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+	GPIO_REsetBits(GPIOA,GPIO_Pin_0);
+	
+	/* 配置为输外部中断0在PA0上 */
+	AFIO->EXTICR[0] &= ~(0xF << 0);
+	AFIO->EXTICR[0] |=  (0x0 << 0);
+	/* 开启外部中断0 */
+	EXTI->IMR       |=  (1 << 0);
+	/* 上升沿触发 */
+	EXTI->RTSR      |=  (1 << 0);
+	/*设置PA0中断优先级*/
+	Set_NVIC(EXTI0_IRQn ,1,1);	
+	
+	RTC_Init(）;//实时时钟初始化
+}
+
+
+void EXTI0_IRQHandler(void)
+{
+	 EXTI->PR=1<<0;  //清除LINE0上的中断标志位
+	 
+	 if(Check_WKUP()){
+		Sys_Standby();
+	 }
+	 
+}
+
+
+
+u8 Check_WKUP(void)
+{
+u8 t=0,tx=0;
+
+	while(1){
+		
+		if(WKUP){
+			t ++;
+			tx = 0;
+		}else{
+			tx ++;
+			if(tx>10){						//真的没按下了
+				t = 0;							
+				tx = 0;
+				return 0;
+			}
+		}
+		
+		Delay_ms(30);
+		if(t>50){					//1.5秒
+			t = 0;
+			tx = 0;
+			return 1;
+		}
+	}
+}
+
+int main(void){
+	
+	WKUP_Init();
+	
+	if(0==Check_WKUP()){
+		Sys_Standby();
+	}
+	
+	system_init();
+	
+	while(1){
+		
+	}
+	
+}
+
+本来是上面那样，但是那样不合理
+
+于是乎修改了
+
+具体请看SYSTEM_WKUP文件；
+
+另外那个ShutOFF()在按键 application.c里面
+
+那个u8 Common_Key(short *i,short *j,u8 tls_x, u8 tls_y,u8 *Old_flag, u8 *Self_flag,u8 *New_flag)里面调用了
+
+检测到WKUP键按下，同时调用ShutOFF()这个函数（主要是用来检测WKUP是否长按）
+
+
+/*用宏提高速度*/
+#define ShutOFF(){\
+if(Check_WKUP()){\
+Sys_Standby();\
+}\
+}
+
+2016/3/28 14:23 现在，可以在任意界面实现长按关机
+

@@ -50,10 +50,15 @@ void Login_Func(void)
 				Login_flag = 0;				//失能登陆界面
 				Home_flag = 1;				//使能主界面	
 			}
+				
+			#ifdef Debug_Login
+				printf("user:%s\r\npasswd:%s\r\n",Account.User,Account.Passwd);
+				printf("DefAcc.user:%s\r\nDefAcc.passwd:%s\r\n",DefAcc.User,DefAcc.Passwd);
+			#endif
 		}
 		
 	}while(Login_flag);
 	
 }
 
-
+/*********************************END**************************************/
