@@ -1,6 +1,6 @@
 #include "Application.h"
 
-u8 Login_flag = 1;
+u8 Login_flag = 0;
 u8 Home_flag = 0;
 u8 Menu_flag = 0;
 u8 Newtable_flag = 0;
@@ -11,7 +11,7 @@ u8 RetreatFood_flag = 0;
 u8 Query_flag = 0;
 u8 MMS_flag = 0;
 u8 Settings_flag = 0;
-u8 Settings_Time_flag = 0;
+u8 Settings_Time_flag = 1;
 u8 Settings_User_flag = 0;
 u8 Settings_LAB_flag = 0;
 u8 Settings_About_flag = 0;
