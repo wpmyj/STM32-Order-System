@@ -21,9 +21,11 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 	#ifdef Debug_Get_Num
 	u8 debug=0;
 	#endif
-	u8 key;
+	u8 key,tmp=0;
+	u8 *str;
 	u8 Num[Food_Num][5] = {0};
-	short i=0,j=0,tmp1=0,tmp2=0;	
+	short i=0,j=0,tmp1=0,tmp2=1;			//进入do while里面立刻更新显示菜谱，不要修改tmp2 初始值
+	
 	/*菜单*/
 	LIST_TYPE Menu = {(u8 **)Food,(u8 **)Null_Num};
 	/*起始横坐标，起始纵坐标，图标宽度，图标高度，横间隙，纵间隙，窗口贴片横数量，窗口贴片纵数量*/
@@ -35,14 +37,7 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 	Win.Name = name;
 	/*界面初始化*/
 	Windows_Init(Win);
-	/*显示菜单*/
-	Windows_Titles(Food_Info,(u8 **)Menu.Food+j*Food_Info.tls_y,Theme_BACK);
-	Windows_Titles(Num_Info,(u8 **)Menu.Num+j*Num_Info.tls_y,Theme_BACK);
-	/*选择第一项图标，添加高亮*/
-	Windows_Title(Food_Info,(u8 **)Menu.Food+j*Food_Info.tls_y,i,0,Theme_SLE);
-	Windows_Title(Num_Info,(u8 **)Menu.Num+j*Num_Info.tls_y,i,0,Theme_SLE);
-	BACK_COLOR = Theme_BACK;
-	
+	str = (u8 *)malloc(Food_Num);
 	/*循环菜单*/
 	do{
 		/*获取功能键值*/
@@ -56,6 +51,7 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 		
 		/*点菜数量*/
 		Key_Input_Str(Num_Info,i,0,key,3,Num[i+j*Food_Info.tls_y]);
+		BACK_COLOR = Theme_SLE;
 		Display_String(164,(Num_Info.St_y+i*(Num_Info.Hight+Num_Info.Jx_y)+4),24,16,Num[i+j*Food_Info.tls_y],16);
 		
 		/*被选择的图标添加高亮*/
@@ -79,6 +75,10 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 
 		/*变化菜单*/
 		if(tmp2!=j){
+			/*显示当前第几页*/
+			sprintf((char *)str,"%d/%d",j+1,Food_Info.tls_y+1);
+			BACK_COLOR = Theme_Color;
+			Display_String(100,150,24,16,str,16);
 			/*显示菜单*/
 			Windows_Titles(Food_Info,(u8 **)Menu.Food+j*Food_Info.tls_y,Theme_BACK);
 			Windows_Titles(Num_Info,(u8 **)Menu.Num+j*Num_Info.tls_y,Theme_BACK);
@@ -87,6 +87,7 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 			Windows_Title(Num_Info,(u8 **)Menu.Num+j*Num_Info.tls_y,i,0,Theme_SLE);	
 			tmp2 = j;
 			i = 0;	
+			
 			#ifdef Debug_Get_Num
 				for(debug=0;debug<30;debug++)
 					printf("%s ",Menu.Num[debug]);
@@ -95,28 +96,23 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 		}
 		
 	}while(*Self_flag);
+	/*提示界面*/
 	if(*Old_flag==0)
 		Message_Warming_Func(Self_flag,New_flag,"是否确认！");
-	if(*New_flag==1){
-		/*发送点菜单数据，整理数据*/
-		u8 **food_tmp;
-		u8 **num_tmp;
-		u8 tmp=0;
-		u8 *str;
+	
+	/*发送点菜单数据，整理数据*/
+	if(*New_flag==1){	
+		COUSTOMER.Food = (u8 **)malloc(Food_Num);							//开辟空间
+		COUSTOMER.Num = (u8 **)malloc(Food_Num);
 		
-		food_tmp = (u8 **)malloc(Food_Num);										//开辟空间
-		num_tmp = (u8 **)malloc(Food_Num);
-		str = (u8 *)malloc(Food_Num);
-		
+		/*查找点菜单*/
 		for(i=0;i<Food_Num;i++){
 			if(Menu.Num[i][0]>='0'&&Menu.Num[i][0]<='9'){				//查找有点到的食物
-				num_tmp[tmp] = Menu.Num[i];												//复制食物数量地址
-				food_tmp[tmp] = Menu.Food[i]; 										//复制食物名称地址
+				COUSTOMER.Num[tmp] = Menu.Num[i];									//复制食物数量地址
+				COUSTOMER.Food[tmp] = Menu.Food[i]; 							//复制食物名称地址
 				tmp ++;																						//重新指向下一个指针数组元素
 			}
 		}
-		COUSTOMER.Food = food_tmp;														//重新映射地址
-		COUSTOMER.Num = num_tmp;															//重新映射地址
 	
 		/*发送点菜单*/
 		sprintf((char *)str,"桌子号：%d",COUSTOMER.Table);
@@ -125,17 +121,17 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 			sprintf((char *)str,"%s***数量：%s",COUSTOMER.Food[i],COUSTOMER.Num[i]);
 			Send_msg(0x08,str);
 		}
-		free(food_tmp);																				//释放空间
-		free(num_tmp);
-		free(str);
+
 		#ifdef Debug_data
 			printf("桌子号：%d\r\n",COUSTOMER.Table);
 			for(i=0;i<tmp;i++)
 				printf("食物：%s****数量：%s\r\n",COUSTOMER.Food[i],COUSTOMER.Num[i]);
 		#endif
-
+		
+		free(COUSTOMER.Food);																				//释放空间
+		free(COUSTOMER.Num);
 	}
-	
+	free(str);
 }
 
 

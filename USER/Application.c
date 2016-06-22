@@ -22,7 +22,7 @@ u16 Theme_Color 							= 		GBLUE;				//主题清屏色
 u16 Theme_BACK  							= 		LBBLUE;				//主题背景色
 u16 Theme_SLE 								= 		CYAN;					//主题选择色
 /****************************相关数据定义***************************/
-ACCOUNT_TYPE DefAcc ={"123456    ","123456    "};	//默认用户
+ACCOUNT_TYPE DefAcc ={"123456","123456"};	//默认用户
 CUSTOMER_TYPE COUSTOMER;													//顾客
 /************************	*点菜系统相关数据************************/
 u8 LCD_BL_LIGHT								=			10;						//点菜机LCD显示屏亮度级别
@@ -340,6 +340,25 @@ void Key_Input_Str(WINDOWS_TYPE t,u8 x,u8 y,u8 key,u8 range,u8 *str)
 		Esc_flag = 1;
 	}
 	
+}
+
+
+/***************************************************************
+	函数功能：带窗体显示字符串
+	参数：WINDOWS_INIT_TYPE windows 窗体信息
+				u8 x：横第几块窗体
+				u8 y：纵第几块窗体
+				u8 *show：显示的字符串
+				u16 color：显示窗体的颜色
+****************************************************************/
+void DispStr_Win(WINDOWS_TYPE t,u8 x,u8 y,u8 *show,u16 color)
+{
+	BACK_COLOR = color;
+	LCD_DrawRecFill((t.St_x+y*(t.Weight+t.Jx_x)),								//x1 
+									(t.St_y+x*(t.Hight+t.Jx_y)), 								//y1
+									(t.St_x+y*(t.Weight+t.Jx_x)+t.Weight), 			//x2
+									(t.St_y+x*(t.Hight+t.Jx_y)+t.Hight),color);	//y2
+	Display_String((t.St_x+y*(t.Weight+t.Jx_x)+4),(t.St_y+x*(t.Hight+t.Jx_y)+4),88,16,show,16);					//显示字符串
 }
 
 /***************************************************************

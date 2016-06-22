@@ -19,8 +19,8 @@
 /*****************************定义类型***********************************/
 /*****************************用户管理***********************************/
 typedef struct{
-	u8 *User;
-	u8 *Passwd;
+	u8 User[10];
+	u8 Passwd[10];
 }ACCOUNT_TYPE;
 
 /*****************************点菜部分***********************************/
@@ -116,7 +116,6 @@ void RTC_Func(void);										/*实时时钟*/
 void Message_Warming_Func(u8 *Old_flag, u8 *New_flag, u8 *Str);		/*信息提示界面*/
 
 /*******************************输入相关函数*******************************/
-u8 *Input_Scan(void);																								//按键输入不带范围
 u8 *Key_Input(u8 key, u8 range, u8 *Clear_All);											//按键输入带范围
 void Key_Input_Str(WINDOWS_TYPE t,u8 x,u8 y,u8 key,u8 range,u8 *str);//窗口内按键输入
 u8 Common_Key(short *i,short *j,u8 tls_x, u8 tls_y,u8 *Old_flag, u8 *Self_flag,u8 *New_flag);	//功能键
@@ -125,7 +124,7 @@ u8 Common_Key(short *i,short *j,u8 tls_x, u8 tls_y,u8 *Old_flag, u8 *Self_flag,u
 void Windows_Init(WINDOWS_INIT_TYPE windows);												//窗体初始化
 void Windows_Title(WINDOWS_TYPE t, u8 **show,u8 i, u8 j,u16 color);	//窗口贴片块
 void Windows_Titles(WINDOWS_TYPE t, u8 **show,u16 color);						//窗口贴片
-
+void DispStr_Win(WINDOWS_TYPE t,u8 x,u8 y,u8 *show,u16 color);			//带窗体显示字符串
 /********************************获取桌子号*********************************/
 u16 Get_Table_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag,u8 *name,u8 *show,u8 *warming);
 

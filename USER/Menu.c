@@ -35,9 +35,7 @@ void Menu_Func(void)
 	/*彩片块初始化*/
 	Disp_Menu(Menu_Num);
 	
-	
 	do{
-
 		/*获取功能键值*/
 		Common_Key((short *)&Null,&Menu_Num,8,Null, &Home_flag,&Menu_flag,(u8*)&Null);
 		

@@ -1,132 +1,62 @@
 #include "Application.h"
 
-u8 user_input_flag=1,passwd_input_flag=0;
-ACCOUNT_TYPE Account={"          ","          "};	
-
-/*
-	函数功能：获取输入
-	返回值：获取到的数据首地址
-*/
-u8 *Input_Scan(void)
-{
-	u8 key;
-	static u8 i=0,Esc_flag=1,WKUP_flag=1;
-	static u8 Input_Data[11]="          ";
-	static u8 temp1[11]="          ";			//temp1是user
-	static u8 temp2[11]="          ";		  //temp2是passwd
-	static u8 i1=0,i2=0;									//i1 是user i2是passwd
-	
-	key = Key_Scan();
-	if(i<10){								//输入范围0-10
-		if((key>0&&key<10))		//输入数字1-9
-			Input_Data[i++] = key + 0x30;
-		if(key==KEY_0)				//输入数字0
-			Input_Data[i++] = '0';
-		if(key==KEY_X)				//输入字符*
-			Input_Data[i++] = '*';
-		if(key==KEY_J)				//输入字符#
-			Input_Data[i++] = '#';
-	}
-	if(key==KEY_ESC){				//清除键
-		Esc_flag = 0;
-		LCD_DrawRecFill(10, 145, 60, 170,Theme_BACK);//清除效果
-		if(i!=0)							//范围最低0
-			Input_Data[--i] = ' ';
-	}else if(Esc_flag==0){
-		Esc_flag = 1;
-		BACK_COLOR = Theme_BACK;
-		Display_String(20,150,80,16,"清除",16);
-		BACK_COLOR = Theme_SLE;
-	}
-	
-	/*输入切换*/
-	if((key==KEY_UP)&&user_input_flag==0){
-		BACK_COLOR = Theme_BACK;
-		LCD_DrawRecFill(90, 45, 190, 75,Theme_SLE);
-		LCD_DrawRecFill(90, 95, 190, 122,Theme_BACK);
-		user_input_flag = 1;											//用户输入标志为1
-		passwd_input_flag = 0;										//密码输入标志为0
-		strcpy((char*)temp2,(char*)Input_Data);		//把密码存到temp2里面
-		strcpy((char*)Input_Data,(char*)temp1);		//把用户还原到Input_Data里面
-		i2 =i;																		//记录密码输入到第几个
-		i = i1;																		//还原用户输入到第几个
-		return temp2;			//返回passwd的地址，因为还没变成user，退出之后才变
-	}
-	if((key==KEY_DOWN)&&passwd_input_flag==0){
-		BACK_COLOR = Theme_BACK;
-		LCD_DrawRecFill(90, 45, 190, 75,Theme_BACK);
-		LCD_DrawRecFill(90, 95, 190, 122,Theme_SLE);
-		user_input_flag = 0;											//用户输入标志为0
-		passwd_input_flag = 1;										//密码输入标志为1
-		strcpy((char*)temp1,(char*)Input_Data);		//把用户存到temp1里面
-		strcpy((char*)Input_Data,(char*)temp2);		//把密码还原到Input_Data里面
-		i1 = i;																		//记录用户输入到第几个
-		i = i2;																		//还原密码输入到第几个
-		return temp1;			//返回user的地址，因为还没变成passwd，退出之后才变
-	}
-	
-	
-	/*确认输入*/
-	if((key==KEY_WKUP)&&WKUP_flag){
-		WKUP_flag = 0;
-		LCD_DrawRecFill(160, 145, 210, 170,Theme_BACK);
-//		FLASH_Serial_Read_Data(USER_Addr, 10, DefAcc.User);	//获取用户名
-//		FLASH_Serial_Read_Data(PASSWD_Addr, 10, DefAcc.Passwd);	//获取用户名
-		if(str_cmpx(Account.User,DefAcc.User, 10)&&str_cmpx(Account.Passwd,DefAcc.Passwd,10)){
-			Login_flag = 0;				//失能登陆界面
-			Home_flag = 1;				//使能主界面	
-		}
-		#ifdef Debug_Login
-			printf("user:%s\r\npasswd:%s\r\n",Account.User,Account.Passwd);
-			printf("DefAcc.user:%s\r\nDefAcc.passwd:%s\r\n",DefAcc.User,DefAcc.Passwd);
-		#endif
-	}else if(WKUP_flag==0){
-		WKUP_flag = 1;
-		BACK_COLOR = Theme_BACK;
-		Display_String(170,150,80,16,"确认",16);
-		BACK_COLOR = Theme_SLE;
-	}
-	
-	return Input_Data;			//返回获取到的数据首地址
-}
+const u8 *name[2] = {"用户:","密码:"};
+const u8 *mima[2] = {"        ","        "};
 
 /*
 	函数功能：登陆界面
 */
 void Login_Func(void)
 {
-
+	u8 key=0;
+	short i=0,tmp=1;
+	ACCOUNT_TYPE Account={0};
+	
+	/*起始横坐标，起始纵坐标，图标宽度，图标高度，横间隙，纵间隙，窗口贴片横数量，窗口贴片纵数量*/
+	WINDOWS_TYPE Login_Name = {20,45,60,28,0,22,1,2};
+	WINDOWS_TYPE Login_Info = {95,45,100,28,0,22,1,2};
+	/*名称起始横坐标，按键1，按键2*/
 	WINDOWS_INIT_TYPE Login_Win = {77,"用户登陆","清除","确认"};
-	/*窗口初始化*/
-	Windows_Init(Login_Win);
-
-	LCD_DrawRecFill(20, 45, 80, 75,Theme_BACK);
-	Display_String(25,52,80,16,"用户：",16);
-	LCD_DrawRecFill(20, 95, 80, 122,Theme_BACK);
-	Display_String(25,100,80,16,"密码：",16);
-	LCD_DrawRecFill(90, 45, 190, 75,(user_input_flag ? Theme_SLE : Theme_BACK));
-	Display_String(95,52,80,16,Account.User,16);
-	LCD_DrawRecFill(90, 95, 190, 122,(passwd_input_flag ? Theme_SLE : Theme_BACK));
-	Display_String(95,100,80,16,Account.Passwd,16);
+	/*界面初始化*/
+	Windows_Init(Login_Win);	
+	/*显示菜单*/
+	Windows_Titles(Login_Name,(u8 **)name,Theme_BACK);
+	Windows_Titles(Login_Info,(u8 **)mima,Theme_BACK);
 	
 	do{
 		
-		/*输入用户名*/
-		if(user_input_flag){
-			BACK_COLOR = Theme_SLE;
-			Account.User = Input_Scan();
-			Display_String(95,52,80,16,Account.User,16);
+		/*获取功能键值*/
+		key = Common_Key((short *)&i,(short *)&Null,Null,Login_Info.tls_y, (u8 *)&Null,(u8 *)&Null,(u8 *)&Null);
+		if(key==KEY_WKUP){
+			if(!strcmp((const char *)Account.User,	(const char *)DefAcc.User)&&
+				 !strcmp((const char *)Account.Passwd,(const char *)DefAcc.Passwd)){
+				Login_flag = 0;				//失能登陆界面
+				Home_flag = 1;				//使能主界面	
+			}
+				
+			#ifdef Debug_Login
+				printf("user:%s\r\npasswd:%s\r\n",Account.User,Account.Passwd);
+				printf("DefAcc.user:%s\r\nDefAcc.passwd:%s\r\n",DefAcc.User,DefAcc.Passwd);
+			#endif
 		}
-		/*输入密码*/
-		if(passwd_input_flag){
-			BACK_COLOR = Theme_SLE;
-			Account.Passwd = Input_Scan();
-			Display_String(95,100,80,16,Account.Passwd,16);
+		
+		/*输入获取时间*/	
+		Key_Input_Str(Login_Info,i,0,key,8,i?Account.Passwd:Account.User);
+		BACK_COLOR = Theme_SLE;
+		Display_String((Login_Info.St_x+4),(Login_Info.St_y+i*(Login_Info.Hight+Login_Info.Jx_y)+4),
+										88,16,(i?Account.Passwd:Account.User),16);						
+	
+		/*更新显示*/
+		if(tmp!=i){	
+			/*恢复原来的图标颜色*/
+			DispStr_Win(Login_Info,tmp,0,tmp?Account.Passwd:Account.User,Theme_BACK);		
+			tmp = i;
+			/*选择新的图标，添加高亮*/
+			DispStr_Win(Login_Info,i,0,i?Account.Passwd:Account.User,Theme_SLE);	
 		}
+		
 	}while(Login_flag);
 	
-	#ifdef Debug_Theme
-		printf("Color:%X,Back:%X,SLE:%X\r\n",Theme_Color,Theme_BACK,Theme_SLE);
-	#endif
 }
+
 
