@@ -17,21 +17,17 @@ u8 Settings_Theme_flag 				=			0;						//设置界面---用户管理
 u8 Settings_LAB_flag 					=			0;						//设置界面---背光及声音
 u8 Settings_About_flag 				=			0;						//设置界面---关于
 u8 Message_Warming_flag				=			0;						//提示信息界面
-
 /*****************************主题相关*****************************/
 u16 Theme_Color 							= 		GBLUE;				//主题清屏色
 u16 Theme_BACK  							= 		LBBLUE;				//主题背景色
 u16 Theme_SLE 								= 		CYAN;					//主题选择色
-
 /****************************相关数据定义***************************/
 ACCOUNT_TYPE DefAcc ={"123456","123456"};					//默认用户
 CUSTOMER_TYPE COUSTOMER;													//顾客
-
 /************************	*点菜系统相关数据************************/
 u8 LCD_BL_LIGHT								=			10;						//点菜机LCD显示屏亮度级别
 u8 Clear_flag 								=			0;						//清除标志 当Clear_flag = 1 时，可清除；为0时，不可清除；
 u32 Null 											= 		1;						//无效操作空间
-
 /*******************************************************************
 	函数功能：硬件初始化
 ********************************************************************/
@@ -41,9 +37,6 @@ void Hardware_Init(void)
 	Beep_Init();											//蜂鸣器初始化
 	KEY_Init();												//按键初始化
 	Delay_Init();											//延时函数初始化
-	#ifdef Debug
-		USART1_Init(115200);						//串口初始化
-	#endif
 	W25Q64_Init();										//存储芯片初始化
 	Font_Init();											//字库初始化	
 	LCD_Init();												//液晶屏初始化
@@ -63,10 +56,7 @@ void Hardware_Init(void)
 ********************************************************************/
 void DCJ_SYSTEM_INIT()
 {
-	#ifdef Debug_Save
-		u8 i;
-		u8 tmp[10]={0};
-	#endif
+
 	Delay_ms(100);																		//等待系统稳定
 	/*判断系统是否第一次使用*/
 	FlASH_Read_Byte_Data(FIRST_USE);									//无意义的操作，第一个不稳 丢掉		
@@ -78,14 +68,6 @@ void DCJ_SYSTEM_INIT()
 		Theme_Color = (u16)FlASH_Read_Byte_Data(Theme_Addr+0)<<8 | FlASH_Read_Byte_Data(Theme_Addr+1) ;
 		Theme_BACK  = (u16)FlASH_Read_Byte_Data(Theme_Addr+2)<<8 | FlASH_Read_Byte_Data(Theme_Addr+3) ;
 		Theme_SLE   = (u16)FlASH_Read_Byte_Data(Theme_Addr+4)<<8 | FlASH_Read_Byte_Data(Theme_Addr+5) ;
-		
-		#ifdef Debug_Save
-			FLASH_Serial_Read_Data(Theme_Addr, 6, tmp);
-			for(i=0;i<6;i++){
-				printf("%X ",tmp[i]);
-			}
-			printf("Color:%X,Back:%X,SLE:%X\r\n",Theme_Color,Theme_BACK,Theme_SLE);
-		#endif
 		
 		BEEP_EN = FlASH_Read_Byte_Data(BEEP_EN_Addr);				//获取蜂鸣器状态
 		KEY_LED = FlASH_Read_Byte_Data(KEY_LED_EN_Addr);		//获取键盘灯状态
@@ -272,10 +254,6 @@ u8 *Key_Input(u8 key, u8 range)
 		Esc_flag = 1;
 	}
 	
-	#ifdef Debug_Input
-	printf("key:%d,i:%d,Clear_flag:%d,Input_Data:%s\r\n",key,i,Clear_flag,Input);
-	#endif
-	
 	return Input;
 }
 
@@ -295,10 +273,6 @@ void Key_Input_Str(WINDOWS_TYPE t,u8 x,u8 y,u8 key,u8 range,u8 *str)
 	u8 i=strlen((const char *)str);
 
 	BACK_COLOR = Theme_BACK;
-	
-	#ifdef Debug_Input
-		printf("str:%s\r\ni:%d\r\n",str,i);
-	#endif
 	
 	/*正常获取数据*/
 	if(i<range){						//输入范围
@@ -435,5 +409,5 @@ void Message_Warming_Func(u8 *Old_flag,u8 *New_flag, u8 *Str)
 	
 }
 
-/********************************END****************************************/
+/********************************************************************************/
 

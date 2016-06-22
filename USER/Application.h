@@ -13,7 +13,6 @@
 #include "ILI9341.h"
 #include "RTC.h"
 #include "string.h"
-#include "Debug.h"
 #include "TIM.h"
 #include "cc1101.h"
 /*****************************定义类型***********************************/

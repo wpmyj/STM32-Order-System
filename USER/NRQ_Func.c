@@ -30,9 +30,7 @@ u16 Get_Table_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag,u8 *name,u8 *show,u
 			*Self_flag = 0;
 			Message_Warming_flag = 1;
 			sscanf((char *)Table,"%d",(int *)&table_num);
-			#ifdef Debug_Get_Table
-			printf("桌子号：%d\r\n",table_num);
-			#endif
+
 		}
 		/*获取桌子号*/
 		Table = Key_Input(key,3);
@@ -81,5 +79,5 @@ void Query_Func(void)
 }
 
 
-/********************************END*********************************************/
+/********************************************************************************/
 
