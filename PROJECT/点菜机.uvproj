@@ -620,11 +620,6 @@
               <FilePath>..\USER\main.c</FilePath>
             </File>
             <File>
-              <FileName>Data_Handler.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\Data_Handler.c</FilePath>
-            </File>
-            <File>
               <FileName>Application.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\Application.c</FilePath>
@@ -670,9 +665,9 @@
               <FilePath>..\USER\Settings_time.c</FilePath>
             </File>
             <File>
-              <FileName>Settings_User.c</FileName>
+              <FileName>Settings_Theme.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\USER\Settings_User.c</FilePath>
+              <FilePath>..\USER\Settings_Theme.c</FilePath>
             </File>
             <File>
               <FileName>Settings_LAB.c</FileName>

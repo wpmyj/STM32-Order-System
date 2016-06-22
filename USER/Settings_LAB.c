@@ -30,13 +30,13 @@ void Settings_LAB_Func(void)
 	/*起始横坐标，起始纵坐标，图标宽度，图标高度，横间隙，纵间隙，窗口贴片横数量，窗口贴片纵数量*/
 	WINDOWS_TYPE Settings_LAB_Info = {10,25,200,25,5,5,1,3};
 	/*清屏颜色，背景颜色，名称起始横坐标，按键1，按键2*/
-	WINDOWS_INIT_TYPE Settings_LAB_Win={GBLUE,LBBLUE,70,"背光及声音","返回","选择"};
+	WINDOWS_INIT_TYPE Settings_LAB_Win={70,"背光及声音","返回","选择"};
 	/*窗口初始化*/
 	Windows_Init(Settings_LAB_Win);	
 	/*显示菜单*/
-	Windows_Titles(Settings_LAB_Info,(u8 **)Settings_LAB,LBBLUE);
+	Windows_Titles(Settings_LAB_Info,(u8 **)Settings_LAB,Theme_BACK);
 	for(tmp=0;tmp<3;tmp++)
-		Display_Info(tmp,j,(tmp?BEEP_EN:KEY_LED),LBBLUE);
+		Display_Info(tmp,j,(tmp?BEEP_EN:KEY_LED),Theme_BACK);
 	
 	do{
 		
@@ -46,26 +46,26 @@ void Settings_LAB_Func(void)
 			Settings_LAB_flag = 1;
 			if(i==0)	KEY_LED = !KEY_LED;
 			if(i==2)	BEEP_EN = !BEEP_EN;
-			Display_Info(i,j,(i?BEEP_EN:KEY_LED),CYAN);
+			Display_Info(i,j,(i?BEEP_EN:KEY_LED),Theme_SLE);
 		}
 		
 		/*调节亮度*/
 		if((tmp2!=j)&&i==1){
 			LCD_BL_PWM = j * 5;
 			tmp2 = j;
-			BACK_COLOR = CYAN;
-			Display_Info(i,j,(i?BEEP_EN:KEY_LED),CYAN);
+			BACK_COLOR = Theme_SLE;
+			Display_Info(i,j,(i?BEEP_EN:KEY_LED),Theme_SLE);
 		}
 		
 		/*更新显示*/
 		if(tmp1!=i){
 			/*显示旧的信息，取消高亮*/
-			Windows_Title(Settings_LAB_Info,(u8 **)Settings_LAB,tmp1,0,LBBLUE);
-			Display_Info(tmp1,j,(tmp1?BEEP_EN:KEY_LED),LBBLUE);
+			Windows_Title(Settings_LAB_Info,(u8 **)Settings_LAB,tmp1,0,Theme_BACK);
+			Display_Info(tmp1,j,(tmp1?BEEP_EN:KEY_LED),Theme_BACK);
 			tmp1 = i;
 			/*显示新的信息，设置高亮*/
-			Windows_Title(Settings_LAB_Info,(u8 **)Settings_LAB,i,0,CYAN);
-			Display_Info(i,j,(i?BEEP_EN:KEY_LED),CYAN);
+			Windows_Title(Settings_LAB_Info,(u8 **)Settings_LAB,i,0,Theme_SLE);
+			Display_Info(i,j,(i?BEEP_EN:KEY_LED),Theme_SLE);
 		}
 	
 	}while(Settings_LAB_flag);

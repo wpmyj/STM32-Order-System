@@ -11,10 +11,7 @@ typedef struct
 {
 	  unsigned char len;     //数据帧长度
     unsigned char adr;     //地址 
-    unsigned char event;   //编号
-    unsigned char status;  //状态
-//    unsigned int  value;   //传值
-		unsigned char str[16];	//传字符串
+		unsigned char str[50];	//传字符串
 }_RF_Dat;
 
 extern _RF_Dat RF_Dat;

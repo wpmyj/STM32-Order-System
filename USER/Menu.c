@@ -12,7 +12,7 @@ const u8 Menu_Name[10][6] = {"  ","¿ª×À","µã²Ë","´ß²Ë","¼Ó²Ë","ÍË²Ë","²éÑ¯","ÐÅÏ
 void Menu_Func(void)
 {
 	static short Menu_Num=0,temp=0;
-	WINDOWS_INIT_TYPE Menu_Win={GBLUE,LBBLUE,94,"²Ëµ¥","·µ»Ø","Ñ¡Ôñ"};
+	WINDOWS_INIT_TYPE Menu_Win={94,"²Ëµ¥","·µ»Ø","Ñ¡Ôñ"};
 	
 	/*´°¿Ú³õÊ¼»¯*/
 	Windows_Init(Menu_Win);
@@ -20,7 +20,7 @@ void Menu_Func(void)
 	LCD_DrawRecFill(20, Menu_YS, 60, Menu_YE,Menu_Color[Menu_Num+2]);
 	LCD_DrawRecFill(80, Menu_YS, 140, Menu_YE,Menu_Color[Menu_Num+1]);
 	LCD_DrawRecFill(160, Menu_YS, 200, Menu_YE,Menu_Color[Menu_Num]);	
-	BACK_COLOR = GBLUE;
+	BACK_COLOR = Theme_Color;
 	Display_String(94,130,80,16,(unsigned char *)Menu_Name[Menu_Num+1],16);
 	
 	do{
@@ -34,7 +34,7 @@ void Menu_Func(void)
 			LCD_DrawRecFill(20, Menu_YS, 60, Menu_YE,Menu_Color[Menu_Num+2]);
 			LCD_DrawRecFill(80, Menu_YS, 140, Menu_YE,Menu_Color[Menu_Num+1]);
 			LCD_DrawRecFill(160, Menu_YS, 200, Menu_YE,Menu_Color[Menu_Num]);
-			LCD_Fill(90,126,130,150,GBLUE);
+			LCD_Fill(90,126,130,150,Theme_Color);
 			Display_String(94,130,80,16,(unsigned char *)Menu_Name[Menu_Num+1],16);			
 		}
 	

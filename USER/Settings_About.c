@@ -7,11 +7,11 @@ const u8 About[] = "    本点菜系统为深圳市创黑科技有限公司林静伟设计，版权所有！
 */
 void Settings_About_Func(void)
 {	
-	WINDOWS_INIT_TYPE Settings_About_Win={GBLUE,LBBLUE,94,"关于","返回","确认"};
+	WINDOWS_INIT_TYPE Settings_About_Win={94,"关于","返回","确认"};
 	/*窗口初始化*/
 	Windows_Init(Settings_About_Win);	
 	
-	BACK_COLOR = GBLUE;
+	BACK_COLOR = Theme_Color;
 	Display_String(10,25,210,120,(u8 *)About,16);
 	
 	do{

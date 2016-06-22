@@ -29,21 +29,21 @@ u8 *Input_Scan(void)
 	}
 	if(key==KEY_ESC){				//清除键
 		Esc_flag = 0;
-		LCD_DrawRecFill(10, 145, 60, 170,LBBLUE);//清除效果
+		LCD_DrawRecFill(10, 145, 60, 170,Theme_BACK);//清除效果
 		if(i!=0)							//范围最低0
 			Input_Data[--i] = ' ';
 	}else if(Esc_flag==0){
 		Esc_flag = 1;
-		BACK_COLOR = LBBLUE;
+		BACK_COLOR = Theme_BACK;
 		Display_String(20,150,80,16,"清除",16);
-		BACK_COLOR = CYAN;
+		BACK_COLOR = Theme_SLE;
 	}
 	
 	/*输入切换*/
 	if((key==KEY_UP)&&user_input_flag==0){
-		BACK_COLOR = LBBLUE;
-		LCD_DrawRecFill(90, 45, 190, 75,CYAN);
-		LCD_DrawRecFill(90, 95, 190, 122,LBBLUE);
+		BACK_COLOR = Theme_BACK;
+		LCD_DrawRecFill(90, 45, 190, 75,Theme_SLE);
+		LCD_DrawRecFill(90, 95, 190, 122,Theme_BACK);
 		user_input_flag = 1;											//用户输入标志为1
 		passwd_input_flag = 0;										//密码输入标志为0
 		strcpy((char*)temp2,(char*)Input_Data);		//把密码存到temp2里面
@@ -53,9 +53,9 @@ u8 *Input_Scan(void)
 		return temp2;			//返回passwd的地址，因为还没变成user，退出之后才变
 	}
 	if((key==KEY_DOWN)&&passwd_input_flag==0){
-		BACK_COLOR = LBBLUE;
-		LCD_DrawRecFill(90, 45, 190, 75,LBBLUE);
-		LCD_DrawRecFill(90, 95, 190, 122,CYAN);
+		BACK_COLOR = Theme_BACK;
+		LCD_DrawRecFill(90, 45, 190, 75,Theme_BACK);
+		LCD_DrawRecFill(90, 95, 190, 122,Theme_SLE);
 		user_input_flag = 0;											//用户输入标志为0
 		passwd_input_flag = 1;										//密码输入标志为1
 		strcpy((char*)temp1,(char*)Input_Data);		//把用户存到temp1里面
@@ -69,10 +69,11 @@ u8 *Input_Scan(void)
 	/*确认输入*/
 	if((key==KEY_WKUP)&&WKUP_flag){
 		WKUP_flag = 0;
-		LCD_DrawRecFill(160, 145, 210, 170,LBBLUE);
+		LCD_DrawRecFill(160, 145, 210, 170,Theme_BACK);
 //		FLASH_Serial_Read_Data(USER_Addr, 10, DefAcc.User);	//获取用户名
 //		FLASH_Serial_Read_Data(PASSWD_Addr, 10, DefAcc.Passwd);	//获取用户名
-		if(str_cmpx(Account.User,DefAcc.User, 10)&&str_cmpx(Account.Passwd,DefAcc.Passwd,10)){
+//		if(str_cmpx(Account.User,DefAcc.User, 10)&&str_cmpx(Account.Passwd,DefAcc.Passwd,10)){
+		if(str_cmpx(Account.User,"123456     ", 10)&&str_cmpx(Account.Passwd,"123456     ",10)){
 			Login_flag = 0;				//失能登陆界面
 			Home_flag = 1;				//使能主界面	
 		}
@@ -82,9 +83,9 @@ u8 *Input_Scan(void)
 		#endif
 	}else if(WKUP_flag==0){
 		WKUP_flag = 1;
-		BACK_COLOR = LBBLUE;
+		BACK_COLOR = Theme_BACK;
 		Display_String(170,150,80,16,"确认",16);
-		BACK_COLOR = CYAN;
+		BACK_COLOR = Theme_SLE;
 	}
 	
 	return Input_Data;			//返回获取到的数据首地址
@@ -96,33 +97,30 @@ u8 *Input_Scan(void)
 void Login_Func(void)
 {
 
-	WINDOWS_INIT_TYPE Login_Win = {GBLUE,LBBLUE,77,"用户登陆","清除","确认"};
+	WINDOWS_INIT_TYPE Login_Win = {77,"用户登陆","清除","确认"};
 	/*窗口初始化*/
 	Windows_Init(Login_Win);
 
-	LCD_DrawRecFill(20, 45, 80, 75,LBBLUE);
+	LCD_DrawRecFill(20, 45, 80, 75,Theme_BACK);
 	Display_String(25,52,80,16,"用户：",16);
-	
-	LCD_DrawRecFill(20, 95, 80, 122,LBBLUE);
+	LCD_DrawRecFill(20, 95, 80, 122,Theme_BACK);
 	Display_String(25,100,80,16,"密码：",16);
-	
-	LCD_DrawRecFill(90, 45, 190, 75,(user_input_flag ? CYAN : LBBLUE));
+	LCD_DrawRecFill(90, 45, 190, 75,(user_input_flag ? Theme_SLE : Theme_BACK));
 	Display_String(95,52,80,16,Account.User,16);
-	
-	LCD_DrawRecFill(90, 95, 190, 122,(passwd_input_flag ? CYAN : LBBLUE));
+	LCD_DrawRecFill(90, 95, 190, 122,(passwd_input_flag ? Theme_SLE : Theme_BACK));
 	Display_String(95,100,80,16,Account.Passwd,16);
 	
 	do{
 		
 		/*输入用户名*/
 		if(user_input_flag){
-			BACK_COLOR = CYAN;
+			BACK_COLOR = Theme_SLE;
 			Account.User = Input_Scan();
 			Display_String(95,52,80,16,Account.User,16);
 		}
 		/*输入密码*/
 		if(passwd_input_flag){
-			BACK_COLOR = CYAN;
+			BACK_COLOR = Theme_SLE;
 			Account.Passwd = Input_Scan();
 			Display_String(95,100,80,16,Account.Passwd,16);
 		}

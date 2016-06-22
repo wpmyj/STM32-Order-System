@@ -60,10 +60,10 @@ const RF_SETTINGS rfSettings =
 //开启在收到数据时为MCU提供中断信号
 //GDO0 output pin configuration. Refer to SmartRF?Studio User Manual for detailed pseudo register explanation.
 
-    0x06,   // PKTCTRL1  Packet automation control.  //地址校验以及0(0x00)为广播地址
+    0x05,   // PKTCTRL1  Packet automation control.  //地址校验以及0(0x00)为广播地址，不接受广播
 
     0x05,   // PKTCTRL0  Packet automation control.   //使用"可变数据包长度模式"
-    0x07,   // ADDR      Device address.              //设备地址为0x07
+    0x08,   // ADDR      Device address.              //设备地址为0x08
     0xff    // PKTLEN    Packet length.               //在非固定长度时设置为255
 };
 

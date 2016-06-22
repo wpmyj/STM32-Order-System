@@ -16,13 +16,13 @@ u16 Get_Table_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag,u8 *name,u8 *show,u
 	u16 table_num;
 	u8 *Table;
 	/*界面信息*/
-	WINDOWS_INIT_TYPE Win={GBLUE,LBBLUE,94,"    ","取消","确认"};
+	WINDOWS_INIT_TYPE Win={94,"    ","取消","确认"};
 	Win.Name = name;
 	/*界面初始化*/
 	Windows_Init(Win);
-	LCD_DrawRecFill(40,40,180,60,LBBLUE);
+	LCD_DrawRecFill(40,40,180,60,Theme_BACK);
 	Display_String(43,43,150,16,show,16);
-	LCD_DrawRecFill(40,80,180,120,LBBLUE);
+	LCD_DrawRecFill(40,80,180,120,Theme_BACK);
 	
 	do{
 		/*获取功能键值*/
@@ -61,9 +61,12 @@ void Newtable_Func(void)
 ********************************************************************************/
 void Reminder_Func(void)
 {
+	u8 str[40];
 	/*老界面标志，自身界面标志，新界面标志，窗体名称，获取桌子号提示，确认提示*/
 	u16 Remider_num = Get_Table_Func(&Menu_flag, &Reminder_flag,&Menu_flag,"催菜","请输入催菜桌号：","是否催菜？");
 	COUSTOMER.Table = Remider_num;
+	sprintf((char *)str,"%d桌客人在催菜！快点！",COUSTOMER.Table);
+	Send_msg(0x08,str);
 }
 
 /********************************************************************************

@@ -1,5 +1,134 @@
 #include "Application.h"
 
+/****************************相应界面激活*************************/
+u8 Login_flag 								=			1;						//登陆界面
+u8 Home_flag									=			0;						//主界面
+u8 Menu_flag 									=			0;						//菜单界面
+u8 Newtable_flag 							=			0;						//开桌界面
+u8 Order_flag 								=			0;						//点菜界面
+u8 Reminder_flag 							=			0;						//催菜界面
+u8 AddFood_flag 							=			0;						//加菜界面
+u8 RetreatFood_flag 					=			0;						//退菜界面
+u8 Query_flag 								=			0;						//查询界面
+u8 MMS_flag 									=			0;						//信息界面
+u8 Settings_flag 							=			0;						//设置界面
+u8 Settings_Time_flag 				=			0;						//设置界面---时间设置
+u8 Settings_Theme_flag 				=			0;						//设置界面---用户管理
+u8 Settings_LAB_flag 					=			0;						//设置界面---背光及声音
+u8 Settings_About_flag 				=			0;						//设置界面---关于
+u8 Message_Warming_flag				=			0;						//提示信息界面
+/************************	*点菜系统相关数据************************/
+u8 LCD_BL_LIGHT								=			10;						//点菜机LCD显示屏亮度级别
+u8 Clear_flag 								=			0;						//清除标志 当Clear_flag = 1 时，可清除；为0时，不可清除；
+u8 Clear_All									=			1;						//全局清除标志，
+u8 Null 											= 		1;						//无效操作空间
+/*****************************主题相关*****************************/
+u16 Theme_Color = GBLUE;
+u16 Theme_BACK = LBBLUE;
+u16 Theme_SLE = CYAN;
+/****************************相关数据定义***************************/
+
+ACCOUNT_TYPE DefAcc ={"123456    ","123456    "};
+CUSTOMER_TYPE COUSTOMER;
+
+/*******************************************************************
+	函数功能：硬件初始化
+********************************************************************/
+void Hardware_Init(void)
+{
+	LED_Init();			//LED灯初始化
+	Beep_Init();		//蜂鸣器初始化
+	KEY_Init();			//按键初始化
+	Delay_Init();		//延时函数初始化
+	USART1_Init(115200);	//串口初始化
+	W25Q64_Init();	//存储芯片初始化
+	Font_Init();		//字库初始化	
+	LCD_Init();			//液晶屏初始化
+	RTC_Init();			//实时时钟初始化
+	TIM2_PWM_Init(100,720);//定时器2PWM波输出初始化
+	
+	if(CC1101_Init())			//初始化433模块
+	{
+		Open_GD0_Interrupt();
+	}		
+	else 	LCD_ShowString(50,10,200,16,16,"CC1101 RESET ERR");		
+}
+
+/*******************************************************************
+	函数功能：SYSTEM数据初始化
+
+********************************************************************/
+void DCJ_SYSTEM_INIT()
+{
+	#ifdef Debug_Save
+		u8 i;
+		u8 tmp[10]={0};
+	#endif
+	Delay_ms(10);																			//等待系统稳定
+	/*获取数据并还原数据*/
+	
+	FlASH_Read_Byte_Data(Theme_Addr+0);
+	
+	Theme_Color = (u16)FlASH_Read_Byte_Data(Theme_Addr+0)<<8 | FlASH_Read_Byte_Data(Theme_Addr+1) ;
+	Theme_BACK  = (u16)FlASH_Read_Byte_Data(Theme_Addr+2)<<8 | FlASH_Read_Byte_Data(Theme_Addr+3) ;
+	Theme_SLE   = (u16)FlASH_Read_Byte_Data(Theme_Addr+4)<<8 | FlASH_Read_Byte_Data(Theme_Addr+5) ;
+	
+	#ifdef Debug_Save
+		FLASH_Serial_Read_Data(Theme_Addr, 6, tmp);
+		for(i=0;i<6;i++){
+			printf("%X ",tmp[i]);
+		}
+		printf("Color:%X,Back:%X,SLE:%X\r\n",Theme_Color,Theme_BACK,Theme_SLE);
+	#endif
+	
+	BEEP_EN = FlASH_Read_Byte_Data(BEEP_EN_Addr);				//获取蜂鸣器状态
+	KEY_LED = FlASH_Read_Byte_Data(KEY_LED_EN_Addr);		//获取键盘灯状态
+	LCD_BL_LIGHT = FlASH_Read_Byte_Data(LCD_BL_Addr);		//获取屏幕亮度级别
+	LCD_BL_PWM = LCD_BL_LIGHT *5;												//还原屏幕亮度
+	
+}
+
+void SAVE_Data(void)
+{
+	FLASH_Sector_Erase(BEEP_EN_Addr);		//不要乱擦除扇区
+	FLASH_Sector_Erase(KEY_LED_EN_Addr);
+	FLASH_Sector_Erase(LCD_BL_Addr);
+	FLASH_Write_Byte_Data(BEEP_EN_Addr,BEEP_EN);
+	FLASH_Write_Byte_Data(KEY_LED_EN_Addr,KEY_LED);
+	FLASH_Write_Byte_Data(LCD_BL_Addr,LCD_BL_LIGHT);
+	FLASH_Write_Byte_Data(Theme_Addr+0,Theme_Color>>8);
+	FLASH_Write_Byte_Data(Theme_Addr+1,Theme_Color);
+	FLASH_Write_Byte_Data(Theme_Addr+2,Theme_BACK>>8);
+	FLASH_Write_Byte_Data(Theme_Addr+3,Theme_BACK);
+	FLASH_Write_Byte_Data(Theme_Addr+4,Theme_SLE>>8);
+	FLASH_Write_Byte_Data(Theme_Addr+5,Theme_SLE);
+}
+
+
+/*******************************************************************
+	函数功能：SYSTEM开始	
+********************************************************************/
+void DCJ_SYSTEM_START(void)
+{
+	while(1){
+		if(Login_flag)						Login_Func();								//登陆界面
+		if(Home_flag)							Home_Func();								//主界面
+		if(Menu_flag)							Menu_Func();								//菜单界面
+		if(Newtable_flag) 				Newtable_Func();						//开桌界面
+		if(Order_flag)						Order_Func();								//点菜界面
+		if(Reminder_flag)					Reminder_Func();						//催菜界面
+		if(AddFood_flag)					AddFood_Func();							//加菜界面
+		if(RetreatFood_flag)			RetreatFood_Func();					//退菜界面
+		if(Query_flag)						Query_Func();								//查询界面
+		if(MMS_flag)							MMS_Func();									//信息界面
+		if(Settings_flag)					Settings_Func();						//设置界面
+		if(Settings_Time_flag)		Settings_Time_Func();				//设置界面--设置时间
+		if(Settings_Theme_flag)		Settings_Theme_Func();			//设置界面--主题设置
+		if(Settings_LAB_flag)			Settings_LAB_Func();				//设置界面--背光及声音
+		if(Settings_About_flag)		Settings_About_Func();			//设置界面--关于
+	}
+}
+
 /*******************************************************************
 	函数功能：实时时钟
 ********************************************************************/
@@ -88,7 +217,7 @@ u8 *Key_Input(u8 key, u8 range, u8 *Clear)
 	
 	/*清除标志位*/
 	if((i==1)&&Clear_flag==0){
-		LCD_DrawRecFill(10, 145, 60, 170,LBBLUE);//清除效果
+		LCD_DrawRecFill(10, 145, 60, 170,Theme_BACK);//清除效果
 	}	
 	if(i!=0){
 		Clear_flag = 1;
@@ -101,7 +230,7 @@ u8 *Key_Input(u8 key, u8 range, u8 *Clear)
 	/*清除数据*/
 	if(key==KEY_ESC){				//清除键
 		Esc_flag = 0;
-		LCD_DrawRecFill(10, 145, 60, 170,LBBLUE);//清除效果
+		LCD_DrawRecFill(10, 145, 60, 170,Theme_BACK);//清除效果
 		if(i!=0)							//范围最低0
 			Input[--i] = ' ';
 	}else if(Esc_flag==0){
@@ -115,7 +244,7 @@ u8 *Key_Input(u8 key, u8 range, u8 *Clear)
 		i=0;
 		Esc_flag=1;
 		*Clear = 0;
-		LCD_DrawRecFill(10, 145, 60, 170,LBBLUE);//清除效果
+		LCD_DrawRecFill(10, 145, 60, 170,Theme_BACK);//清除效果
 	}
 	
 	#ifdef Debug_Input
@@ -131,7 +260,7 @@ void Key_Input1(u8 x1,u8 y1,u8 x2,u8 y2,u8 key,u8 range,u8 *str)
 	static u8 Esc_flag=1;
 	u8 i=strlen((const char *)str);
 
-	BACK_COLOR = LBBLUE;
+	BACK_COLOR = Theme_BACK;
 	
 	#ifdef Debug_Input
 		printf("str:%s\r\ni:%d\r\n",str,i);
@@ -151,7 +280,7 @@ void Key_Input1(u8 x1,u8 y1,u8 x2,u8 y2,u8 key,u8 range,u8 *str)
 	
 	/*清除标志位*/
 	if((i==1)&&Clear_flag==0){
-		LCD_DrawRecFill(10, 145, 60, 170,LBBLUE);//清除效果
+		LCD_DrawRecFill(10, 145, 60, 170,Theme_BACK);//清除效果
 	}	
 	if(i!=0){
 		Clear_flag = 1;
@@ -164,7 +293,7 @@ void Key_Input1(u8 x1,u8 y1,u8 x2,u8 y2,u8 key,u8 range,u8 *str)
 	/*清除数据*/
 	if(key==KEY_ESC){				//清除键
 		Esc_flag = 0;
-		LCD_DrawRecFill(10, 145, 60, 170,LBBLUE);//清除效果
+		LCD_DrawRecFill(10, 145, 60, 170,Theme_BACK);//清除效果
 		LCD_DrawRecFill(x1,y1,x2,y2,CYAN);
 		if(i!=0)							//范围最低0
 			str[--i] = '\0';
@@ -173,7 +302,6 @@ void Key_Input1(u8 x1,u8 y1,u8 x2,u8 y2,u8 key,u8 range,u8 *str)
 	}
 	
 }
-
 
 /***************************************************************
 	函数功能：窗口初始化
@@ -184,16 +312,16 @@ void Windows_Init(WINDOWS_INIT_TYPE windows)
 	/*初始化一些相关参数*/
 	Clear_flag = 0;
 	Clear_All = 1;
-	LCD_Clear(windows.Clear_Color);
-	BACK_COLOR = windows.Back_Color;
+	LCD_Clear(Theme_Color);
+	BACK_COLOR = Theme_BACK;
 	/*画状态栏*/
-	LCD_DrawRecFill(0,0,220,20,LBBLUE);
+	LCD_DrawRecFill(0,0,220,20,Theme_BACK);
 	Display_String(windows.Location,3,130,16,windows.Name,16);
 	/*画按键1*/
-	LCD_DrawRecFill(10, 145, 60, 170,LBBLUE);
+	LCD_DrawRecFill(10, 145, 60, 170,Theme_BACK);
 	Display_String(20,150,80,16,windows.Button1,16);
 	/*画按键2*/
-	LCD_DrawRecFill(160, 145, 210, 170,LBBLUE);
+	LCD_DrawRecFill(160, 145, 210, 170,Theme_BACK);
 	Display_String(170,150,80,16,windows.Button2,16);
 }
 
@@ -237,10 +365,10 @@ void Windows_Titles(WINDOWS_TYPE t, u8 **show,u16 color)
 ****************************************************************************/
 void Message_Warming_Func(u8 *Old_flag,u8 *New_flag, u8 *Str)
 {
-	WINDOWS_INIT_TYPE Msg_Win={LIGHTBLUE,LBBLUE,94,"提示"," 否"," 是"};
+	WINDOWS_INIT_TYPE Msg_Win={94,"提示"," 否"," 是"};
 	/*窗口初始化*/
 	Windows_Init(Msg_Win);	
-	LCD_DrawRecFill(50, 50, 170, 96,LBBLUE);
+	LCD_DrawRecFill(50, 50, 170, 96,Theme_BACK);
 	Display_String(70,60,170,96,Str,16);
 
 	do{
@@ -250,7 +378,6 @@ void Message_Warming_Func(u8 *Old_flag,u8 *New_flag, u8 *Str)
 	}while(Message_Warming_flag);
 	
 }
-
 
 /********************************************************************************/
 

@@ -2,12 +2,10 @@
 
 #define Food_Num    30
 
-//CUSTOMER_TYPE customer;
-
 /*菜单部分,后期修改从W25Q64里面获取*/
-const u8 *Food[Food_Num] = {"炒饭   ￥10","炒面   ￥10","炒粉   ￥10",
-														"面条   ￥10","饺子   ￥10","云吞   ￥10",
-														"蒸饺   ￥10","鸡排饭 ￥12","叉烧饭 ￥13"};
+const u8 *Food[Food_Num] = {"炒饭    ￥10","炒面    ￥10","炒粉    ￥10",
+														"面条    ￥10","饺子    ￥10","云吞    ￥10",
+														"蒸饺    ￥10","鸡排饭  ￥12","叉烧饭  ￥13"};
 						
 const u8 *Null_Num[Food_Num] = {0};		
 
@@ -29,17 +27,17 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 	/*起始横坐标，起始纵坐标，图标宽度，图标高度，横间隙，纵间隙，窗口贴片横数量，窗口贴片纵数量*/
 	WINDOWS_TYPE Num_Info  = {160,25,50,25,10,5,1,4};
 	/*清屏颜色，背景颜色，名称起始横坐标，按键1，按键2*/
-	WINDOWS_INIT_TYPE Win={GBLUE,LBBLUE,94,"    ","取消","确认"};
+	WINDOWS_INIT_TYPE Win={94,"    ","取消","确认"};
 	Win.Name = name;
 	/*界面初始化*/
 	Windows_Init(Win);
 	/*显示菜单*/
-	Windows_Titles(Food_Info,(u8 **)Menu.Food+j*Food_Info.tls_y,LBBLUE);
-	Windows_Titles(Num_Info,(u8 **)Menu.Num+j*Num_Info.tls_y,LBBLUE);
+	Windows_Titles(Food_Info,(u8 **)Menu.Food+j*Food_Info.tls_y,Theme_BACK);
+	Windows_Titles(Num_Info,(u8 **)Menu.Num+j*Num_Info.tls_y,Theme_BACK);
 	/*选择第一项图标，添加高亮*/
-	Windows_Title(Food_Info,(u8 **)Menu.Food+j*Food_Info.tls_y,i,0,CYAN);
-	Windows_Title(Num_Info,(u8 **)Menu.Num+j*Num_Info.tls_y,i,0,CYAN);
-	BACK_COLOR = LBBLUE;
+	Windows_Title(Food_Info,(u8 **)Menu.Food+j*Food_Info.tls_y,i,0,Theme_SLE);
+	Windows_Title(Num_Info,(u8 **)Menu.Num+j*Num_Info.tls_y,i,0,Theme_SLE);
+	BACK_COLOR = Theme_BACK;
 	/*循环菜单*/
 	do{
 		/*获取功能键值*/
@@ -63,12 +61,12 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 			/*复制字符串*/
 			Menu.Num[tmp1+tmp2*Num_Info.tls_y] = Num[tmp1+tmp2*Num_Info.tls_y];		//映射Num的地址到Menu.Num 里面
 			/*恢复原来的图标颜色*/
-			Windows_Title(Food_Info,(u8 **)Menu.Food+tmp2*Food_Info.tls_y,tmp1,0,LBBLUE);
-			Windows_Title(Num_Info,(u8 **)Menu.Num+tmp2*Num_Info.tls_y,tmp1,0,LBBLUE);
+			Windows_Title(Food_Info,(u8 **)Menu.Food+tmp2*Food_Info.tls_y,tmp1,0,Theme_BACK);
+			Windows_Title(Num_Info,(u8 **)Menu.Num+tmp2*Num_Info.tls_y,tmp1,0,Theme_BACK);
 			tmp1 = i;
 			/*选择新的图标，添加高亮*/
-			Windows_Title(Food_Info,(u8 **)Menu.Food+j*Food_Info.tls_y,i,0,CYAN);	
-			Windows_Title(Num_Info,(u8 **)Menu.Num+j*Num_Info.tls_y,i,0,CYAN);	
+			Windows_Title(Food_Info,(u8 **)Menu.Food+j*Food_Info.tls_y,i,0,Theme_SLE);	
+			Windows_Title(Num_Info,(u8 **)Menu.Num+j*Num_Info.tls_y,i,0,Theme_SLE);	
 			#ifdef Debug_Get_Num
 				for(debug=0;debug<30;debug++){
 					printf("%s ",Menu.Num[debug]);
@@ -80,11 +78,11 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 		/*变化菜单*/
 		if(tmp2!=j){
 			/*显示菜单*/
-			Windows_Titles(Food_Info,(u8 **)Menu.Food+j*Food_Info.tls_y,LBBLUE);
-			Windows_Titles(Num_Info,(u8 **)Menu.Num+j*Num_Info.tls_y,LBBLUE);
+			Windows_Titles(Food_Info,(u8 **)Menu.Food+j*Food_Info.tls_y,Theme_BACK);
+			Windows_Titles(Num_Info,(u8 **)Menu.Num+j*Num_Info.tls_y,Theme_BACK);
 			/*选择新的图标，添加高亮*/
-			Windows_Title(Food_Info,(u8 **)Menu.Food+j*Food_Info.tls_y,i,0,CYAN);
-			Windows_Title(Num_Info,(u8 **)Menu.Num+j*Num_Info.tls_y,i,0,CYAN);	
+			Windows_Title(Food_Info,(u8 **)Menu.Food+j*Food_Info.tls_y,i,0,Theme_SLE);
+			Windows_Title(Num_Info,(u8 **)Menu.Num+j*Num_Info.tls_y,i,0,Theme_SLE);	
 			tmp2 = j;
 			i = 0;	
 			#ifdef Debug_Get_Num
@@ -99,60 +97,37 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 	if(sure_flag){
 		
 		/*发送点菜单数据，整理数据*/
-		/*第一种整理成具体数字*/
-		#ifdef Debug_menu
-			u8 food[Food_Num]={0},num[Food_Num]={0};
-			u8 tmp=0;
-			for(i=0;i<Food_Num;i++){
-				if(Menu.Num[i][0]>='0'&&Menu.Num[i][0]<='9'){
-					sscanf((char *)Menu.Num[i],"%d",(int *)&num[tmp]);	
-					food[tmp] = i;
-					tmp ++;
-				}
+		u8 *food_tmp[Food_Num];
+		u8 *num_tmp[Food_Num];
+		u8 tmp=0;
+		u8 str[30];
+		for(i=0;i<Food_Num;i++){
+			if(Menu.Num[i][0]>='0'&&Menu.Num[i][0]<='9'){				//查找有点到的食物
+				num_tmp[tmp] = Menu.Num[i];												//复制食物数量地址
+				food_tmp[tmp] = Menu.Food[i]; 										//复制食物名称地址
+				tmp ++;																						//重新指向下一个指针数组元素
 			}
-			num[tmp] = '\0';
-			food[tmp] = '\0';
-			
-			#ifdef Debug_data
-				for(i=0;i<tmp;i++)
-					printf("food:%d  num:%d\r\n",food[i],num[i]);
-			#endif
-		
-		#else
-			/*第二种整理成字符串*/
-			u8 *food_tmp[Food_Num];
-			u8 *num_tmp[Food_Num];
-			u8 tmp=0;
-			u8 str[30];
-			for(i=0;i<Food_Num;i++){
-				if(Menu.Num[i][0]>='0'&&Menu.Num[i][0]<='9'){				//查找有点到的食物
-					num_tmp[tmp] = Menu.Num[i];												//复制食物数量地址
-					food_tmp[tmp] = Menu.Food[i]; 										//复制食物名称地址
-					tmp ++;																						//重新指向下一个指针数组元素
-				}
-			}
-			COUSTOMER.Food = food_tmp;														//重新映射地址
-			COUSTOMER.Num = num_tmp;															//重新映射地址
-		
-			/*发送点菜单*/
-			sprintf((char *)str,"桌子号：%d",COUSTOMER.Table);
-			Send_msg(0x07,str);
-			for(i=0;i<tmp;i++){
-				sprintf((char *)str,"%s***%s",COUSTOMER.Food[i],COUSTOMER.Num[i]);
-				Send_msg(0x07,str);
-			}
-			#ifdef Debug_data
-				printf("桌子号：%d\r\n",COUSTOMER.Table);
-				for(i=0;i<tmp;i++)
-					printf("食物：%s**********数量：%s\r\n",COUSTOMER.Food[i],COUSTOMER.Num[i]);
-			#endif
-			
+		}
+		COUSTOMER.Food = food_tmp;														//重新映射地址
+		COUSTOMER.Num = num_tmp;															//重新映射地址
+	
+		/*发送点菜单*/
+		sprintf((char *)str,"桌子号：%d",COUSTOMER.Table);
+		Send_msg(0x08,str);
+		for(i=0;i<tmp;i++){
+			sprintf((char *)str,"%s***数量：%s",COUSTOMER.Food[i],COUSTOMER.Num[i]);
+			Send_msg(0x08,str);
+		}
+		#ifdef Debug_data
+			printf("桌子号：%d\r\n",COUSTOMER.Table);
+			for(i=0;i<tmp;i++)
+				printf("食物：%s**********数量：%s\r\n",COUSTOMER.Food[i],COUSTOMER.Num[i]);
 		#endif
-		
-		
+
 	}
 	
 }
+
 
 /*********************************************************************
 	函数功能：点菜界面
@@ -167,7 +142,7 @@ void Order_Func(void)
 	函数功能：加菜界面
 *********************************************************************/
 void AddFood_Func(void)
-{		
+{	
 	/*老的界面标志，自身界面标志，新界面标志，窗口名称*/
 	Food_Func(&Menu_flag, &AddFood_flag,&Menu_flag,"加菜");
 }

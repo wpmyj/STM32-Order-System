@@ -6,7 +6,8 @@
 //#define Debug_Login	//登陆
 //#define Debug_Input	//输入
 //#define Debug_data		//数据整理
-//#define Debug_menu   //模式调试 字符串还是编号
+//#define Debug_menu   	//模式调试 字符串还是编号
+//#define Debug_Save		//调试保存数据
 
 #endif
 

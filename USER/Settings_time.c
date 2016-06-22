@@ -29,12 +29,12 @@ void Settings_Time_Func(void)
 	WINDOWS_TYPE Set_Time_Info = {5,53,40,25,33,10,3,2};
 	
 	/*清屏颜色，背景颜色，名称起始横坐标，按键1，按键2*/
-	WINDOWS_INIT_TYPE Set_Time_Win={GBLUE,LBBLUE,78,"设置时间","取消","确认"};
+	WINDOWS_INIT_TYPE Set_Time_Win={78,"设置时间","取消","确认"};
 	/*界面初始化*/
 	Windows_Init(Set_Time_Win);	
 	/*显示菜单*/
-	Windows_Titles(Set_Name_Info,(u8 **)Time,LBBLUE);
-	Windows_Titles(Set_Time_Info,(u8 **)Null_time,LBBLUE);
+	Windows_Titles(Set_Name_Info,(u8 **)Time,Theme_BACK);
+	Windows_Titles(Set_Time_Info,(u8 **)Null_time,Theme_BACK);
 	
 	do{
 		
@@ -56,11 +56,11 @@ void Settings_Time_Func(void)
 		/*更新显示*/
 		if(tmp1!=i||tmp2!=j){	
 			/*恢复原来的图标颜色*/
-			Disp_Time_Info(Set_Time_Info,tmp1,tmp2,(u8 *)date_time[tmp2+tmp1*Set_Time_Info.tls_x],LBBLUE);			
+			Disp_Time_Info(Set_Time_Info,tmp1,tmp2,(u8 *)date_time[tmp2+tmp1*Set_Time_Info.tls_x],Theme_BACK);			
 			tmp1 = i;
 			tmp2 = j;
 			/*选择新的图标，添加高亮*/
-			Disp_Time_Info(Set_Time_Info,i,j,(u8 *)date_time[tmp2+tmp1*Set_Time_Info.tls_x],CYAN);
+			Disp_Time_Info(Set_Time_Info,i,j,(u8 *)date_time[tmp2+tmp1*Set_Time_Info.tls_x],Theme_SLE);
 		}
 		
 	}while(Settings_Time_flag);	

@@ -59,8 +59,6 @@ typedef struct{
 
 /**************************窗体初始化信息********************************/
 typedef struct{
-	u16 Clear_Color;
-	u16 Back_Color;
 	u8 Location;
 	u8 *Name;
 	u8 *Button1;
@@ -80,7 +78,7 @@ extern u8 Query_flag;
 extern u8 MMS_flag;
 extern u8 Settings_flag;
 extern u8 Settings_Time_flag;
-extern u8 Settings_User_flag;
+extern u8 Settings_Theme_flag;
 extern u8 Settings_LAB_flag;
 extern u8 Settings_About_flag;
 extern u8 Message_Warming_flag;
@@ -91,6 +89,10 @@ extern u8 LCD_BL_LIGHT;
 extern ACCOUNT_TYPE Account;
 extern ACCOUNT_TYPE DefAcc;
 extern CUSTOMER_TYPE COUSTOMER;
+/******************************主题颜色**********************************/
+extern u16 Theme_Color;
+extern u16 Theme_BACK;
+extern u16 Theme_SLE;
 /*****************************数据存储地址*******************************/
 #define DATA_BASE								(0x050000)
 #define BEEP_EN_Addr						(0x00+DATA_BASE)
@@ -98,7 +100,7 @@ extern CUSTOMER_TYPE COUSTOMER;
 #define LCD_BL_Addr							(0x20+DATA_BASE)
 #define USER_Addr								(0x30+DATA_BASE)
 #define PASSWD_Addr							(0x40+DATA_BASE)
-
+#define Theme_Addr							(0x50+DATA_BASE)
 /*****************************函数声明***********************************/
 void Hardware_Init(void);								/*硬件部分初始化*/						
 void DCJ_SYSTEM_INIT(void);							/*点菜机系统数据初始化*/
@@ -116,7 +118,7 @@ void Query_Func(void);									/*查询界面*/
 void MMS_Func(void);										/*信息界面*/					
 void Settings_Func(void);								/*设置界面*/								
 void Settings_Time_Func(void);					/*设置界面--设置时间*/										
-void Settings_User_Func(void);					/*设置界面--用户管理*/											
+void Settings_Theme_Func(void);					/*设置界面--主题设置*/											
 void Settings_LAB_Func(void);						/*设置界面--背光及声音*/									
 void Settings_About_Func(void);					/*设置界面--关于*/											
 void RTC_Func(void);										/*实时时钟*/	
