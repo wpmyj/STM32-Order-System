@@ -26,6 +26,7 @@ extern u8 Query_flag;
 extern u8 MMS_flag;
 extern u8 Settings_flag;
 
+extern u8 Clear_flag;
 
 /*实时时钟*/
 void RTC_Func(void);
@@ -52,5 +53,7 @@ void Query_Func(void);
 void MMS_Func(void);
 /*设置界面*/
 void Settings_Func(void);
+
+u8 *Key_Input(u8 key);
 
 #endif

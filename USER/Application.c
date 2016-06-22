@@ -12,6 +12,7 @@ u8 Query_flag = 0;
 u8 MMS_flag = 0;
 u8 Settings_flag = 0;
 
+u8 Clear_flag = 0;
 
 /*
 	函数功能：实时时钟
@@ -37,3 +38,51 @@ void RTC_Func(void)
 	}
 	
 }
+
+/*
+	函数功能：按键输入处理
+	参数：u8 key：外部输入的按键值
+	返回值：处理完之后的数据首地址
+*/
+u8 *Key_Input(u8 key)
+{
+	static u8 i=0,Esc_flag=1;
+	static u8 Input_Data[11]="          ";
+	
+	/*正常获取数据*/
+	if(i<10){								//输入范围0-10
+		if((key>0&&key<10))		//输入数字1-9
+			Input_Data[i++] = key + 0x30;
+		if(key==KEY_0)				//输入数字0
+			Input_Data[i++] = '0';
+		if(key==KEY_X)				//输入字符*
+			Input_Data[i++] = '*';
+		if(key==KEY_J)				//输入字符#
+			Input_Data[i++] = '#';
+	}
+	
+	/*清除标志位*/
+	if((i==1)&&Clear_flag==0){
+		LCD_DrawRecFill(10, 145, 60, 170,BROWN);//清除效果
+	}	
+	if(i!=0){
+		Clear_flag = 1;
+		Display_String(20,150,80,16,"清除",16);
+	}else{
+		Clear_flag = 0;
+		Display_String(20,150,80,16,"取消",16);
+	}
+
+	/*清除数据*/
+	if(key==KEY_ESC){				//清除键
+		Esc_flag = 0;
+		LCD_DrawRecFill(10, 145, 60, 170,BROWN);//清除效果
+		if(i!=0)							//范围最低0
+			Input_Data[--i] = ' ';
+	}else if(Esc_flag==0){
+		Esc_flag = 1;
+	}
+	
+	return Input_Data;
+}
+

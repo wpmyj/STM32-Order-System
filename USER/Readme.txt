@@ -29,9 +29,9 @@
 
 	1).Newtable_Func;		//开桌				已完成
 
-	2).Order_Func;			//点菜				开动，基本完成
+	2).Order_Func;			//点菜				基本完成
 
-	3).Reminder_Func;		//催菜
+	3).Reminder_Func;		//催菜				开动，基本完成
 
 	4).AddFood_Func;		//加菜
 	
@@ -95,5 +95,6 @@ Display_String((ST_X+j*(Weight+JX)+4),(ST_Y+i*(Hight+JX)+3),60,16,(u8 *)Food[j+i
 
 2016/3/15 16:07   已基本完成点菜界面了，但还没添加食物价格以及点的数量
 
+2016/3/15 16:10	  开始制作催菜界面
 
-	
+2016/3/15 16:51	  基本完成催菜界面，后期在完善
