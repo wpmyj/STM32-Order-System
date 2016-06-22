@@ -24,7 +24,10 @@ void Newtable_Func(void)
 		
 		/*获取功能键值*/
 		key = Common_Key((short*)&Null,(short*)&Null,Null,Null, &Menu_flag,&Newtable_flag,&Menu_flag);
-		
+		if((key==KEY_WKUP)&&Clear_flag){
+			
+		}
+			
 		/*获取新开桌子号*/
 		Table = Key_Input(key,Input_Cnt,&Clear_All);
 		Display_String(98,90,80,16,Table,16);

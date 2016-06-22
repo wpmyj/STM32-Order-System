@@ -45,7 +45,8 @@ u8 Key_Scan(void)
 	if((S0|S1||S2||S3||S4|S5||S6||S7||S8||S9||S10||S11||
 		S12||S13||S14||S15||S16||S17)&&key_flag){
 		key_flag = 0;
-		Delay_ms(10);
+//		Delay_ms(10);
+		Beep_Alarm();		//ÑÓÊ±Ìæ»»³É·äÃùÆ÷±Æ±Æ
 		if(S1)	return 1;
 		if(S2) 	return 2;
 		if(S3) 	return 3;

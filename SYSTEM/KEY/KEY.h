@@ -3,6 +3,7 @@
 #include <stm32f10x.h>
 #include "SYS.h"
 #include "delay.h"
+#include "Beep.h"
 
 /*相关IO口定义*/
 #define KEY_1     1
