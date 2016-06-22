@@ -6,7 +6,6 @@
 */
 int main(void)
 {
-	u8 key;
 	
 	LED_Init();			//LED灯初始化
 	Beep_Init();		//蜂鸣器初始化
@@ -18,12 +17,9 @@ int main(void)
 	LCD_Init();			//液晶屏初始化
 	RTC_Init();			//实时时钟初始化
 	
-	Login_Func();
-	
 	while(1){
-		key = Key_Scan();
-		if(key) LCD_ShowNum(10,10,key,3,16);
-
+		Login_Func();
+		Home_Func();
 	}
 }
 

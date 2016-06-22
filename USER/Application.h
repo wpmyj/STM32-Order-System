@@ -13,11 +13,13 @@
 #include "RTC.h"
 #include "string.h"
 
+/*实时时钟*/
 void RTC_Func(void);
+/*登陆界面*/
 void Login_Func(void);
-
 u8 *Input_Scan(void);
-
+/*主界面*/
+void Home_Func(void);
 
 
 #endif
