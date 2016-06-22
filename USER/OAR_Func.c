@@ -37,7 +37,7 @@ void Food_Func(u8 *Old_flag, u8 *Self_flag, u8 *New_flag, u8 *name)
 		
 		u8 key,tmp=0;
 		u8 *str;
-		u8 Num[Food_Num][5] = {0};
+		static u8 Num[Food_Num][5] = {0};
 		short i=0,j=0,tmp1=0,tmp2=1;			//进入do while里面立刻更新显示菜谱，不要修改tmp2 初始值
 		
 		/*菜单*/
